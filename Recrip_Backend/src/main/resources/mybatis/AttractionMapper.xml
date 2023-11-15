@@ -13,7 +13,7 @@
 		from gugun
 		where sido_code=#{sido_code};
 	</select>
-	<insert id=insertRank parameterType="rankdto">
+	<insert id="insertRank" parameterType="rankdto">
 		insert into
 		attrank(content_id, score, sido_code, gugun_code)
 		values(#{content_id},#{score},#{sido_code},#{gugun_code})
