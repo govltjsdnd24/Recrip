@@ -45,7 +45,7 @@ public class BoardController {
 	@PostMapping("/boardwrite")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody BoardDto dto) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
-		
+		System.out.println("123");
 		try {
 			service.boardwrite(dto);
 			map.put("resmsg", "입력성공");
