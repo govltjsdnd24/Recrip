@@ -6,11 +6,14 @@
   <typeAliases>
   	<typeAlias type="com.ssafy.recrip.model.BoardDto" alias="boardDto"/>
   	<typeAlias type="com.ssafy.recrip.model.CommentDto" alias="commentDto"/>
-  	<typeAlias type="com.ssafy.recrip.model.EnjoyBoardDto" alias="enjoyBoardDto"/>
-  	<typeAlias type="com.ssafy.recrip.model.MemberDto" alias="memdto"/>
+  	<typeAlias type="com.ssafy.recrip.model.MemberDto" alias="memDto"/>
+  	<typeAlias type="com.ssafy.recrip.model.FileDto" alias="fileDto"/>
+  	<typeAlias type="com.ssafy.recrip.model.SidoDto" alias="sidoDto"/>
+  	<typeAlias type="com.ssafy.recrip.model.GugunDto" alias="gugunDto"/>
   </typeAliases>
   <mappers>
     <mapper resource="mybatis/BoardMapper.xml"/>
-    <mapper resource="mybatis/memberMapper.xml"/>
+    <mapper resource="mybatis/MemberMapper.xml"/>
+    <mapper resource="mybatis/AttractionMapper.xml"/>
   </mappers>
 </configuration>

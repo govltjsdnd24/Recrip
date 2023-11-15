@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.recrip.mapper.AttractionMapper">
+	<select id="listSido"  resultType="sidoDto">
+		select sido_code, sido_name
+		from sido;
+	</select>
+	<select id="listGugun" parameterType="string" resultType="gugunDto">
+		select gugun_code, gugun_name
+		from gugun
+		where sido_code=#{sido_code};
+	</select>
+
+</mapper>

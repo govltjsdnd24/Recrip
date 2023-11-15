@@ -4,12 +4,12 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.recrip.mapper.MemberMapper">
-	<insert id="memberInsert" parameterType="memdto">
+	<insert id="memberInsert" parameterType="Memdto">
 		insert into
 		members(userid, username, userpwd, profile, token)
 		values(#{userid},#{username},#{userpwd},#{profile}, #{token})
 	</insert>
-	<select id="login" parameterType="memdto" resultType="memdto">
+	<select id="login" parameterType="Memdto" resultType="Memdto">
 		select
 		userid, username , userpwd, email, isdelete,profile, token
 		from members
@@ -17,13 +17,13 @@
 		and userpwd = #{userpwd}
 		and isdelete = false
 	</select>
-	<select id="selectDeleted" resultType="memdto">
+	<select id="selectDeleted" resultType="Memdto">
 		select
 		userid, username , userpwd, isdelete,profile, token
 		from members
 		WHERE isdelete = true;
 	</select>
-	<update id="memberUpdate" parameterType="memdto">
+	<update id="memberUpdate" parameterType="Memdto">
 		update members set userpwd = #{userpwd}, username = #{username}, profile = #{profile}
 		where userid = #{userid}
 	</update>

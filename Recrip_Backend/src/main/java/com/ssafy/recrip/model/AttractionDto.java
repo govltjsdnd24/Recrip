@@ -10,8 +10,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class AttractionDto {
-	String contentid;
-	String contenttypeid;
+	String content_id;
+	String content_type_id;
 	String title;
 	String addr1;
 	String addr2;
