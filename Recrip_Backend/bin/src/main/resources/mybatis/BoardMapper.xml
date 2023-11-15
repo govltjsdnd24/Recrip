@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.enjoytrip.mapper.BoardMapper">
+
+	<sql id="search">
+		<if test="word != null and word != ''">
+			<if test="key == 'subject'">
+				and subject like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'subject'">
+				and ${key} = #{word}
+			</if>
+		</if>
+	</sql>
+
+	<select id="listArticle" parameterType="map" resultType="boardDto">
+		select *
+		from board
+		where isdelete = false
+		<include refid="search"></include>
+		order by articleno desc
+		limit #{start}, #{listsize}
+	</select>
+	
+	<select id="getTotalArticleCount" parameterType="map" resultType="int">
+		select count(articleno)
+		from board
+		where isdelete = false
+		<include refid="search"></include>
+	</select>
+	
+  	<select id="boardlist" parameterType="int" resultType="boardDto">
+  		select * from board where isdelete = false order by articleno desc limit #{no}, 20
+  	</select>
+  	
+  	<insert id="boardwrite" parameterType="boardDto">
+  		insert into board (userid, subject, content)
+  		values (#{userid}, #{subject}, #{content})
+  	</insert>
+  	
+  	<update id="boarddelete" parameterType="string">
+  		update board set isdelete = true where articleno = #{articleno}
+  	</update>
+  	
+  	<update id="boardupdate" parameterType="boardDto">
+  		update board set subject = #{subject}, content = #{content} where articleno = #{articleno}
+  	</update>
+  	
+  	<select id="boardview" parameterType="string" resultType="boardDto">
+  		select * from board where isdelete = false and articleno = #{articleno}
+  	</select>
+  	
+  	<select id="enjoyboardlist" parameterType="map" resultType="enjoyBoardDto">
+  		select * from attraction_info where sido_code = #{sido} and content_type_id = #{content} and title like '%${word}%';
+  	</select>
+  	
+  	<select id="commentlist" parameterType="string" resultType="commentDto">
+  		select * from comment where isdelete = false and articleno = #{articleno}
+  	</select>
+  	
+  	<insert id="commentwrite" parameterType="commentDto">
+  		insert into comment (articleno, userid, content)
+  		values (#{articleno}, #{userid}, #{content})
+  	</insert>
+  	
+  	<update id="commentdelete" parameterType="string">
+  		update comment set isdelete = true where commentno = #{commentno}
+  	</update>
+  	
+<!--   	<select id="getTotalArticleCount" resultType="int">
+  		select count(*) from board where isdelete = false
+  	</select> -->
+</mapper>

@@ -1,0 +1,50 @@
+/* 1. header */
+.header {
+  padding: 8px 16px;
+  background-color: whitesmoke;
+  font-size: 1.25rem;
+}
+
+.header-nav {
+  margin-left: 50px;
+}
+
+.service-logo {
+  width: 150px;
+  margin-left: 50px;
+}
+
+.nav-img {
+  width: 30px;
+  margin-right: 10px;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gap {
+  margin: 0 20px;
+}
+
+.header-users-img {
+  cursor: pointer;
+  width: 40px;
+}
+
+.header-dropdown-wrap {
+  position: relative;
+}
+
+.header-dropdown {
+  position: absolute;
+  width: 60px;
+  top: 20px;
+  right: 60px;
+}
+
+.header-dropdown-button {
+  cursor: pointer;
+}

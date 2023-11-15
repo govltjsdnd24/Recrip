@@ -1,0 +1,24 @@
+/* 3. map (debugs) */
+
+.map-title {
+  text-align: center;
+}
+
+.map-select-list {
+  text-align: center;
+}
+
+.map-select {
+  padding: 6px 28px 6px 12px;
+  border-radius: 5px;
+  min-width: 200px;
+  min-height: 40px;
+  margin: 0 20px;
+  font-size: 1.25rem;
+  font-family: inherit;
+}
+
+.map-form {
+  margin: 20px 0;
+  text-align: center;
+}

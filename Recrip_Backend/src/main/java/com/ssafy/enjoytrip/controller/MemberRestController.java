@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.enjoytrip.model.BoardDto;
 import com.ssafy.enjoytrip.model.MemberDto;
 import com.ssafy.enjoytrip.service.MemberService;
+import com.ssafy.enjoytrip.service.S3UploadService;
 import com.ssafy.enjoytrip.util.SizeConstant;
 
 import io.swagger.annotations.Api;
@@ -31,10 +33,28 @@ import io.swagger.annotations.Api;
 public class MemberRestController {
 	
 	private MemberService service;
+	private S3UploadService s3service;
 	
 	@Autowired
-	public MemberRestController(MemberService service) {
+	public MemberRestController(MemberService service, S3UploadService s3service) {
 		this.service = service;
+		this.s3service=s3service;
+	}
+	
+	@PostMapping("/upload")
+	public ResponseEntity<Map<String, Object>> upload(@RequestBody MultipartFile multipartFile) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			String upload = s3service.saveFile(multipartFile);
+			map.put("url", upload);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", e.toString());
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
 	}
 	
 	@PostMapping("/restmemlogin")
