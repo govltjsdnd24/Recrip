@@ -1,5 +1,6 @@
 package com.ssafy.recrip.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -25,6 +26,12 @@ public class MemberServiceImpl implements MemberService{
 		// TODO Auto-generated method stub
 		return session.getMapper(MemberMapper.class).login(dto);
 	}
+	
+	@Override
+	public List<MemberDto> selectDeleted() {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).selectDeleted();
+	}
 
 	@Override
 	public int memberInsert(MemberDto dto) {
@@ -42,6 +49,12 @@ public class MemberServiceImpl implements MemberService{
 	public int memberDelete(String userid) {
 		// TODO Auto-generated method stub
 		return session.getMapper(MemberMapper.class).memberDelete(userid);
+	}
+	
+	@Override
+	public int memberPermaDelete(String userid) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).memberPermaDelete(userid);
 	}
 
 }

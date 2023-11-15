@@ -13,8 +13,9 @@ import lombok.ToString;
 @AllArgsConstructor
 public class MemberDto {
 	String userid;
-	String username;
 	String userpwd;
-	String email;
+	String username;
 	String isdelete;
+	String profile;
+	String token;
 }

@@ -30,7 +30,7 @@ import io.swagger.annotations.Api;
 
 @CrossOrigin("*")
 @RestController
-@Api(tags = {"EnjoyTrip Member API V1"})
+@Api(tags = {"Recrip Member API"})
 public class MemberRestController {
 	
 	private MemberService service;
@@ -42,23 +42,23 @@ public class MemberRestController {
 		this.s3service=s3service;
 	}
 	
-	@PostMapping("/upload")
-	public ResponseEntity<Map<String, Object>> upload(@RequestBody(required = false) MultipartFile multipartFile) throws IllegalStateException, IOException, SQLException {
-		Map<String, Object> map = new HashMap<>();
-		try {
-			String upload = s3service.saveFile(multipartFile);
-			map.put("url", upload);
-		} catch (Exception e) {
-			e.printStackTrace();
-			map.put("resmsg", e.toString());
-		}
-		
-		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-		
-		return res;
-	}
+//	@PostMapping("/upload")
+//	public ResponseEntity<Map<String, Object>> upload(@RequestBody(required = false) MultipartFile multipartFile) throws IllegalStateException, IOException, SQLException {
+//		Map<String, Object> map = new HashMap<>();
+//		try {
+//			String upload = s3service.saveFile(multipartFile);
+//			map.put("url", upload);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			map.put("resmsg", e.toString());
+//		}
+//		
+//		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+//		
+//		return res;
+//	}
 	
-	@PostMapping("/restmemlogin")
+	@GetMapping("/restmemlogin")
 	public ResponseEntity<Map<String, Object>> restmemlogin(@RequestBody MemberDto dto) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
@@ -67,7 +67,7 @@ public class MemberRestController {
 				map.put("resmsg", login);
 				map.put("resdata", "1");
 			} else {
-				map.put("resmsg", "로그인 실패");
+				map.put("resmsg", "로그인 정보 존재하지 않음");
 				map.put("resdata", "0");
 			}
 		} catch (Exception e) {
@@ -80,10 +80,37 @@ public class MemberRestController {
 		return res;
 	}
 	
-	@PostMapping("/restmeminsert")
-	public ResponseEntity<Map<String, Object>> restmeminsert(@RequestBody MemberDto dto) throws Exception {
+	@GetMapping("/restselectdeleted")
+	public ResponseEntity<Map<String, Object>> restselectdeleted(@RequestBody MemberDto dto) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
+			List<MemberDto> deleted = service.selectDeleted();
+			if(deleted.size()>0) {
+				map.put("resmsg", deleted);
+				map.put("resdata", "1");
+			} else {
+				map.put("resmsg", "삭제된 사용자 없음");
+				map.put("resdata", "0");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "삭제된 사용자 조회 중 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@PostMapping("/restmeminsert")
+	public ResponseEntity<Map<String, Object>> restmeminsert(@RequestBody MemberDto dto, @RequestBody(required = false) MultipartFile multipartFile) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			String upload;
+			if(multipartFile!=null) {
+				upload = s3service.saveFile(multipartFile);
+				dto.setProfile(upload);
+			}
 			int result = service.memberInsert(dto);
 			if(result != 0) {
 				map.put("resdata", "1");
@@ -141,6 +168,29 @@ public class MemberRestController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			map.put("resmsg", "멤버 삭제 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@DeleteMapping("/restmempermadelete")
+	public ResponseEntity<Map<String, Object>> restmempermadelete(String userid) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			int result = service.memberPermaDelete(userid);
+			if(result != 0) {
+				map.put("resdata", "1");
+				map.put("resmsg", "멤버 영구 삭제 성공");
+			} else {
+				map.put("resdata", "0");
+				map.put("resmsg", "멤버 영구 삭제 실패");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "멤버 영구 삭제 오류 발생");
 		}
 		
 		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
