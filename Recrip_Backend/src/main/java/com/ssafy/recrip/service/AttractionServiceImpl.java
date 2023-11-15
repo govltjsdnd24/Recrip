@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.recrip.mapper.AttractionMapper;
 import com.ssafy.recrip.model.GugunDto;
+import com.ssafy.recrip.model.RankDto;
 import com.ssafy.recrip.model.SidoDto;
 
 @Service
@@ -30,5 +31,21 @@ public class AttractionServiceImpl implements AttractionService {
 	public List<GugunDto> listGugun(String sido) {
 		return session.getMapper(AttractionMapper.class).listGugun(sido);
 	}
+
+	@Override
+	public int insertRank(RankDto rankDto) {
+		return session.getMapper(AttractionMapper.class).insertRank(rankDto);
+	}
+
+	@Override
+	public List<RankDto> selectRank() {
+		return session.getMapper(AttractionMapper.class).selectRank();
+	}
+
+	@Override
+	public int updateRank(RankDto rankDto) {
+		return session.getMapper(AttractionMapper.class).updateRank(rankDto);
+	}
+
 
 }

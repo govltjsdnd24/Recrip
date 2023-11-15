@@ -10,6 +10,7 @@
   	<typeAlias type="com.ssafy.recrip.model.FileDto" alias="fileDto"/>
   	<typeAlias type="com.ssafy.recrip.model.SidoDto" alias="sidoDto"/>
   	<typeAlias type="com.ssafy.recrip.model.GugunDto" alias="gugunDto"/>
+  	<typeAlias type="com.ssafy.recrip.model.RankDto" alias="rankDto"/>
   </typeAliases>
   <mappers>
     <mapper resource="mybatis/BoardMapper.xml"/>

@@ -13,5 +13,17 @@
 		from gugun
 		where sido_code=#{sido_code};
 	</select>
-
+	<insert id=insertRank parameterType="rankdto">
+		insert into
+		attrank(content_id, score, sido_code, gugun_code)
+		values(#{content_id},#{score},#{sido_code},#{gugun_code})
+	</insert>
+	<select id="selectRank" resultType="rankDto">
+		select content_id, score, sido_code, gugun_code
+		from attrank
+	</select>
+	<update id="updateRank" parameterType="rankDto">
+		update attrank set score = #{score}, sido_code = #{sido_code}, gugun_code = #{gugun_code}
+		where content_id = #{content_id}
+	</update>
 </mapper>
