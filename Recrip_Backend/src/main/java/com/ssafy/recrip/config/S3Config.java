@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.config;
+package com.ssafy.recrip.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

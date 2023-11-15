@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.controller;
+package com.ssafy.recrip.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.enjoytrip.model.BoardDto;
-import com.ssafy.enjoytrip.model.CommentDto;
-import com.ssafy.enjoytrip.model.EnjoyBoardDto;
-import com.ssafy.enjoytrip.service.BoardService;
-import com.ssafy.enjoytrip.util.SizeConstant;
+import com.ssafy.recrip.model.BoardDto;
+import com.ssafy.recrip.model.CommentDto;
+import com.ssafy.recrip.model.EnjoyBoardDto;
+import com.ssafy.recrip.service.BoardService;
+import com.ssafy.recrip.util.SizeConstant;
 
 import io.swagger.annotations.Api;
 

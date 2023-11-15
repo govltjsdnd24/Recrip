@@ -8,11 +8,11 @@
 		<version>2.7.17</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.ssafy.enjoytrip</groupId>
-	<artifactId>EnjoyTrip_Spring</artifactId>
+	<groupId>com.ssafy.recrip</groupId>
+	<artifactId>Recrip_Backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>EnjoyTrip_Spring</name>
-	<description>EnjoyTrip_Spring</description>
+	<name>Recrip_Backend</name>
+	<description>Recrip_Backend</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>

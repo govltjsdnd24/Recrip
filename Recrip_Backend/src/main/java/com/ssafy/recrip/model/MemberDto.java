@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.model;
+package com.ssafy.recrip.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

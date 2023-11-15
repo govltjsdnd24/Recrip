@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.model;
+package com.ssafy.recrip.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +9,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class BoardDto {
+public class CommentDto {
+	String commentno;
 	String articleno;
 	String userid;
-	String subject;
 	String content;
-	String date;
-	String hit;
+	String date;	
 	boolean isdelete;
 }

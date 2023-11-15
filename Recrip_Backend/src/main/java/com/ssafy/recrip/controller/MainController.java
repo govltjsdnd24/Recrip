@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.controller;
+package com.ssafy.recrip.controller;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ssafy.enjoytrip.model.BoardDto;
-import com.ssafy.enjoytrip.model.CommentDto;
-import com.ssafy.enjoytrip.service.BoardService;
-import com.ssafy.enjoytrip.util.PageNavigation;
+import com.ssafy.recrip.model.BoardDto;
+import com.ssafy.recrip.model.CommentDto;
+import com.ssafy.recrip.service.BoardService;
+import com.ssafy.recrip.util.PageNavigation;
 
 import springfox.documentation.annotations.ApiIgnore;
 

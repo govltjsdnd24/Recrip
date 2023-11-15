@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.config;
+package com.ssafy.recrip.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ public class SwaggerConfig {
 				.select()                                  
 		        .apis(RequestHandlerSelectors.any())
 		        .paths(PathSelectors.any())
-		        .apis(RequestHandlerSelectors.basePackage("com.ssafy.enjoytrip.controller"))
+		        .apis(RequestHandlerSelectors.basePackage("com.ssafy.recrip.controller"))
 		        .build();
 	}
 }

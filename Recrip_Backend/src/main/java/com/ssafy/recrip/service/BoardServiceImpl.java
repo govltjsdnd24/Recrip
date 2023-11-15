@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.service;
+package com.ssafy.recrip.service;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -9,12 +9,12 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.enjoytrip.mapper.BoardMapper;
-import com.ssafy.enjoytrip.model.BoardDto;
-import com.ssafy.enjoytrip.model.CommentDto;
-import com.ssafy.enjoytrip.model.EnjoyBoardDto;
-import com.ssafy.enjoytrip.util.PageNavigation;
-import com.ssafy.enjoytrip.util.SizeConstant;
+import com.ssafy.recrip.mapper.BoardMapper;
+import com.ssafy.recrip.model.BoardDto;
+import com.ssafy.recrip.model.CommentDto;
+import com.ssafy.recrip.model.EnjoyBoardDto;
+import com.ssafy.recrip.util.PageNavigation;
+import com.ssafy.recrip.util.SizeConstant;
 
 
 

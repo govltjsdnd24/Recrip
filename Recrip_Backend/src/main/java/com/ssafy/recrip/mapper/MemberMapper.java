@@ -1,12 +1,17 @@
-package com.ssafy.enjoytrip.service;
+package com.ssafy.recrip.mapper;
 
 import java.util.Map;
 
-import com.ssafy.enjoytrip.model.MemberDto;
+import org.apache.ibatis.annotations.Mapper;
 
-public interface MemberService {
+import com.ssafy.recrip.model.MemberDto;
+
+@Mapper
+public interface MemberMapper {
+
 	MemberDto login(MemberDto dto);
 	int memberInsert(MemberDto dto);
 	int memberUpdate(MemberDto dto);
 	int memberDelete(String userid);
+
 }

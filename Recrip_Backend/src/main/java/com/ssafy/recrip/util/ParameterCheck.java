@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.util;
+package com.ssafy.recrip.util;
 
 public class ParameterCheck {
 

@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.service;
+package com.ssafy.recrip.service;
 
 import java.util.Map;
 
@@ -6,8 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.enjoytrip.mapper.MemberMapper;
-import com.ssafy.enjoytrip.model.MemberDto;
+import com.ssafy.recrip.mapper.MemberMapper;
+import com.ssafy.recrip.model.MemberDto;
 
 @Service
 public class MemberServiceImpl implements MemberService{

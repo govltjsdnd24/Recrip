@@ -1,16 +1,18 @@
-package com.ssafy.enjoytrip.service;
+package com.ssafy.recrip.mapper;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import com.ssafy.enjoytrip.model.BoardDto;
-import com.ssafy.enjoytrip.model.CommentDto;
-import com.ssafy.enjoytrip.model.EnjoyBoardDto;
-import com.ssafy.enjoytrip.util.PageNavigation;
+import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.recrip.model.BoardDto;
+import com.ssafy.recrip.model.CommentDto;
+import com.ssafy.recrip.model.EnjoyBoardDto;
 
-public interface BoardService {
+@Mapper
+public interface BoardMapper {
+	
 	List<BoardDto> boardlist(int currentpage);
 	void boardwrite(BoardDto dto);
 	void boarddelete(String articleno);
@@ -20,7 +22,7 @@ public interface BoardService {
 	List<CommentDto> commentlist(String articleno);
 	void commentwrite(CommentDto dto);
 	void commentdelete(String commentno);
-	PageNavigation makePageNavigation(int pgno) throws Exception;
-	int getTotalPage() throws SQLException;
-	Map<String,Object> boardlist(Map<String, String> map) throws Exception;
+	int getTotalArticleCount() throws SQLException;
+	List<BoardDto> listArticle(Map<String, Object> param) throws SQLException;
+	int getTotalArticleCount(Map<String, Object> param) throws SQLException;
 }

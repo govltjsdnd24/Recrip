@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.service;
+package com.ssafy.recrip.service;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.ssafy.enjoytrip.config.S3Config;
+import com.ssafy.recrip.config.S3Config;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,11 +39,11 @@ public class S3UploadService {
         
        try {
     	   amazonS3Client.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
-       }catch (Exception e) {
+       } catch (Exception e) {
 		e.printStackTrace();
-	}
+       }
         
-        return amazonS3Client.getUrl(bucket, originalFilename).toString();
+       return amazonS3Client.getUrl(bucket, originalFilename).toString();
     }
 
 	

@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.controller;
+package com.ssafy.recrip.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ssafy.enjoytrip.model.MemberDto;
-import com.ssafy.enjoytrip.service.MemberService;
+import com.ssafy.recrip.model.MemberDto;
+import com.ssafy.recrip.service.MemberService;
 
 import springfox.documentation.annotations.ApiIgnore;
 
