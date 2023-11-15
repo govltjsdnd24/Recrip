@@ -11,9 +11,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class RankDto {
-	String content_id;
-	String sido_code;
-	String gugun_code;
-	String score;
+public class WishHisDto {
+	String userid;
+	String contentid;
 }

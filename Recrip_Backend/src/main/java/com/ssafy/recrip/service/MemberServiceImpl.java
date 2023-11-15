@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.recrip.mapper.MemberMapper;
+import com.ssafy.recrip.model.CourseDto;
 import com.ssafy.recrip.model.MemberDto;
+import com.ssafy.recrip.model.MessageDto;
+import com.ssafy.recrip.model.WishHisDto;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -55,6 +58,84 @@ public class MemberServiceImpl implements MemberService{
 	public int memberPermaDelete(String userid) {
 		// TODO Auto-generated method stub
 		return session.getMapper(MemberMapper.class).memberPermaDelete(userid);
+	}
+
+	@Override
+	public List<WishHisDto> histroyList(String userid) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).histroyList(userid);
+	}
+
+	@Override
+	public List<WishHisDto> wishList(String userid) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).wishList(userid);
+	}
+
+	@Override
+	public List<CourseDto> courseList(String userid) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).courseList(userid);
+	}
+
+	@Override
+	public int histroyInsert(WishHisDto dto) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).histroyInsert(dto);
+	}
+
+	@Override
+	public int wishInsert(WishHisDto dto) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).wishInsert(dto);
+	}
+
+	@Override
+	public int courseInsert(CourseDto dto) {
+		// TODO Auto-generated method stub
+		String groupno = session.getMapper(MemberMapper.class).findMaxGroupno();
+		if(groupno == null) {
+			dto.setGroupno("1");
+		} else {
+			dto.setGroupno(String.valueOf(Integer.parseInt(groupno)+1));
+		}
+		return session.getMapper(MemberMapper.class).courseInsert(dto);
+	}
+
+	@Override
+	public int historydelete(String contentid) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).historydelete(contentid);
+	}
+
+	@Override
+	public int wishdelete(String contentid) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).wishdelete(contentid);
+	}
+
+	@Override
+	public int coursedelete(String groupno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).coursedelete(groupno);
+	}
+
+	@Override
+	public List<MessageDto> messageList(String userid) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).messageList(userid);
+	}
+
+	@Override
+	public int messageinsert(MessageDto dto) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).messageinsert(dto);
+	}
+
+	@Override
+	public int messagedelete(String messageno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).messagedelete(messageno);
 	}
 
 }

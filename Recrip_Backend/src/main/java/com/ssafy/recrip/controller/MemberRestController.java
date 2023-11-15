@@ -21,7 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.recrip.model.BoardDto;
+import com.ssafy.recrip.model.CourseDto;
 import com.ssafy.recrip.model.MemberDto;
+import com.ssafy.recrip.model.MessageDto;
+import com.ssafy.recrip.model.WishHisDto;
 import com.ssafy.recrip.service.MemberService;
 import com.ssafy.recrip.service.S3UploadService;
 import com.ssafy.recrip.util.SizeConstant;
@@ -191,6 +194,274 @@ public class MemberRestController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			map.put("resmsg", "멤버 영구 삭제 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/histroylist")
+	public ResponseEntity<Map<String, Object>> histroylist(String userid) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			List<WishHisDto> list = service.histroyList(userid);
+			if(list.size()>0) {
+				map.put("resmsg", list);
+				map.put("resdata", "1");
+			} else {
+				map.put("resmsg", "조회 실패");
+				map.put("resdata", "0");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회 중 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/wishlist")
+	public ResponseEntity<Map<String, Object>> wishlist(String userid) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			List<WishHisDto> list = service.wishList(userid);
+			if(list.size()>0) {
+				map.put("resmsg", list);
+				map.put("resdata", "1");
+			} else {
+				map.put("resmsg", "조회 실패");
+				map.put("resdata", "0");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회 중 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/courselist")
+	public ResponseEntity<Map<String, Object>> courselist(String userid) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			List<CourseDto> list = service.courseList(userid);
+			if(list.size()>0) {
+				map.put("resmsg", list);
+				map.put("resdata", "1");
+			} else {
+				map.put("resmsg", "조회 실패");
+				map.put("resdata", "0");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회 중 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@PostMapping("/historyinsert")
+	public ResponseEntity<Map<String, Object>> historyinsert(@RequestBody WishHisDto dto) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			int result = service.histroyInsert(dto);
+			if(result != 0) {
+				map.put("resdata", "1");
+				map.put("resmsg", "등록 성공");
+			} else {
+				map.put("resdata", "0");
+				map.put("resmsg", "등록 실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "등록 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@PostMapping("/wishinsert")
+	public ResponseEntity<Map<String, Object>> wishinsert(@RequestBody WishHisDto dto) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			int result = service.wishInsert(dto);
+			if(result != 0) {
+				map.put("resdata", "1");
+				map.put("resmsg", "등록 성공");
+			} else {
+				map.put("resdata", "0");
+				map.put("resmsg", "등록 실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "등록 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@PostMapping("/courseinsert")
+	public ResponseEntity<Map<String, Object>> courseinsert(@RequestBody CourseDto dto) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			int result = service.courseInsert(dto);
+			if(result != 0) {
+				map.put("resdata", "1");
+				map.put("resmsg", "등록 성공");
+			} else {
+				map.put("resdata", "0");
+				map.put("resmsg", "등록 실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "등록 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@DeleteMapping("/histroydelete")
+	public ResponseEntity<Map<String, Object>> histroydelete(String contentid) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			int result = service.historydelete(contentid);
+			if(result != 0) {
+				map.put("resdata", "1");
+				map.put("resmsg", "삭제 성공");
+			} else {
+				map.put("resdata", "0");
+				map.put("resmsg", "삭제 실패");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "삭제 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@DeleteMapping("/wishdelete")
+	public ResponseEntity<Map<String, Object>> wishdelete(String contentid) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			int result = service.wishdelete(contentid);
+			if(result != 0) {
+				map.put("resdata", "1");
+				map.put("resmsg", "삭제 성공");
+			} else {
+				map.put("resdata", "0");
+				map.put("resmsg", "삭제 실패");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "삭제 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@DeleteMapping("/coursedelete")
+	public ResponseEntity<Map<String, Object>> coursedelete(String groupno) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			int result = service.coursedelete(groupno);
+			if(result != 0) {
+				map.put("resdata", "1");
+				map.put("resmsg", "삭제 성공");
+			} else {
+				map.put("resdata", "0");
+				map.put("resmsg", "삭제 실패");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "삭제 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/messagelist")
+	public ResponseEntity<Map<String, Object>> messagelist(String userid) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			List<MessageDto> list = service.messageList(userid);
+			if(list.size()>0) {
+				map.put("resmsg", list);
+				map.put("resdata", "1");
+			} else {
+				map.put("resmsg", "조회 실패");
+				map.put("resdata", "0");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회 중 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@PostMapping("/messageinsert")
+	public ResponseEntity<Map<String, Object>> messageinsert(@RequestBody MessageDto dto) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			int result = service.messageinsert(dto);
+			if(result != 0) {
+				map.put("resdata", "1");
+				map.put("resmsg", "등록 성공");
+			} else {
+				map.put("resdata", "0");
+				map.put("resmsg", "등록 실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "등록 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@DeleteMapping("/messagedelete")
+	public ResponseEntity<Map<String, Object>> messagedelete(String messageno) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			int result = service.messagedelete(messageno);
+			if(result != 0) {
+				map.put("resdata", "1");
+				map.put("resmsg", "삭제 성공");
+			} else {
+				map.put("resdata", "0");
+				map.put("resmsg", "삭제 실패");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "삭제 오류 발생");
 		}
 		
 		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);

@@ -36,6 +36,48 @@
 		where userid = #{userid}
 		AND isdelete = true;
 	</delete>
-
+	<select id="histroyList" parameterType="String">
+		select from histroylist
+		where userid = #{userid}
+	</select>
+	<select id="wishList" parameterType="String">
+		select from wishlist
+		where userid = #{userid}
+	</select>
+	<select id="courseList" parameterType="String">
+		select from courselist
+		where userid = #{userid}
+	</select>
+	<insert id="histroyInsert" parameterType="wishHisDto">
+		insert into historylist (userid, contentid) values (#{userid}, #{contentid})
+	</insert>
+	<insert id="wishInsert" parameterType="wishHisDto">
+		insert into wishlist (userid, contentid) values (#{userid}, #{contentid})
+	</insert>
+	<insert id="courseInsert" parameterType="wishHisDto">
+		insert into courselist (userid, contentid, groupno) values (#{userid}, #{contentid}, #{groupno})
+	</insert>
+	<delete id="historydelete" parameterType="string">
+		delete from historylist where contentid = #{contentid}
+	</delete>
+	<delete id="wishdelete" parameterType="string">
+		delete from wishlist where contentid = #{contentid}
+	</delete>
+	<delete id="coursedelete" parameterType="string">
+		delete from courselist where groupno = #{groupno}
+	</delete>
+	<select id="findMaxGroupno" resultType="string">
+		select groupno from courselist order by groupno desc limit 1;
+	</select>
+	<select id="messageList" parameterType="String" resultType="messageDto">
+		select * from message
+		where isdelete = 0 and to = #{userid}
+	</select>
+	<insert id="messageinsert" parameterType="messageDto">
+		insert into message (fromid, toid, subject, content) values (#{fromid}, #{toid}, #{subject}, #{content})
+	</insert>
+	<delete id="messagedelete" parameterType="string">
+		delete from message where messageno = #{messageno}
+	</delete>
 </mapper>
   
