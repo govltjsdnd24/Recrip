@@ -1,0 +1,36 @@
+/*  4. carousel */
+
+.carousel-wrap {
+  width: 1500px;
+  height: 300px;
+  position: relative;
+  overflow: hidden;
+  margin: 20px auto;
+}
+
+.carousel-flex {
+  display: flex;
+  transform: translate3d(0, 0, 0);
+  transition: transform, 0.2s;
+}
+
+.carousel-button {
+  font-size: 1.5rem;
+  position: absolute;
+  top: 40%;
+  z-index: 1;
+}
+
+.carousel-button-left {
+  left: 0;
+}
+
+.carousel-button-right {
+  right: 0;
+}
+
+.carousel-single-wrap {
+  min-width: 300px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
