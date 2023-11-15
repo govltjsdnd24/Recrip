@@ -17,7 +17,7 @@
 
 	<select id="boardList" parameterType="map" resultType="boardDto">
 		select *
-		from #{table}
+		from ${table}
 		where isdelete = false
 		<include refid="search"></include>
 		order by articleno desc
@@ -26,7 +26,7 @@
 	
 	<select id="getTotalListCount" parameterType="map" resultType="int">
 		select count(articleno)
-		from #{table}
+		from ${table}
 		where isdelete = false
 		<include refid="search"></include>
 	</select>
@@ -63,10 +63,6 @@
   	
   	<select id="reviewBoardView" parameterType="string" resultType="boardDto">
   		select * from reviewboard where isdelete = false and articleno = #{articleno}
-  	</select>
-  	
-  	<select id="attractionList" parameterType="map" resultType="enjoyBoardDto">
-  		select * from attraction_info where sido_code = #{sido} and content_type_id = #{content} and title like '%${word}%';
   	</select>
   	
   	<select id="freeCommentList" parameterType="string" resultType="commentDto">

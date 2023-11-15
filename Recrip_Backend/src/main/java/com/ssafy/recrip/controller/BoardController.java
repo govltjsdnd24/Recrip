@@ -34,194 +34,290 @@ import io.swagger.annotations.Api;
 @Api(tags = {"EnjoyTrip Board API V1"})
 public class BoardController {
 	
-//	BoardService service;
-//
-//	@Autowired
-//	public BoardController(BoardService service) {
-//		super();
-//		this.service = service;
-//	}
-//	
-//	@PostMapping("/boardwrite")
-//	public ResponseEntity<Map<String, Object>> insert(@RequestBody BoardDto dto) throws IllegalStateException, IOException, SQLException {
-//		Map<String, Object> map = new HashMap<>();
-//		System.out.println("123");
-//		try {
-//			service.boardwrite(dto);
-//			map.put("resmsg", "입력성공");
-//			map.put("resdata", "1");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			map.put("resmsg", "입력실패");
-//		}
-//		
-//		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-//		
-//		return res;
-//	}
-//	
-//	@GetMapping("/boardlist")
-//	public ResponseEntity<Map<String, Object>> list(@RequestParam Map<String, String> map) throws Exception {
-//		System.out.println(map);
-//		Map<String, Object> resultmap = new HashMap<>();
-//		try {
-//			Map<String, Object> result = service.boardList(map);
-//			resultmap.put("resdata", result);
-//			resultmap.put("resmsg", "조회성공");
-//		} catch (Exception e) { 
-//			e.printStackTrace();
-//			resultmap.put("resmsg", "조회실패");
-//		}
-//		
-//		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(resultmap,HttpStatus.OK);
-//		
-//		return res;
-//	}
-//	
-//	@GetMapping("/boardview")
-//	public ResponseEntity<Map<String, Object>> view(String articleno) throws SQLException {
-//		Map<String, Object> map = new HashMap<>();
-//		try {
-//			BoardDto dto = service.boardview(articleno);
-//			map.put("resdata", dto);
-//			map.put("resmsg", "조회성공");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			map.put("resmsg", "조회실패");
-//		}
-//		
-//		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-//		
-//		return res;
-//		
-//	}
-//	
-//	@PutMapping("/boardupdate")
-//	public ResponseEntity<Map<String, Object>> update(@RequestBody BoardDto dto) throws SQLException {
-//		Map<String, Object> map = new HashMap<>();
-//		try {
-//			service.boardupdate(dto);
-//			map.put("resdata", dto);
-//			map.put("resmsg", "수정성공");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			map.put("resmsg", "수정실패");
-//		}
-//		
-//		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-//		
-//		return res;
-//	}
-//	
-//	@DeleteMapping("/boarddelete")
-//	public ResponseEntity<Map<String, Object>> update(String articleno) throws SQLException {
-//		Map<String, Object> map = new HashMap<>();
-//		try {
-//			service.boarddelete(articleno);
-//			map.put("resdata", "1");
-//			map.put("resmsg", "삭제성공");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			map.put("resmsg", "삭제실패");
-//		}
-//		
-//		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-//		
-//		return res;
-//	}
-//	
-//	@GetMapping("/enjoyboardlist")
-//	public ResponseEntity<Map<String, Object>> enjoylist(@RequestParam(defaultValue = "") String sido,
-//														@RequestParam(defaultValue = "") String content,
-//														@RequestParam(defaultValue = "") String word) throws Exception {
-//		Map<String, Object> map = new HashMap<>();
-//		try {
-//			Map<String,String> search = new HashMap<>();
-//			search.put("sido" , sido);
-//			search.put("content",content);
-//			search.put("word", word);
-//			List<AttractionDto> list = service.enjoyboardlist(search);
-//			System.out.println(list);
-//			map.put("resdata", list);
-//			map.put("resmsg", "조회성공");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			map.put("resmsg", "조회실패");
-//		}
-//		
-//		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-//		
-//		return res;
-//	}
-//	
-//	@GetMapping("/commentlist")
-//	public ResponseEntity<Map<String, Object>> commentlist(String articleno) throws Exception {
-//		Map<String, Object> map = new HashMap<>();
-//		try {
-//			List<CommentDto> list = service.commentlist(articleno);
-//			System.out.println(list);
-//			map.put("resdata", list);
-//			map.put("resmsg", "조회성공");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			map.put("resmsg", "조회실패");
-//		}
-//		
-//		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-//		
-//		return res;
-//	}
-//	
-//	@PostMapping("/commentwrite")
-//	public ResponseEntity<Map<String, Object>> commentinsert(@RequestBody CommentDto dto) throws IllegalStateException, IOException, SQLException {
-//		Map<String, Object> map = new HashMap<>();
-//		
-//		try {
-//			service.commentwrite(dto);
-//			map.put("resmsg", "입력성공");
-//			map.put("resdata", "1");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			map.put("resmsg", "입력실패");
-//		}
-//		
-//		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-//		
-//		return res;
-//	}
-//	
-//	@DeleteMapping("/commentdelete")
-//	public ResponseEntity<Map<String, Object>> commentdelete(String commentno) throws SQLException {
-//		Map<String, Object> map = new HashMap<>();
-//		try {
-//			service.commentdelete(commentno);
-//			map.put("resdata", "1");
-//			map.put("resmsg", "삭제성공");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			map.put("resmsg", "삭제실패");
-//		}
-//		
-//		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-//		
-//		return res;
-//	}
-//	
-//	@GetMapping("/boardtotalpage")
-//	public ResponseEntity<Map<String, Object>> boardtotalpage() throws SQLException {
-//		Map<String, Object> map = new HashMap<>();
-//		try {
-//			int totalpage = service.getTotalPage();
-//			map.put("resdata", totalpage);
-//			map.put("resmsg", "조회성공");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			map.put("resmsg", "조회실패");
-//		}
-//		
-//		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-//		
-//		return res;
-//		
-//	}
+	BoardService service;
+
+	@Autowired
+	public BoardController(BoardService service) {
+		super();
+		this.service = service;
+	}
+	
+	@PostMapping("/freeboardwrite")
+	public ResponseEntity<Map<String, Object>> freeboardwrite(@RequestBody BoardDto dto) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		System.out.println("123");
+		try {
+			service.freeBoardWrite(dto);
+			map.put("resmsg", "입력성공");
+			map.put("resdata", "1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "입력실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@PostMapping("/reviewboardwrite")
+	public ResponseEntity<Map<String, Object>> reviewboardwrite(@RequestBody BoardDto dto) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		System.out.println("123");
+		try {
+			service.reviewBoardWrite(dto);
+			map.put("resmsg", "입력성공");
+			map.put("resdata", "1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "입력실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/boardlist")
+	public ResponseEntity<Map<String, Object>> boardlist(@RequestBody Map<String, String> map) throws Exception {
+		System.out.println(map);
+		Map<String, Object> resultmap = new HashMap<>();
+		try {
+			Map<String, Object> result = service.boardList(map);
+			resultmap.put("resdata", result);
+			resultmap.put("resmsg", "조회성공");
+		} catch (Exception e) { 
+			e.printStackTrace();
+			resultmap.put("resmsg", "조회실패");
+			resultmap.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(resultmap,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/freeboardview")
+	public ResponseEntity<Map<String, Object>> freeboardview(String articleno) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			BoardDto dto = service.freeBoardView(articleno);
+			map.put("resdata", dto);
+			map.put("resmsg", "조회성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+		
+	}
+	
+	@GetMapping("/reviewboardview")
+	public ResponseEntity<Map<String, Object>> reviewboardview(String articleno) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			BoardDto dto = service.reviewBoardView(articleno);
+			map.put("resdata", dto);
+			map.put("resmsg", "조회성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+		
+	}
+	
+	@PutMapping("/freeboardupdate")
+	public ResponseEntity<Map<String, Object>> freeboardupdate(@RequestBody BoardDto dto) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			service.freeBoardUpdate(dto);
+			map.put("resdata", dto);
+			map.put("resmsg", "수정성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "수정실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@PutMapping("/reviewboardupdate")
+	public ResponseEntity<Map<String, Object>> reviewboardupdate(@RequestBody BoardDto dto) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			service.reviewBoardUpdate(dto);
+			map.put("resdata", dto);
+			map.put("resmsg", "수정성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "수정실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@DeleteMapping("/freeboarddelete")
+	public ResponseEntity<Map<String, Object>> freeboarddelete(String articleno) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			service.freeBoardDelete(articleno);
+			map.put("resdata", "1");
+			map.put("resmsg", "삭제성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "삭제실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@DeleteMapping("/reviewboarddelete")
+	public ResponseEntity<Map<String, Object>> reviewboarddelete(String articleno) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			service.reviewBoardDelete(articleno);
+			map.put("resdata", "1");
+			map.put("resmsg", "삭제성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "삭제실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/freecommentlist")
+	public ResponseEntity<Map<String, Object>> freecommentlist(String articleno) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			List<CommentDto> list = service.freeCommentList(articleno);
+			System.out.println(list);
+			map.put("resdata", list);
+			map.put("resmsg", "조회성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/reviewcommentlist")
+	public ResponseEntity<Map<String, Object>> reviewcommentlist(String articleno) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			List<CommentDto> list = service.reviewCommentList(articleno);
+			System.out.println(list);
+			map.put("resdata", list);
+			map.put("resmsg", "조회성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@PostMapping("/freecommentwrite")
+	public ResponseEntity<Map<String, Object>> freecommentwrite(@RequestBody CommentDto dto) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		
+		try {
+			service.freeCommentWrite(dto);
+			map.put("resmsg", "입력성공");
+			map.put("resdata", "1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "입력실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@PostMapping("/reviewcommentwrite")
+	public ResponseEntity<Map<String, Object>> reviewcommentwrite(@RequestBody CommentDto dto) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		
+		try {
+			service.reviewCommentWrite(dto);
+			map.put("resmsg", "입력성공");
+			map.put("resdata", "1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "입력실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@DeleteMapping("/freecommentdelete")
+	public ResponseEntity<Map<String, Object>> freecommentdelete(String commentno) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			service.freeCommentDelete(commentno);
+			map.put("resdata", "1");
+			map.put("resmsg", "삭제성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "삭제실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@DeleteMapping("/reviewcommentdelete")
+	public ResponseEntity<Map<String, Object>> reviewcommentdelete(String commentno) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			service.reviewCommentDelete(commentno);
+			map.put("resdata", "1");
+			map.put("resmsg", "삭제성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "삭제실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
 }

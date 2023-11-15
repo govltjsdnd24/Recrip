@@ -23,7 +23,6 @@ public interface BoardMapper {
 	int reviewBoardUpdate(BoardDto dto);
 	BoardDto freeBoardView(String articleno);
 	BoardDto reviewBoardView(String articleno);
-	List<AttractionDto> attractionList(Map<String, Object> param);
 	List<CommentDto> freeCommentList(String articleno);
 	List<CommentDto> reviewCommentList(String articleno);
 	int freeCommentWrite(CommentDto dto);

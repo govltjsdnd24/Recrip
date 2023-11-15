@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.recrip.mapper.BoardMapper;
 import com.ssafy.recrip.model.BoardDto;
 import com.ssafy.recrip.model.CommentDto;
+import com.ssafy.recrip.model.FileDto;
 import com.ssafy.recrip.model.AttractionDto;
 import com.ssafy.recrip.util.PageNavigation;
 import com.ssafy.recrip.util.SizeConstant;
@@ -52,6 +53,114 @@ public class BoardServiceImpl implements BoardService {
 		resultmap.put("list", list);
 		resultmap.put("totalpage", totalPageCount);
 		return resultmap;
+	}
+
+	@Override
+	public int freeBoardWrite(BoardDto dto) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).freeBoardWrite(dto);
+	}
+
+	@Override
+	public int reviewBoardWrite(BoardDto dto) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).reviewBoardWrite(dto);
+	}
+
+	@Override
+	public int freeBoardDelete(String articleno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).freeBoardDelete(articleno);
+	}
+
+	@Override
+	public int reviewBoardDelete(String articleno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).reviewBoardDelete(articleno);
+	}
+
+	@Override
+	public int freeBoardUpdate(BoardDto dto) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).freeBoardUpdate(dto);
+	}
+
+	@Override
+	public int reviewBoardUpdate(BoardDto dto) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).reviewBoardUpdate(dto);
+	}
+
+	@Override
+	public BoardDto freeBoardView(String articleno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).freeBoardView(articleno);
+	}
+
+	@Override
+	public BoardDto reviewBoardView(String articleno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).reviewBoardView(articleno);
+	}
+
+	@Override
+	public List<CommentDto> freeCommentList(String articleno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).freeCommentList(articleno);
+	}
+
+	@Override
+	public List<CommentDto> reviewCommentList(String articleno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).reviewCommentList(articleno);
+	}
+
+	@Override
+	public int freeCommentWrite(CommentDto dto) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).freeCommentWrite(dto);
+	}
+
+	@Override
+	public int reviewCommentWrite(CommentDto dto) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).reviewCommentWrite(dto);
+	}
+
+	@Override
+	public int freeCommentDelete(String commentno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).freeCommentDelete(commentno);
+	}
+
+	@Override
+	public int reviewCommentDelete(String commentno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).reviewCommentDelete(commentno);
+	}
+
+	@Override
+	public List<FileDto> freeBoardFileList(String articleno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).freeBoardFileList(articleno);
+	}
+
+	@Override
+	public List<FileDto> reviewBoardFileList(String articleno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).reviewBoardFileList(articleno);
+	}
+
+	@Override
+	public int freeBoardFileWrite(FileDto dto) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).freeBoardFileWrite(dto);
+	}
+
+	@Override
+	public int reviewBoardFileWrite(FileDto dto) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).reviewBoardFileWrite(dto);
 	}
 	
 }
