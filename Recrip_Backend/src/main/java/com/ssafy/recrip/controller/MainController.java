@@ -52,21 +52,7 @@ public class MainController {
 		return "board";
 	}
 	
-	@GetMapping("/view")
-	public String view(HttpSession session, String articleno) {
-		BoardDto dto = service.boardview(articleno);
-		session.setAttribute("view", dto);
-		
-		List<CommentDto> list = service.commentlist(articleno);
-		session.setAttribute("commentlist", list);
-		return "view";
-	}
 	
-	@GetMapping("/makenav")
-	public void makenav(HttpServletResponse response, String pgno) throws NumberFormatException, Exception {
-		response.setContentType("plain/text; charset=utf-8;");
-		response.getWriter().write(service.makePageNavigation(Integer.parseInt(pgno)).getNavigator());
-	}
 	
 	@GetMapping("/modify")
 	public String modify() {

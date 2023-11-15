@@ -15,66 +15,99 @@
 		</if>
 	</sql>
 
-	<select id="freeBoardList" parameterType="map" resultType="boardDto">
+	<select id="boardList" parameterType="map" resultType="boardDto">
 		select *
-		from freeboard
+		from #{table}
 		where isdelete = false
 		<include refid="search"></include>
 		order by articleno desc
 		limit #{start}, #{listsize}
 	</select>
 	
-	<select id="reviewBoardList" parameterType="map" resultType="boardDto">
-		select *
-		from reviewboard
-		where isdelete = false
-		<include refid="search"></include>
-		order by articleno desc
-		limit #{start}, #{listsize}
-	</select>
-	
-	<select id="getTotalArticleCount" parameterType="map" resultType="int">
+	<select id="getTotalListCount" parameterType="map" resultType="int">
 		select count(articleno)
-		from board
+		from #{table}
 		where isdelete = false
 		<include refid="search"></include>
 	</select>
   	
-  	<insert id="boardwrite" parameterType="boardDto">
-  		insert into board (userid, subject, content)
+  	<insert id="freeBoardWrite" parameterType="boardDto">
+  		insert into freeboard (userid, subject, content)
   		values (#{userid}, #{subject}, #{content})
   	</insert>
   	
-  	<update id="boarddelete" parameterType="string">
-  		update board set isdelete = true where articleno = #{articleno}
+  	<insert id="reviewBoardWrite" parameterType="boardDto">
+  		insert into reviewboard (userid, subject, content)
+  		values (#{userid}, #{subject}, #{content})
+  	</insert>
+  	
+  	<update id="freeBoardDelete" parameterType="string">
+  		update freeboard set isdelete = true where articleno = #{articleno}
   	</update>
   	
-  	<update id="boardupdate" parameterType="boardDto">
-  		update board set subject = #{subject}, content = #{content} where articleno = #{articleno}
+  	<update id="reviewBoardDelete" parameterType="string">
+  		update reviewboard set isdelete = true where articleno = #{articleno}
   	</update>
   	
-  	<select id="boardview" parameterType="string" resultType="boardDto">
-  		select * from board where isdelete = false and articleno = #{articleno}
+  	<update id="freeBoardUpdate" parameterType="boardDto">
+  		update freeboard set subject = #{subject}, content = #{content} where articleno = #{articleno}
+  	</update>
+  	
+  	<update id="reviewBoardUpdate" parameterType="boardDto">
+  		update reviewboard set subject = #{subject}, content = #{content} where articleno = #{articleno}
+  	</update>
+  	
+  	<select id="freeBoardView" parameterType="string" resultType="boardDto">
+  		select * from freeboard where isdelete = false and articleno = #{articleno}
   	</select>
   	
-  	<select id="enjoyboardlist" parameterType="map" resultType="enjoyBoardDto">
+  	<select id="reviewBoardView" parameterType="string" resultType="boardDto">
+  		select * from reviewboard where isdelete = false and articleno = #{articleno}
+  	</select>
+  	
+  	<select id="attractionList" parameterType="map" resultType="enjoyBoardDto">
   		select * from attraction_info where sido_code = #{sido} and content_type_id = #{content} and title like '%${word}%';
   	</select>
   	
-  	<select id="commentlist" parameterType="string" resultType="commentDto">
-  		select * from comment where isdelete = false and articleno = #{articleno}
+  	<select id="freeCommentList" parameterType="string" resultType="commentDto">
+  		select * from freecomment where isdelete = false and articleno = #{articleno}
   	</select>
   	
-  	<insert id="commentwrite" parameterType="commentDto">
-  		insert into comment (articleno, userid, content)
+  	<select id="reviewCommentList" parameterType="string" resultType="commentDto">
+  		select * from reviewcomment where isdelete = false and articleno = #{articleno}
+  	</select>
+  	
+  	<insert id="freeCommentWrite" parameterType="commentDto">
+  		insert into freecomment (articleno, userid, content)
   		values (#{articleno}, #{userid}, #{content})
   	</insert>
   	
-  	<update id="commentdelete" parameterType="string">
-  		update comment set isdelete = true where commentno = #{commentno}
+  	<insert id="reviewCommentWrite" parameterType="commentDto">
+  		insert into reviewcomment (articleno, userid, content)
+  		values (#{articleno}, #{userid}, #{content})
+  	</insert>
+  	
+  	<update id="freeCommentDelete" parameterType="string">
+  		update freecomment set isdelete = true where commentno = #{commentno}
   	</update>
   	
-<!--   	<select id="getTotalArticleCount" resultType="int">
-  		select count(*) from board where isdelete = false
-  	</select> -->
+  	<update id="reviewCommentDelete" parameterType="string">
+  		update reviewcomment set isdelete = true where commentno = #{commentno}
+  	</update>
+  	
+  	<select id="freeBoardFileList" parameterType="string">
+  		select from freeboardfiles where articleno = #{articleno};
+  	</select>
+  	
+  	<select id="reviewBoardFileList" parameterType="string">
+  		select from reviewboardfiles where articleno = #{articleno};
+  	</select>
+  	
+  	<insert id="freeBoardFileWrite" parameterType="fileDto">
+  		insert into freeboardfiles (articleno, url, filename) values (#{articleno}, #{url}, #{filename})
+  	</insert>
+  	
+  	<insert id="reviewBoardFileWrite" parameterType="fileDto">
+  		insert into reviewboardfiles (articleno, url, filename) values (#{articleno}, #{url}, #{filename})
+  	</insert>
 </mapper>

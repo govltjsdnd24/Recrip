@@ -9,7 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class EnjoyBoardDto {
+public class AttractionDto {
 	String contentid;
 	String contenttypeid;
 	String title;

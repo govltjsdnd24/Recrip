@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.recrip.mapper.BoardMapper;
 import com.ssafy.recrip.model.BoardDto;
 import com.ssafy.recrip.model.CommentDto;
-import com.ssafy.recrip.model.EnjoyBoardDto;
+import com.ssafy.recrip.model.AttractionDto;
 import com.ssafy.recrip.util.PageNavigation;
 import com.ssafy.recrip.util.SizeConstant;
 
@@ -30,7 +30,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Map<String,Object> boardlist(Map<String, String> map) throws Exception {
+	public Map<String,Object> boardList(Map<String, String> map) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("word", map.get("word") == null ? "" : map.get("word"));
 		int currentPage = Integer.parseInt(map.get("pgno") == null ? "1" : map.get("pgno"));
@@ -38,13 +38,14 @@ public class BoardServiceImpl implements BoardService {
 		int start = currentPage * sizePerPage - sizePerPage;
 		param.put("start", start);
 		param.put("listsize", sizePerPage);
-
+		param.put("table", map.get("table"));
+		
 		String key = map.get("key");
 		param.put("key", key == null ? "" : key);
 		System.out.println(param);
-		List<BoardDto> list = session.getMapper(BoardMapper.class).listArticle(param);
+		List<BoardDto> list = session.getMapper(BoardMapper.class).boardList(param);
 
-		int totalArticleCount = session.getMapper(BoardMapper.class).getTotalArticleCount(param);
+		int totalArticleCount = session.getMapper(BoardMapper.class).getTotalListCount(param);
 		int totalPageCount = (totalArticleCount - 1) / sizePerPage + 1;
 		Map<String, Object> resultmap = new HashMap<String, Object>();
 		
@@ -52,91 +53,5 @@ public class BoardServiceImpl implements BoardService {
 		resultmap.put("totalpage", totalPageCount);
 		return resultmap;
 	}
-	
-	@Override
-	public List<BoardDto> boardlist(int currentpage) {
-		// TODO Auto-generated method stub
-		return session.getMapper(BoardMapper.class).boardlist(currentpage);
-	}
-
-	@Override
-	public void boardwrite(BoardDto dto) {
-		// TODO Auto-generated method stub
-		session.getMapper(BoardMapper.class).boardwrite(dto);
-	}
-
-	@Override
-	public void boarddelete(String articleno) {
-		// TODO Auto-generated method stub
-		session.getMapper(BoardMapper.class).boarddelete(articleno);
-	}
-
-	@Override
-	public void boardupdate(BoardDto dto) {
-		// TODO Auto-generated method stub
-		session.getMapper(BoardMapper.class).boardupdate(dto);
-	}
-
-	@Override
-	public BoardDto boardview(String articleno) {
-		// TODO Auto-generated method stub
-		return session.getMapper(BoardMapper.class).boardview(articleno);
-	}
-
-	@Override
-	public List<EnjoyBoardDto> enjoyboardlist(Map<String, String> map) {
-		// TODO Auto-generated method stub
-		return session.getMapper(BoardMapper.class).enjoyboardlist(map);
-	}
-
-	@Override
-	public List<CommentDto> commentlist(String articleno) {
-		// TODO Auto-generated method stub
-		return session.getMapper(BoardMapper.class).commentlist(articleno);
-	}
-
-	@Override
-	public void commentwrite(CommentDto dto) {
-		// TODO Auto-generated method stub
-		session.getMapper(BoardMapper.class).commentwrite(dto);
-	}
-
-	@Override
-	public void commentdelete(String commentno) {
-		// TODO Auto-generated method stub
-		session.getMapper(BoardMapper.class).commentdelete(commentno);
-	}
-
-	@Override
-	public PageNavigation makePageNavigation(int pgno) throws Exception {
-		PageNavigation pageNavigation = new PageNavigation();
-
-		int naviSize = SizeConstant.NAVIGATION_SIZE;
-		int sizePerPage = SizeConstant.LIST_SIZE;
-		int currentPage = pgno;
-
-		pageNavigation.setCurrentPage(currentPage);
-		pageNavigation.setNaviSize(naviSize);
-		int totalCount = session.getMapper(BoardMapper.class).getTotalArticleCount();
-		pageNavigation.setTotalCount(totalCount);
-		int totalPageCount = (totalCount - 1) / sizePerPage + 1;
-		pageNavigation.setTotalPageCount(totalPageCount);
-		boolean startRange = currentPage <= naviSize;
-		pageNavigation.setStartRange(startRange);
-		boolean endRange = (totalPageCount - 1) / naviSize * naviSize < currentPage;
-		pageNavigation.setEndRange(endRange);
-		pageNavigation.makeNavigator();
-
-		return pageNavigation;
-	}
-
-	@Override
-	public int getTotalPage() throws SQLException {
-		// TODO Auto-generated method stub
-		return session.getMapper(BoardMapper.class).getTotalArticleCount();
-	}
-
-	
-	
 	
 }

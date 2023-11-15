@@ -8,21 +8,30 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.recrip.model.BoardDto;
 import com.ssafy.recrip.model.CommentDto;
-import com.ssafy.recrip.model.EnjoyBoardDto;
+import com.ssafy.recrip.model.FileDto;
+import com.ssafy.recrip.model.AttractionDto;
 
 @Mapper
 public interface BoardMapper {
-	
-	List<BoardDto> boardlist(int currentpage);
-	void boardwrite(BoardDto dto);
-	void boarddelete(String articleno);
-	void boardupdate(BoardDto dto);
-	BoardDto boardview(String articleno);
-	List<EnjoyBoardDto> enjoyboardlist(Map<String,String> map);
-	List<CommentDto> commentlist(String articleno);
-	void commentwrite(CommentDto dto);
-	void commentdelete(String commentno);
-	int getTotalArticleCount() throws SQLException;
-	List<BoardDto> listArticle(Map<String, Object> param) throws SQLException;
-	int getTotalArticleCount(Map<String, Object> param) throws SQLException;
+	List<BoardDto> boardList(Map<String, Object> param) throws SQLException;
+	int getTotalListCount(Map<String, Object> param) throws SQLException;
+	int freeBoardWrite(BoardDto dto);
+	int reviewBoardWrite(BoardDto dto);
+	int freeBoardDelete(String articleno);
+	int reviewBoardDelete(String articleno);
+	int freeBoardUpdate(BoardDto dto);
+	int reviewBoardUpdate(BoardDto dto);
+	BoardDto freeBoardView(String articleno);
+	BoardDto reviewBoardView(String articleno);
+	List<AttractionDto> attractionList(Map<String, Object> param);
+	List<CommentDto> freeCommentList(String articleno);
+	List<CommentDto> reviewCommentList(String articleno);
+	int freeCommentWrite(CommentDto dto);
+	int reviewCommentWrite(CommentDto dto);
+	int freeCommentDelete(String commentno);
+	int reviewCommentDelete(String commentno);
+	List<FileDto> freeBoardFileList(String articleno);
+	List<FileDto> reviewBoardFileList(String articleno);
+	int freeBoardFileWrite(FileDto dto);
+	int reviewBoardFileWrite(FileDto dto);
 }
