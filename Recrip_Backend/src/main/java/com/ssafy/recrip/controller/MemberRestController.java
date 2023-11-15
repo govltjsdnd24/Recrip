@@ -81,7 +81,7 @@ public class MemberRestController {
 	}
 	
 	@GetMapping("/restselectdeleted")
-	public ResponseEntity<Map<String, Object>> restselectdeleted(@RequestBody MemberDto dto) throws IllegalStateException, IOException, SQLException {
+	public ResponseEntity<Map<String, Object>> restselectdeleted() throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			List<MemberDto> deleted = service.selectDeleted();

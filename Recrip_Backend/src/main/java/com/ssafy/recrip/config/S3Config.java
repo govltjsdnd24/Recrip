@@ -27,13 +27,11 @@ public class S3Config {
     @Bean
     public AmazonS3 amazonS3Client() {
         BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-        System.out.println("asdadsadsadsasdddsaads " + credentials.getAWSAccessKeyId() + " " + credentials.getAWSSecretKey());
         AmazonS3 client= (AmazonS3) AmazonS3ClientBuilder
                 .standard()
                 .withRegion(region)
                 .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
                 .build();
-        System.out.println(client.getBucketLocation("primary-sun-bucket"));
         return client;
     }
 }

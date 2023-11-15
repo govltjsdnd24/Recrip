@@ -19,7 +19,7 @@
 	</select>
 	<select id="selectDeleted" resultType="memdto">
 		select
-		userid, username , userpwd, email, isdelete,profile, token
+		userid, username , userpwd, isdelete,profile, token
 		from members
 		WHERE isdelete = true;
 	</select>
@@ -34,7 +34,7 @@
 	<delete id="memberPermaDelete" parameterType="String">
 		delete from members 
 		where userid = #{userid}
-		AND isdelete = false;
+		AND isdelete = true;
 	</delete>
 
 </mapper>
