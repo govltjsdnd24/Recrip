@@ -1,0 +1,73 @@
+/* 5. modal */
+.modal-wrap {
+  width: 100vw;
+  height: 150vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: lightgray;
+  z-index: 4;
+}
+
+.modal1 {
+  max-width: 450px;
+  min-height: 400px;
+  background-color: white;
+  border-radius: 10px;
+  margin: 30vh auto;
+  padding: 40px;
+  z-index: 1;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-close-btn {
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-label {
+  font-size: 1.25rem;
+  margin-right: 20px;
+}
+
+.modal-input-wrap {
+  margin-top: 20px;
+}
+
+.modal-input {
+  padding: 6px 10px;
+  border: 1px solid rgba(62, 69, 81, 0.7);
+  font-family: inherit;
+  font-size: 1.2rem;
+  border-radius: 5px;
+}
+
+.modal-submit {
+  background-color: #01baef;
+  padding: 20px;
+  font-size: 1.25rem;
+  border-radius: 10px;
+  margin-right: 20px;
+  color: white;
+  font-family: inherit;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.modal-cancel {
+  background-color: #b80c09;
+  padding: 20px;
+  font-size: 1.25rem;
+  border-radius: 10px;
+  margin-right: 20px;
+  color: white;
+  font-family: inherit;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}

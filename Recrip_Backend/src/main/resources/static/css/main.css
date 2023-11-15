@@ -1,0 +1,159 @@
+:root {
+    --main-text-color: #2C3E50;
+    --main-text-grey: #6C757D;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: yg-jalnan;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+}
+h2 {
+    color: var(--main-text-grey);
+    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+}
+h3 {
+    color: #343a40;
+    font-size: 1.25rem;
+}
+
+h4 {
+    color: var(--main-text-color);
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+@font-face {
+    font-family: 'yg-jalnan';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@media only screen and (min-width: 0) {
+    .wrapper {
+        background-color: #ecf7fc;
+        display: grid;
+        grid-gap: 20px;
+        grid-template-columns: 100%;
+        grid-template-rows: auto;
+    }
+
+    .wrapper2 {
+        display: grid;
+        grid-gap: 20px;
+        grid-template-rows: auto;
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    .wrapper {
+        grid-gap: 20px;
+        grid-template-columns: 1fr 3fr;
+        height: 448px;
+    }
+
+    .wrapper2 {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
+}
+
+.sidebar {
+    padding-left: 10px;
+}
+
+.love > p {
+    font-weight: bold;
+}
+
+.love p:nth-child(1) {
+    font-size: 1.5rem;
+    color: var(--main-text-color);
+}
+
+.love p:nth-child(2) {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #6C757D;
+}
+
+.love p:nth-child(3), .love p:nth-child(4) {
+    font-size: 1rem;
+    color: var(--main-text-color);
+}
+
+
+.divider {
+    width: 100%;
+    height: 72px;
+    content: '';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.divider::before {
+    content: '';
+    background-color: #48a1f4;
+    width: 33%;
+    height: 7px;
+}
+
+.main-image-container {
+    height: 209px;
+    position: relative;
+    -webkit-transition-property: all;
+    -webkit-transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease;
+}
+
+.main-image-container p {
+    position: absolute;
+    text-align: center;
+    color: goldenrod;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.main-image-container:hover {
+    transform: scale(1.1);
+    -webkit-filter: none;
+    filter: none;
+}
+
+.center-grid-image {
+    background-size: cover;
+    height: 100%;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 150%;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    -webkit-transition-property: all;
+    -webkit-transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease;
+}
+
+.center-grid-image:hover{
+    -webkit-filter: none;
+    filter: none;
+}
+
+
+.divider-container {
+    background-color: #ecf7fc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

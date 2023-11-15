@@ -1,0 +1,25 @@
+/* 2. footer */
+.footer {
+  padding: 24px;
+  margin-top: 16px;
+  background-color: bisque;
+}
+
+.footer-main-img {
+  height: 100px;
+}
+
+.footer-nav-img {
+  height: 60px;
+  margin-right: 10px;
+}
+
+.footer-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.footer-info {
+  margin-top: 10px;
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <typeAliases>
+  	<typeAlias type="com.ssafy.enjoytrip.model.BoardDto" alias="boardDto"/>
+  	<typeAlias type="com.ssafy.enjoytrip.model.CommentDto" alias="commentDto"/>
+  	<typeAlias type="com.ssafy.enjoytrip.model.EnjoyBoardDto" alias="enjoyBoardDto"/>
+  	<typeAlias type="com.ssafy.enjoytrip.model.MemberDto" alias="memdto"/>
+  </typeAliases>
+  <mappers>
+    <mapper resource="mybatis/BoardMapper.xml"/>
+    <mapper resource="mybatis/memberMapper.xml"/>
+  </mappers>
+</configuration>
