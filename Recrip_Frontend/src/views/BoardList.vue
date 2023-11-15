@@ -11,7 +11,6 @@ const articles = ref();
 const userinfo = ref();
 const currentpage = ref(1);
 const totalpage = ref();
-const test = ref(0);
 onMounted(() => {
   // var gettotalarticle = "/api/boardtotalpage";
   // async function getTotalPage(gettotalarticle) {
