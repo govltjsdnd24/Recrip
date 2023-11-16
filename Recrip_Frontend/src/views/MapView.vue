@@ -12,6 +12,11 @@ const src =
     '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=4fd0aaf2d6c6b86333a1b8f0115bac76&libraries=services,clusterer,drawing';
 var map = ref(null);
 const mapContainer = ref(null);
+
+const sido_code = ref([{}]);
+const gugun_code = ref([{}]);
+
+
 onMounted(() => {
     sidoCall();
     setMap();
@@ -38,64 +43,71 @@ function initializeMap() {
 }
 
 function sidoCall() {
+  var url = '/api/restattrsido';
     axios
-        .get(areaUrl)
-        .then((response) => {
-            makeOption(response.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+      .get(url)
+      .then((response) => {
+        sido_code.value = response.data.resmsg;
+      })
+      .catch((error) => {
+          console.log(error);
+      });
 }
 
-function makeOption(data) {
-    console.log(data);
-    let areas = data.response.body.items.item;
-    console.log(areas);
+const sidochange = (e) => {
+  console.log(e.target.value);
 
-    let sel = document.querySelector('#search-area');
-    areas.forEach((area) => {
-        let opt = document.createElement('option');
-        opt.setAttribute('value', area.code);
-        opt.appendChild(document.createTextNode(area.name));
-
-        sel.appendChild(opt);
-    });
+  var url = `/api/restattrgugun?sido_code=${e.target.value}`;
+    axios
+      .get(url)
+      .then((response) => {
+        gugun_code.value = response.data.resmsg;
+      })
+      .catch((error) => {
+          console.log(error);
+      });
 }
+
+const gugunchange = (e) => {
+  console.log(e.target.value);
+} 
 
 const Search = () => {
   markers.value.forEach((marker) => {
     marker.setMap(null);
   });
         positions = ref([]);
-        let baseUrl = "/api/enjoyboardlist?";
+        let baseUrl = "/api/attrinfolist";
         
-        let areaCode = document.getElementById("search-area")?.value;
-        let contentTypeId = document.getElementById("search-content-id")?.value;
-        let keyword = document.getElementById("search-keyword").value;
+        let sidoCode = document.getElementById("search-area")?.value;
+        let gugunCode = document.getElementById("search-gugun")?.value;
 
-        console.log(areaCode, contentTypeId, keyword);
-
-        if (parseInt(areaCode)) baseUrl += "&sido=" + areaCode;
-        if (parseInt(contentTypeId))
-        	baseUrl += "&content=" + contentTypeId;
-        if (keyword) {
-        	baseUrl += "&word=" + keyword;
+        if (document.getElementById('all-select').checked == false) {
+          var contentTypeId = document.querySelectorAll('input[name="contentid"]:checked');
+        } else {
+          var contentTypeId = [];
         }
-		
-        console.log(baseUrl);
-        
-        fetch(baseUrl)
-          .then((response) => response.json())
-          .then((data) => makeList(data));
+        let keyword = document.getElementById("search-keyword").value;
+        let contentid = [];
 
+        contentTypeId.forEach((id) => {
+          contentid.push(id.value);
+        });
+
+        var param = {
+          sido_code: sidoCode,
+          gugun_code: gugunCode,
+          contentid: contentid,
+          word: keyword
+        };
+
+        axios.post(baseUrl, param).then((response) => makeList(response.data));
+        
 };
       var markers = ref([]);
       var positions = ref([]); // marker 배열.
       
       function makeList(data) {
-    	  console.log("지도 출력");
-        console.log(data);
         
         let tripList = "";
         positions = [];
@@ -128,7 +140,6 @@ const Search = () => {
           positions.push(markerInfo);
         });
 
-        console.log(positions);
         document.querySelector(".carousel-flex").innerHTML = tripList;
         displayMarker();
       }
@@ -163,6 +174,19 @@ const Search = () => {
         map.setCenter(new kakao.maps.LatLng(lat, lng));
       }
 
+const selectall = (e) => {
+  var checkboxes = document.getElementsByName('contentid');
+  if (e.target.checked) {
+    checkboxes.forEach((ch) => {
+      ch.setAttribute('disabled', 'true');
+    })
+  } else {
+    checkboxes.forEach((ch) => {
+      ch.removeAttribute('disabled');
+    })
+  }
+}
+
 </script>
 
 <template>
@@ -172,19 +196,13 @@ const Search = () => {
 
         <!-- address options -->
         <div class="map-select-list">
-            <select class="map-select" name="search-area" id="search-area">
-                <option value="">시도선택</option>
+            <select class="map-select" name="search-area" id="search-area" required @change="sidochange">
+                <option value="" disabled selected>시도 선택</option>
+                <option v-for="sido in sido_code" :key="sido.sido_code" :value="sido.sido_code">{{ sido.sido_name }}</option>
             </select>
-            <select class="map-select" name="search-content-id" id="search-content-id">
-                <option value="0" selected>관광지 유형</option>
-                <option value="12">관광지</option>
-                <option value="14">문화시설</option>
-                <option value="15">축제공연행사</option>
-                <option value="25">여행코스</option>
-                <option value="28">레포츠</option>
-                <option value="32">숙박</option>
-                <option value="38">쇼핑</option>
-                <option value="39">음식점</option>
+            <select class="map-select" name="search-gugun" id="search-gugun" required @change="gugunchange">
+                <option value="" disabled selected>구군 선택</option>
+                <option v-for="gugun in gugun_code" :key="gugun.gugun_code" :value="gugun.gugun_code">{{ gugun.gugun_name }}</option>
             </select>
             <input class="map-select" name="search-keyword" id="search-keyword" placeholder="검색어를 입력해주세요." />
             <button id="btn-search" style="font-size: 1.5rem; cursor: pointer" @click="Search">검색</button>
@@ -192,23 +210,31 @@ const Search = () => {
 
         <!-- result filter options -->
         <form class="map-form">
-            <input type="radio" id="all-select" />
+            <input type="checkbox" id="all-select" @click="selectall"/>
             <label for="all-select">모두선택</label>
-            <input type="checkbox" id="tour-spot" />
+
+            <input type="checkbox" id="tour-spot" name="contentid" value="12"/>
             <label for="tour-spot">관광지</label>
-            <input type="checkbox" id="cultural" />
+
+            <input type="checkbox" id="cultural" name="contentid" value="14"/>
             <label for="cultural">문화시설</label>
-            <input type="checkbox" id="enjoy" />
+
+            <input type="checkbox" id="enjoy" name="contentid" value="15"/>
             <label for="enjoy">행사 / 공연 / 축제</label>
-            <input type="checkbox" id="travel-course" />
+
+            <input type="checkbox" id="travel-course" name="contentid" value="25"/>
             <label for="travel-course">여행코스</label>
-            <input type="checkbox" id="leisure" />
+
+            <input type="checkbox" id="leisure" name="contentid" value="28"/>
             <label for="leisure">레포츠</label>
-            <input type="checkbox" id="domitory" />
+
+            <input type="checkbox" id="domitory" name="contentid" value="32"/>
             <label for="domitory">숙박</label>
-            <input type="checkbox" id="shopping" />
+
+            <input type="checkbox" id="shopping" name="contentid" value="38"/>
             <label for="shopping">쇼핑</label>
-            <input type="checkbox" id="resturant" />
+
+            <input type="checkbox" id="resturant" name="contentid" value="39"/>
             <label for="resturant">음식점</label>
         </form>
 
@@ -231,4 +257,8 @@ const Search = () => {
     </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+select option[value=""][disabled] {
+	display: none;
+}
+</style>
