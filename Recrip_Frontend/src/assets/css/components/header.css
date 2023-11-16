@@ -33,6 +33,7 @@
     line-height: 1;
     text-align: center;
     margin: 0;
+    white-space: nowrap;
 }
 
 @keyframes reveal {
@@ -76,7 +77,7 @@
 
 .header-users-img {
     cursor: pointer;
-    width: 40px;
+    width: 50px;
 }
 
 .header-dropdown-wrap {
@@ -85,11 +86,17 @@
 
 .header-dropdown {
     position: absolute;
-    width: 60px;
+    width: 100px;
     top: 20px;
     right: 60px;
+    padding: 5px;
 }
 
 .header-dropdown-button {
     cursor: pointer;
+}
+
+.welcome {
+    overflow: hidden;
+    white-space: nowrap;
 }
