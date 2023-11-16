@@ -26,9 +26,11 @@ onMounted(() => {
 
 const login_userid = ref('');
 const login_userpwd = ref('');
+const profile = ref(info.getLoginInfo.profile);
 
 function login() {
     getUserInfo();
+    console.log(profile.value);
 }
 
 const getUserInfo = () => {
@@ -42,6 +44,7 @@ const getUserInfo = () => {
                 //sessionStorage.setItem('userInfo', JSON.stringify(response.data.resmsg));
                 info.setLoginInfo(true, JSON.stringify(response.data.resmsg));
                 modalOff('.modal-signin');
+                profile.value = info.getLoginInfo.profile;
 
                 router.go(router.currentRoute);
             } else {
@@ -214,6 +217,9 @@ const clickuser = () => {
                 <nav>
                     <div style="display: flex; align-items: center">
                         <div v-if="isLogin != false">
+                            <span style="margin: 15px">
+                                <img :src="profile" style="width: 50px; border-radius: 50%" />
+                            </span>
                             <label style="margin-right: 100px">
                                 <div class="but" style="font-family: MICEGothicBold">
                                     {{ info.getLoginInfo.username }}님 안녕하세요.
@@ -231,7 +237,13 @@ const clickuser = () => {
                     <div v-if="isLogin == false">
                         <div class="header-dropdown mx-4" style="display: none">
                             <button @click="modalOn('.modal-signin')" style="overflow: auto; white-space: nowrap">
-                                <span class="but" style="font-family: OAGothic-ExtraBold">로그인</span>
+                                <span
+                                    class="but"
+                                    style="font-family: OAGothic-ExtraBold"
+                                    data-toggle="modal"
+                                    data-target=".modal-signin"
+                                    >로그인</span
+                                >
                             </button>
                             <button @click="modalOn('.modal-signup')" style="overflow: auto; white-space: nowrap">
                                 <span class="but" style="font-family: OAGothic-ExtraBold">회원가입</span>
@@ -253,15 +265,22 @@ const clickuser = () => {
         </header>
     </div>
     <div class="modal-container">
-        <div class="modal-wrap modal-signin" style="display: none">
-            <div class="modal1">
+        <div
+            class="modal modal-wrap modal-signin"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="myLargeModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal1 modal-dialogue">
                 <header class="modal-header">
                     <h2>로그인</h2>
                     <button class="modal-close-btn" @click="modalOff('.modal-signin')">X</button>
                 </header>
                 <div class="modal-input-wrap">
-                    <label class="modal-label" for="modal-id">아이디</label>
+                    <label class="modal-label" for="modal-id">아이디&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <input
+                        margin-right="5px"
                         class="modal-input"
                         type="text"
                         placeholder="아이디"
@@ -296,7 +315,9 @@ const clickuser = () => {
                 </header>
                 <input type="hidden" name="action" value="register" />
                 <div class="modal-input-wrap">
-                    <label class="modal-label" for="signin-name">이름</label>
+                    <label class="modal-label" for="signin-name"
+                        >이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label
+                    >
                     <input
                         class="modal-input"
                         type="text"
@@ -307,7 +328,7 @@ const clickuser = () => {
                     />
                 </div>
                 <div class="modal-input-wrap">
-                    <label class="modal-label" for="signin-id">아이디</label>
+                    <label class="modal-label" for="signin-id">아이디&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <input
                         class="modal-input"
                         type="text"
@@ -329,7 +350,7 @@ const clickuser = () => {
                     />
                 </div>
                 <div class="modal-input-wrap">
-                    <label class="modal-label" for="signin-email">이메일</label>
+                    <label class="modal-label" for="signin-email">이메일&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <input
                         class="modal-input"
                         type="text"
@@ -346,7 +367,7 @@ const clickuser = () => {
             </div>
         </div>
 
-        <div class="modal-wrap modal-edit-userinfo" style="display: none">
+        <div class="modal-wrap modal-edit-userinfo modal">
             <div class="modal1">
                 <header class="modal-header">
                     <h2>회원정보수정</h2>
@@ -355,7 +376,9 @@ const clickuser = () => {
                 <input type="hidden" name="action" value="modify" />
                 <input type="hidden" name="userinfo" value="${userinfo }" />
                 <div class="modal-input-wrap">
-                    <label class="modal-label" for="edit-name">이름</label>
+                    <label class="modal-label" for="edit-name"
+                        >이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label
+                    >
                     <input
                         class="modal-input"
                         type="text"
@@ -366,7 +389,7 @@ const clickuser = () => {
                     />
                 </div>
                 <div class="modal-input-wrap">
-                    <label class="modal-label" for="edit-id">아이디</label>
+                    <label class="modal-label" for="edit-id">아이디&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <input
                         class="modal-input"
                         type="text"
@@ -389,7 +412,7 @@ const clickuser = () => {
                     />
                 </div>
                 <div class="modal-input-wrap">
-                    <label class="modal-label" for="edit-email">이메일</label>
+                    <label class="modal-label" for="edit-email">이메일&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <input
                         class="modal-input"
                         type="text"
