@@ -169,33 +169,39 @@ const clickuser = () => {
                 <div class="flex">
                     <!-- service icon -->
                     <router-link to="/">
-                        <img class="service-logo" src="@/assets/images/service_title.png" alt="enjoy trip logo" />
+                        <img
+                            class="service-logo img-fluid"
+                            src="@/assets/images/logo.gif"
+                            style="width: 90px"
+                            alt="enjoy trip logo"
+                        />
                     </router-link>
 
                     <!-- nav menus -->
                     <nav class="header-nav">
                         <ul class="flex">
                             <li class="gap">
+                                <a href="" class="flex text-decoration-none link-dark">
+                                    <!-- <img class="nav-img" src="@/assets/images/nav/calendar.png" alt="calendar" /> -->
+                                    <span class="nav">내 계획 관리</span>
+                                </a>
+                            </li>
+                            <li class="gap">
                                 <router-link to="/map" class="flex text-decoration-none link-dark">
-                                    <img class="nav-img" src="@/assets/images/nav/map.png" alt="map" />
-                                    지역별여행지
+                                    <!-- <img class="nav-img" src="@/assets/images/nav/map.png" alt="map" /> -->
+                                    <span class="nav">지역별 여행지</span>
                                 </router-link>
                             </li>
                             <li class="gap">
                                 <a href="" class="flex text-decoration-none link-dark">
-                                    <img class="nav-img" src="@/assets/images/nav/calendar.png" alt="calendar" />
-                                    나의여행계획
-                                </a>
-                            </li>
-                            <li class="gap">
-                                <a href="" class="flex text-decoration-none link-dark">
-                                    <img class="nav-img" src="@/assets/images/nav/camera.png" alt="camera" />
-                                    핫플자랑하기
+                                    <!-- <img class="nav-img" src="@/assets/images/nav/camera.png" alt="camera" /> -->
+                                    <span class="nav">여행 게시판</span>
                                 </a>
                             </li>
                             <li class="gap">
                                 <router-link to="/boardlist" class="flex text-decoration-none link-dark">
-                                    <img class="nav-img" src="@/assets/images/nav/chatting.png" alt="chatting" />게시판
+                                    <!-- <img class="nav-img" src="@/assets/images/nav/chatting.png" alt="chatting" /> -->
+                                    <span class="nav">자유 게시판</span>
                                 </router-link>
                             </li>
                         </ul>
@@ -216,9 +222,13 @@ const clickuser = () => {
                         @click="clickuser()"
                     />
                     <div v-if="isLogin == false">
-                        <div class="header-dropdown" style="display: none">
-                            <button @click="modalOn('.modal-signin')">로그인</button>
-                            <button @click="modalOn('.modal-signup')">회원가입</button>
+                        <div class="header-dropdown mx-4" style="display: none">
+                            <button @click="modalOn('.modal-signin')" style="overflow: auto; white-space: nowrap">
+                                로그인
+                            </button>
+                            <button @click="modalOn('.modal-signup')" style="overflow: auto; white-space: nowrap">
+                                회원가입
+                            </button>
                         </div>
                     </div>
                     <div v-if="isLogin != false">
@@ -388,4 +398,16 @@ const clickuser = () => {
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.nav {
+    box-shadow: inset 0 0 0 0 gray;
+    color: black;
+    margin: 0 -0.25rem;
+    padding: 0 0.25rem;
+    transition: color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.nav:hover {
+    box-shadow: inset 200px 0 0 0 gray;
+    color: white;
+}
+</style>
