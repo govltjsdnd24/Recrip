@@ -106,4 +106,8 @@
   	<insert id="reviewBoardFileWrite" parameterType="fileDto">
   		insert into reviewboardfiles (articleno, url, filename) values (#{articleno}, #{url}, #{filename})
   	</insert>
+  	
+  	<select id="freeBoardLastArticleno" resultType="int">
+  		select articleno from freeboard order by articleno desc limit 1;
+  	</select>
 </mapper>

@@ -31,4 +31,5 @@ public interface BoardService {
 	List<FileDto> reviewBoardFileList(String articleno);
 	int freeBoardFileWrite(FileDto dto);
 	int reviewBoardFileWrite(FileDto dto);
+	int freeBoardLastArticleno();
 }

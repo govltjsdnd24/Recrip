@@ -46,22 +46,22 @@ public class MemberRestController {
 		this.s3service=s3service;
 	}
 	
-//	@PostMapping("/upload")
-//	public ResponseEntity<Map<String, Object>> upload(@RequestBody(required = false) MultipartFile multipartFile) throws IllegalStateException, IOException, SQLException {
-//		Map<String, Object> map = new HashMap<>();
-//		try {
-//			String upload = s3service.saveFile(multipartFile);
-//			map.put("url", upload);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			map.put("resmsg", e.toString());
-//		}
-//		
-//		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-//		
-//		return res;
-//	}
-	
+	@PostMapping("/upload")
+	public ResponseEntity<Map<String, Object>> upload(@RequestBody MultipartFile multipartFile) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		System.out.println(multipartFile);
+		try {
+			String upload = s3service.saveFile(multipartFile);
+			map.put("url", upload);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", e.toString());
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
 	
 	@GetMapping("/download")
 	public ResponseEntity<byte[]> download(@RequestParam String fileName) throws IllegalStateException, IOException, SQLException {
@@ -76,9 +76,10 @@ public class MemberRestController {
 		return download;
 	}
 	
-	@GetMapping("/restmemlogin")
+	@PostMapping("/restmemlogin")
 	public ResponseEntity<Map<String, Object>> restmemlogin(@RequestBody MemberDto dto) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
+		System.out.println(dto);
 		try {
 			MemberDto login = service.login(dto);
 			if(login.getUserid().equals(dto.getUserid())) {

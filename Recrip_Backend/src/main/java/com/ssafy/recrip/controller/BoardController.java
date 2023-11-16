@@ -20,11 +20,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.recrip.model.BoardDto;
 import com.ssafy.recrip.model.CommentDto;
+import com.ssafy.recrip.model.FileDto;
 import com.ssafy.recrip.model.AttractionDto;
 import com.ssafy.recrip.service.BoardService;
+import com.ssafy.recrip.service.MemberService;
+import com.ssafy.recrip.service.S3UpDownloadService;
 import com.ssafy.recrip.util.SizeConstant;
 
 import io.swagger.annotations.Api;
@@ -35,19 +39,36 @@ import io.swagger.annotations.Api;
 public class BoardController {
 	
 	BoardService service;
+	private S3UpDownloadService s3service;
 
+	
 	@Autowired
-	public BoardController(BoardService service) {
+	public BoardController(BoardService service, S3UpDownloadService s3service) {
 		super();
 		this.service = service;
+		this.s3service = s3service;
 	}
-	
+
 	@PostMapping("/freeboardwrite")
-	public ResponseEntity<Map<String, Object>> freeboardwrite(@RequestBody BoardDto dto) throws IllegalStateException, IOException, SQLException {
+	public ResponseEntity<Map<String, Object>> freeboardwrite(@RequestParam String userid , @RequestParam String subject, @RequestParam String content, @RequestParam(required = false) List<MultipartFile> multipartFile) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
-		System.out.println("123");
+		BoardDto dto = new BoardDto();
+		dto.setUserid(userid);
+		dto.setSubject(subject);
+		dto.setContent(content);
+		
 		try {
 			service.freeBoardWrite(dto);
+			int articleno = service.freeBoardLastArticleno();
+			
+			for (MultipartFile files : multipartFile) {
+				FileDto fileDto = new FileDto();
+				fileDto.setArticleno(String.valueOf(articleno));
+				fileDto.setFilename(files.getOriginalFilename());
+				fileDto.setUrl(s3service.saveFile(files));
+				service.freeBoardFileWrite(fileDto);
+			}
+			
 			map.put("resmsg", "입력성공");
 			map.put("resdata", "1");
 		} catch (Exception e) {
@@ -64,7 +85,6 @@ public class BoardController {
 	@PostMapping("/reviewboardwrite")
 	public ResponseEntity<Map<String, Object>> reviewboardwrite(@RequestBody BoardDto dto) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
-		System.out.println("123");
 		try {
 			service.reviewBoardWrite(dto);
 			map.put("resmsg", "입력성공");
@@ -81,7 +101,7 @@ public class BoardController {
 	}
 	
 	@GetMapping("/boardlist")
-	public ResponseEntity<Map<String, Object>> boardlist(@RequestBody Map<String, String> map) throws Exception {
+	public ResponseEntity<Map<String, Object>> boardlist(@RequestParam Map<String, String> map) throws Exception {
 		System.out.println(map);
 		Map<String, Object> resultmap = new HashMap<>();
 		try {

@@ -14,6 +14,6 @@ public class CommentDto {
 	String articleno;
 	String userid;
 	String content;
-	String date;	
+	String registdate;	
 	boolean isdelete;
 }
