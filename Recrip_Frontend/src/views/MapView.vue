@@ -230,6 +230,7 @@ const selectall = (e) => {
             <button class="carousel-button carousel-button-left">&lt;</button>
             <!-- carousel images -->
             <ul class="carousel-flex">
+              <template v-if="carousel.length > 1">
               <li v-for="caro in carousel" :key="caro.title" class='carousel-single-wrap' @click="moveCenter(caro.latitude, caro.longitude)">
                 <p><img :src="caro.first_image" height='150px' style='border-radius: 10px'/></p>
                 <p>{{caro.title}}</p>
@@ -237,6 +238,7 @@ const selectall = (e) => {
                 <p>{{caro.latitude}}</p>
                 <p>{{caro.longitude}}</p>
               </li>
+              </template>
             </ul>
             <!-- carousel right button -->
             <button class="carousel-button carousel-button-right">&gt;</button>
@@ -247,5 +249,8 @@ const selectall = (e) => {
 <style scoped>
 select option[value=""][disabled] {
 	display: none;
+}
+label {
+  margin: 10px;
 }
 </style>
