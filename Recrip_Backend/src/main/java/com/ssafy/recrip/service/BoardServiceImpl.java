@@ -162,5 +162,11 @@ public class BoardServiceImpl implements BoardService {
 		// TODO Auto-generated method stub
 		return session.getMapper(BoardMapper.class).reviewBoardFileWrite(dto);
 	}
+
+	@Override
+	public int freeBoardLastArticleno() {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).freeBoardLastArticleno();
+	}
 	
 }

@@ -19,7 +19,7 @@ const comment = ref('');
 onMounted(() => {
     userinfo.value = getLoginInfo;
     console.log(userinfo.value);
-    var url = `/api/boardview?articleno=${articleno}`;
+    var url = `/api/freeboardview?articleno=${articleno}`;
 
     async function getArticle(url) {
         const response = await axios.get(url);
@@ -30,10 +30,11 @@ onMounted(() => {
         console.log(error);
     });   
 
-    var comm = `/api/commentlist?articleno=${articleno}`;
+    var comm = `/api/freecommentlist?articleno=${articleno}`;
 
     async function getComment(comm) {
         const response = await axios.get(comm);
+        console.log(response.data.resdata);
         comments.value = response.data.resdata;
     }
     getComment(comm).catch((error) => {
@@ -42,7 +43,7 @@ onMounted(() => {
 });
 
 const DeleteBoard = () => {
-    var url = `/api/boarddelete?articleno=${articleno}`;
+    var url = `/api/freeboarddelete?articleno=${articleno}`;
 
     async function getArticle(url) {
         const response = await axios.delete(url);
@@ -51,11 +52,15 @@ const DeleteBoard = () => {
         console.log(error);
     });
 
+    setTimeout(golist, 100);
+}
+
+const golist = () => {
     router.push('/boardlist');
 }
 
 const CommentWrite = () => {
-    var url = '/api/commentwrite';
+    var url = '/api/freecommentwrite';
     
     async function articleUpdate(url) {
         const response = await axios.post(url, {
@@ -68,11 +73,15 @@ const CommentWrite = () => {
         console.log(error);
     });
 
+    setTimeout(gozero, 100);
+}
+
+const gozero = () => {
     router.go(0);
 }
 
 const CommentDelete = (commentno) => {
-    var url = `/api/commentdelete?commentno=${commentno}`;
+    var url = `/api/freecommentdelete?commentno=${commentno}`;
 
     async function CommentDelete(url) {
         const response = await axios.delete(url);
@@ -81,7 +90,7 @@ const CommentDelete = (commentno) => {
         console.log(error);
     });
 
-    router.go(0);
+    setTimeout(gozero, 100);
 }
 </script>
 
@@ -149,7 +158,7 @@ const CommentDelete = (commentno) => {
 						  		<div class="media-body">
 						  			<h3 class="mt-0">{{comment.userid}}</h3>
 						  			<h4>{{comment.content}}</h4>
-						  			<h5>{{comment.date}}</h5>
+						  			<h5>{{comment.registdate}}</h5>
 						  		</div>
 					  		</div>
 					  		<!-- <c:if test="${userinfo.userid eq comment.userid }"> -->

@@ -14,7 +14,7 @@ public class BoardDto {
 	String userid;
 	String subject;
 	String content;
-	String date;
+	String registdate;
 	String hit;
 	boolean isdelete;
 }

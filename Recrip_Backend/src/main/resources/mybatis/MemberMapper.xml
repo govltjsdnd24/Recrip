@@ -11,7 +11,7 @@
 	</insert>
 	<select id="login" parameterType="memdto" resultType="memdto">
 		select
-		userid, username , userpwd, email, isdelete,profile, token
+		userid, username , userpwd, isdelete,profile, token
 		from members
 		where userid = #{userid}
 		and userpwd = #{userpwd}
