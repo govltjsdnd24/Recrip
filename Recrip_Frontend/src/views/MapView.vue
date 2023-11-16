@@ -232,7 +232,7 @@ const selectall = (e) => {
             <ul class="carousel-flex">
               <template v-if="carousel.length > 1">
               <li v-for="caro in carousel" :key="caro.title" class='carousel-single-wrap' @click="moveCenter(caro.latitude, caro.longitude)">
-                <p><img :src="caro.first_image" height='150px' style='border-radius: 10px'/></p>
+                <p><img :src="caro.first_image" style='border-radius: 10px; width: 100%; height: 150px;'/></p>
                 <p>{{caro.title}}</p>
                 <p>{{caro.addr1}} {{caro.addr2}}</p>
                 <p>{{caro.latitude}}</p>
