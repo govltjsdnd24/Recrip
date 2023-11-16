@@ -212,17 +212,22 @@ const clickuser = () => {
 
                 <!-- auth menus (dropdown) -->
                 <nav>
-                    <div v-if="isLogin != false">
-                        <label style="margin-right: 100px">
-                            {{ userInfo.userid }} ({{ info.getLoginInfo.username }})님 안녕하세요.
-                        </label>
+                    <div style="display: flex; align-items: center">
+                        <div v-if="isLogin != false">
+                            <label style="margin-right: 100px">
+                                <div class="but" style="font-family: MICEGothicBold">
+                                    {{ info.getLoginInfo.username }}님 안녕하세요.
+                                </div>
+                            </label>
+                        </div>
+                        <img
+                            class="header-users-img"
+                            src="@/assets/images/nav/users.png"
+                            alt="users"
+                            @click="clickuser()"
+                        />
                     </div>
-                    <img
-                        class="header-users-img"
-                        src="@/assets/images/nav/users.png"
-                        alt="users"
-                        @click="clickuser()"
-                    />
+
                     <div v-if="isLogin == false">
                         <div class="header-dropdown mx-4" style="display: none">
                             <button @click="modalOn('.modal-signin')" style="overflow: auto; white-space: nowrap">
@@ -235,8 +240,12 @@ const clickuser = () => {
                     </div>
                     <div v-if="isLogin != false">
                         <div class="header-dropdown" style="display: none">
-                            <button @click="modalOn('.modal-edit-userinfo')">내정보</button>
-                            <button @click="logout">로그아웃</button>
+                            <button @click="modalOn('.modal-edit-userinfo')">
+                                <span class="but" style="font-family: OAGothic-ExtraBold">내정보</span>
+                            </button>
+                            <button @click="logout">
+                                <span class="but" style="font-family: OAGothic-ExtraBold">로그아웃</span>
+                            </button>
                         </div>
                     </div>
                 </nav>
