@@ -31,7 +31,7 @@ import io.swagger.annotations.Api;
 
 @CrossOrigin("*")
 @RestController
-@Api(tags = {"EnjoyTrip Board API V1"})
+@Api(tags = {"Recrip Board API V1"})
 public class BoardController {
 	
 	BoardService service;
