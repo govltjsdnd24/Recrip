@@ -91,12 +91,12 @@
   		update reviewcomment set isdelete = true where commentno = #{commentno}
   	</update>
   	
-  	<select id="freeBoardFileList" parameterType="string">
-  		select from freeboardfiles where articleno = #{articleno};
+  	<select id="freeBoardFileList" parameterType="string" resultType="fileDto">
+  		select * from freeboardfiles where articleno = #{articleno};
   	</select>
   	
-  	<select id="reviewBoardFileList" parameterType="string">
-  		select from reviewboardfiles where articleno = #{articleno};
+  	<select id="reviewBoardFileList" parameterType="string" resultType="fileDto">
+  		select * from reviewboardfiles where articleno = #{articleno};
   	</select>
   	
   	<insert id="freeBoardFileWrite" parameterType="fileDto">

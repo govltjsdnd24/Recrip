@@ -340,4 +340,42 @@ public class BoardController {
 		
 		return res;
 	}
+	
+	@GetMapping("/freeboardfilelist")
+	public ResponseEntity<Map<String, Object>> freeboardfilelist(String articleno) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			List<FileDto> list = service.freeBoardFileList(articleno);
+			System.out.println(list);
+			map.put("resdata", list);
+			map.put("resmsg", "조회성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/reviewboardfilelist")
+	public ResponseEntity<Map<String, Object>> reviewboardfilelist(String articleno) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			List<FileDto> list = service.reviewBoardFileList(articleno);
+			System.out.println(list);
+			map.put("resdata", list);
+			map.put("resmsg", "조회성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
 }

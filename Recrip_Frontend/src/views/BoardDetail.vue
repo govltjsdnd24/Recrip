@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from 'axios';
 import { LoginInfo } from "../store/login";
@@ -13,12 +13,11 @@ const { articleno } = route.params;
 
 const article = ref({});
 const comments = ref([{}]);
-
+const files = ref([{}]);
 const comment = ref('');
 
-onMounted(() => {
+onBeforeMount(() => {
     userinfo.value = getLoginInfo;
-    console.log(userinfo.value);
     var url = `/api/freeboardview?articleno=${articleno}`;
 
     async function getArticle(url) {
@@ -40,6 +39,19 @@ onMounted(() => {
     getComment(comm).catch((error) => {
         console.log(error);
     });   
+
+    var filelist = `/api/freeboardfilelist?articleno=${articleno}`;
+
+    async function getfiles(filelist) {
+        const response = await axios.get(filelist);
+        console.log(response.data.resdata);
+        files.value = response.data.resdata;
+    }
+    getfiles(filelist).catch((error) => {
+        console.log(error);
+    });
+
+    console.log(comments.value);
 });
 
 const DeleteBoard = () => {
@@ -121,6 +133,11 @@ const CommentDelete = (commentno) => {
                             {{article.content}}
 						</div>
 						<div class="divider mt-3 mb-3"></div>
+                        <div><h3>첨부파일</h3></div><br>
+                        <div v-for="file in files" :key="file.filename">
+                            <a :href="'http://192.168.205.66:8080/trip/download?fileName='+file.filename">{{ file.filename }}</a>
+                        </div>
+                        <div class="divider mt-3 mb-3"></div>
 						<div class="d-flex justify-content-end">
                             <router-link to="/boardlist">
 							    <button type="button" class="btn btn-outline-primary mb-3">글목록</button>
@@ -150,6 +167,7 @@ const CommentDelete = (commentno) => {
                         </div>
                     </form>
 				</template>
+
 				<!-- 댓글 목록 -->
 				<div id="comment-area" class="col-lg-8 col-md-10 col-sm-12">
 					<ul class="list-group">
