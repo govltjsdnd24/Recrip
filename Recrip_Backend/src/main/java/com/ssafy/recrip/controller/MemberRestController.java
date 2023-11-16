@@ -122,7 +122,7 @@ public class MemberRestController {
 	}
 	
 	@PostMapping("/restmeminsert")
-	public ResponseEntity<Map<String, Object>> restmeminsert(@RequestBody MemberDto dto, @RequestBody(required = false) MultipartFile multipartFile) throws Exception {
+	public ResponseEntity<Map<String, Object>> restmeminsert(@RequestBody MemberDto dto, @RequestParam(required = false) MultipartFile multipartFile) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			String upload;
@@ -149,12 +149,24 @@ public class MemberRestController {
 	}
 	
 	@PutMapping("/restmemupdate")
-	public ResponseEntity<Map<String, Object>> restmemupdate(@RequestBody MemberDto dto) throws SQLException {
+	public ResponseEntity<Map<String, Object>> restmemupdate(@RequestParam(required = false) MultipartFile multipartFile, @RequestParam String userid, @RequestParam String username, @RequestParam String userpwd) throws SQLException {
 		Map<String, Object> map = new HashMap<>();
+		MemberDto dto=new MemberDto();
+		dto.setUserid(userid);
+		dto.setUsername(username);
+		dto.setUserpwd(userpwd);
 		try {
+			System.out.println(dto);
+			if(multipartFile!=null) {
+				System.out.println("muti " +multipartFile.getOriginalFilename());
+				String upload = s3service.saveFile(multipartFile);
+				dto.setProfile(upload);
+			}
+			System.out.println(dto.getProfile());
 			int result = service.memberUpdate(dto);
 			if(result != 0) {
 				map.put("resdata", "1");
+				map.put("profile",dto.getProfile());
 				map.put("resmsg", "멤버 수정 성공");
 			} else {
 				map.put("resdata", "0");

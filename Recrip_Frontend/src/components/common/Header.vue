@@ -17,11 +17,12 @@ onMounted(() => {
         userInfo.value = getLoginInfo;
         if (userInfo.value != null) {
             console.log('LOADED:' + userInfo != null ? userInfo.value.userid : '', userInfo.value);
-            modified_email.value = userInfo.value.email;
+            modified_profile.value = userInfo.value.profile;
             modified_name.value = userInfo.value.username;
             modified_pwd.value = userInfo.value.userpwd;
         }
     }
+    console.log('asdasdsadasd', userInfo.value);
 });
 
 const login_userid = ref('');
@@ -42,11 +43,12 @@ const getUserInfo = () => {
         .then((response) => {
             if (response.data.resdata == 1) {
                 //sessionStorage.setItem('userInfo', JSON.stringify(response.data.resmsg));
+                console.log('login', response.data.resmsg);
                 info.setLoginInfo(true, JSON.stringify(response.data.resmsg));
                 modalOff('.modal-signin');
                 profile.value = info.getLoginInfo.profile;
 
-                router.go(router.currentRoute);
+                router.go(0);
             } else {
                 alert('로그인 실패');
             }
@@ -66,12 +68,12 @@ function logout() {
 const signup_name = ref('');
 const signup_id = ref('');
 const signup_pwd = ref('');
-const signup_email = ref('');
+const signup_profile = ref('');
 
 function signup() {
     axios
         .post('/api/restmeminsert', {
-            email: signup_email.value,
+            profile: signup_profile.value,
             userid: signup_id.value,
             username: signup_name.value,
             userpwd: signup_pwd.value,
@@ -87,27 +89,37 @@ function signup() {
         });
 }
 
-const modified_email = ref('');
+const modified_profile = ref('');
 const modified_name = ref('');
 const modified_pwd = ref('');
 
 function modify() {
+    const multipartFile = new FormData();
+    console.log('mofile', file.value[0]);
+    multipartFile.append('multipartFile', file.value[0]);
+    multipartFile.append('userid', this.userInfo.userid);
+    multipartFile.append('username', modified_name.value);
+    multipartFile.append('userpwd', modified_pwd.value);
     axios
-        .put('/api/restmemupdate', {
-            email: modified_email.value,
-            userid: this.userInfo.userid,
-            isdeleted: false,
-            username: modified_name.value,
-            userpwd: modified_pwd.value,
-        })
+        .put(
+            '/api/restmemupdate',
+            multipartFile,
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+            //     {
+            //     userid: this.userInfo.userid,
+            //     isdeleted: false,
+            //     username: modified_name.value,
+            //     userpwd: modified_pwd.value,
+            // }
+        )
         .then((response) => {
-            console.log(response);
             if (response.data.resdata == 1) {
+                modified_profile.value = response.data.profile;
                 modalOff('.modal-signin');
                 setLoginInfo(
                     true,
                     JSON.stringify({
-                        email: modified_email.value,
+                        profile: modified_profile.value,
                         userid: this.userInfo.userid,
                         isdeleted: false,
                         username: modified_name.value,
@@ -164,6 +176,12 @@ const clickuser = () => {
         dropdown.style.animation = 'reveal 0.5s cubic-bezier(0.77, 0, 0.175, 1) 0s';
         dropdown.style.display = 'block';
     } else if (dropdown.style.display == 'block') dropdown.style.display = 'none';
+};
+
+const file = ref();
+const filechange = (e) => {
+    file.value = e.target.files;
+    console.log('FILE', file.value);
 };
 </script>
 
@@ -294,13 +312,14 @@ const clickuser = () => {
                     <input
                         class="modal-input"
                         type="password"
+                        width="50px"
                         placeholder="비밀번호"
                         id="userpwd"
                         name="userpwd"
                         v-model="login_userpwd"
                     />
                 </div>
-                <div class="modal-input-wrap">
+                <div class="modal-input-wrap" style="justify-content: center">
                     <button @click="login()" class="modal-submit login but">로그인</button>
                     <button class="modal-cancel but" @click="modalOff('.modal-signin')">취소</button>
                 </div>
@@ -350,15 +369,16 @@ const clickuser = () => {
                     />
                 </div>
                 <div class="modal-input-wrap">
-                    <label class="modal-label" for="signin-email">이메일&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                    <input
+                    <label class="modal-label" for="edit-profile">프로필사진</label>
+                    <input type="file" id="upload" name="upload" @change="filechange" />
+                    <!-- <input
                         class="modal-input"
                         type="text"
                         placeholder="이메일"
-                        id="signin-email"
-                        name="email"
-                        v-model="signup_email"
-                    />
+                        id="edit-profile"
+                        name="profile"
+                        v-model="modified_profile"
+                    /> -->
                 </div>
                 <div class="modal-input-wrap">
                     <button @click="signup()" class="modal-submit signin">회원가입</button>
@@ -412,17 +432,18 @@ const clickuser = () => {
                     />
                 </div>
                 <div class="modal-input-wrap">
-                    <label class="modal-label" for="edit-email">이메일&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                    <input
+                    <label class="modal-label" for="edit-profile">프로필사진</label>
+                    <input type="file" id="upload" name="upload" @change="filechange" />
+                    <!-- <input
                         class="modal-input"
                         type="text"
                         placeholder="이메일"
-                        id="edit-email"
-                        name="email"
-                        v-model="modified_email"
-                    />
+                        id="edit-profile"
+                        name="profile"
+                        v-model="modified_profile"
+                    /> -->
                 </div>
-                <div class="modal-input-wrap">
+                <div class="modal-input-wrap" style="justify-content: center">
                     <button type="button" @click="modify()" class="modal-submit modify">수정</button>
                     <button type="button" @click="remove()" class="modal-warn">탈퇴</button>
                     <button class="modal-cancel" @click="modalOff('.modal-edit-userinfo')">취소</button>
