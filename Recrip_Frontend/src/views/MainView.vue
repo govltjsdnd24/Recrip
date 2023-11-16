@@ -4,7 +4,7 @@ var index = 0;
 var timer = setInterval(displayImages, 4000);
 onMounted(() => {
     displayImages();
-})
+});
 
 function displayImages() {
     let i;
@@ -21,15 +21,14 @@ function displayImages() {
 
 onBeforeUnmount(() => {
     clearInterval(timer);
-})
-
+});
 </script>
 
 <template>
     <div>
         <!--슬라이더-->
         <div class="image-slideshow">
-            <div class="image fade">
+            <div class="image fadeslide">
                 <img src="@/assets/images/top2.png" alt="Palm Trees" />
             </div>
             <div class="image-on-text">
@@ -37,7 +36,7 @@ onBeforeUnmount(() => {
                 <p>Enjoy!!!Trip</p>
                 <p>과 함께 우리지역의 관광지를 알아보고 나만의 여행 계획을 만들어보세요!!!</p>
             </div>
-            <div class="image fade">
+            <div class="image fadeslide">
                 <img src="@/assets/images/top.png" alt="Mountain Top" />
             </div>
             <div class="image-on-text">
