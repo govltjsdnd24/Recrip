@@ -15,7 +15,7 @@ const mapContainer = ref(null);
 
 const sido_code = ref([{}]);
 const gugun_code = ref([{}]);
-
+const carousel = ref([{}]);
 
 onMounted(() => {
     sidoCall();
@@ -108,30 +108,11 @@ const Search = () => {
       var positions = ref([]); // marker 배열.
       
       function makeList(data) {
-        
+        carousel.value = data.resdata;
         let tripList = "";
         positions = [];
         data.resdata.forEach((area) => {
-          if (document.getElementById("search-keyword").value == '') {
-            if (data.resdata.length >= 50) {
-              if (data.resdata.length <= 300) {
-                if (Math.random() > 0.3) return;
-              } else if (data.resdata.length <= 500) {
-                if (Math.random() > 0.2) return;
-              } else {
-                if (Math.random() > 0.1) return;
-              }
-            } 
-          }
-          
         	//console.log(area);
-          tripList += "<li class='carousel-single-wrap' onclick='moveCenter(" + area.latitude + "," + area.longitude + ")'>"+
-              "<p><img src=' "+ area.first_image +"' height='150px' style='border-radius: 10px'></p>"+
-              "<p>" + area.title + "</p>"+
-              "<p>" + area.addr1 + " " + area.addr2 + "</p>"+
-              "<p>" + area.latitude + "</p>"+
-              "<p>" + area.longitude + "</p>"+
-            "</li>";
 
           let markerInfo = {
             title: area.title,
@@ -139,8 +120,6 @@ const Search = () => {
           };
           positions.push(markerInfo);
         });
-
-        document.querySelector(".carousel-flex").innerHTML = tripList;
         displayMarker();
       }
 
@@ -170,9 +149,9 @@ const Search = () => {
         map.setLevel(7);
       }
 
-      function moveCenter(lat, lng) {
-        map.setCenter(new kakao.maps.LatLng(lat, lng));
-      }
+const moveCenter = (lat, lng) => {
+  map.setCenter(new kakao.maps.LatLng(lat, lng));
+}
 
 const selectall = (e) => {
   var checkboxes = document.getElementsByName('contentid');
@@ -250,7 +229,15 @@ const selectall = (e) => {
             <!-- carousel left button -->
             <button class="carousel-button carousel-button-left">&lt;</button>
             <!-- carousel images -->
-            <ul class="carousel-flex"></ul>
+            <ul class="carousel-flex">
+              <li v-for="caro in carousel" :key="caro.title" class='carousel-single-wrap' @click="moveCenter(caro.latitude, caro.longitude)">
+                <p><img :src="caro.first_image" height='150px' style='border-radius: 10px'/></p>
+                <p>{{caro.title}}</p>
+                <p>{{caro.addr1}} {{caro.addr2}}</p>
+                <p>{{caro.latitude}}</p>
+                <p>{{caro.longitude}}</p>
+              </li>
+            </ul>
             <!-- carousel right button -->
             <button class="carousel-button carousel-button-right">&gt;</button>
         </div>
