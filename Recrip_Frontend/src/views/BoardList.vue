@@ -12,17 +12,6 @@ const userinfo = ref();
 const currentpage = ref(1);
 const totalpage = ref();
 onMounted(() => {
-  // var gettotalarticle = "/api/boardtotalpage";
-  // async function getTotalPage(gettotalarticle) {
-  //   const response = await axios.get(gettotalarticle);
-  //   console.log(response.data.resdata);
-  //   totalpage.value = (response.data.resdata - 1 ) / 20 + 1;
-  // }
-  // getTotalPage(gettotalarticle).catch((error) => {
-  //   console.log(error);
-  // });
-  //LoginInfo.setLoginInfo(true, { id: 'ssafy' });
-  //console.log(isLogin, loginInfo, IsLogin, getLoginInfo, setLogOut, setLoginInfo);
   getArticleList();
   userinfo.value = getLoginInfo;
 });
@@ -63,6 +52,7 @@ const param = ref({
   spp: VITE_ARTICLE_LIST_SIZE,
   key: "",
   word: "",
+  table: "freeboard"
 });
 
 const changeKey = (val) => {

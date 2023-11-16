@@ -10,7 +10,7 @@ const article = ref({});
 const router = useRouter();
 
 onMounted(() => {
-    var url = `/api/boardview?articleno=${articleno}`;
+    var url = `/api/freeboardview?articleno=${articleno}`;
 
     async function getArticle(url) {
         const response = await axios.get(url);
@@ -23,7 +23,7 @@ onMounted(() => {
 });
 
 const BoardUpdate = () => {
-    var url = '/api/boardupdate';
+    var url = '/api/freeboardupdate';
     console.log(article.value);
     async function articleUpdate(url) {
         const response = await axios.put(url, {
@@ -37,12 +37,13 @@ const BoardUpdate = () => {
         console.log(error);
     });
 
-    router.push({ name: 'BoardView', params: { articleno: article.value.articleno } });
+	setTimeout(Cancel, 100);
 }
 
 const Cancel = () => {
     router.push({ name: 'BoardView', params: { articleno: article.value.articleno } });
 }
+
 </script>
 
 <template>
