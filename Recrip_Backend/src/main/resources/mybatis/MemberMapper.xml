@@ -36,16 +36,16 @@
 		where userid = #{userid}
 		AND isdelete = true;
 	</delete>
-	<select id="histroyList" parameterType="String">
-		select from histroylist
+	<select id="histroyList" parameterType="String" resultType="wishHisDto">
+		select * from historylist
 		where userid = #{userid}
 	</select>
-	<select id="wishList" parameterType="String">
-		select from wishlist
+	<select id="wishList" parameterType="String" resultType="wishHisDto">
+		select * from wishlist
 		where userid = #{userid}
 	</select>
-	<select id="courseList" parameterType="String">
-		select from courselist
+	<select id="courseList" parameterType="String" resultType="courseDto">
+		select * from courselist
 		where userid = #{userid}
 	</select>
 	<insert id="histroyInsert" parameterType="wishHisDto">
