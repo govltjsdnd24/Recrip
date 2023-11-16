@@ -4,6 +4,19 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.recrip.mapper.AttractionMapper">
+	<select id="attrInfoList" parameterType="map" resultType="attractionDto">
+		select * from attraction_info where sido_code = #{sido_code} and gugun_code = #{gugun_code}
+		<if test="word != null and word != ''">
+			and title like concat('%', #{word}, '%')
+		</if>
+		<if test="contentid != null and contentid.size != 0">
+			and content_type_id in 
+			<foreach collection="contentid" item="arr" open="(" close=")" separator=",">
+ 				#{arr}
+			</foreach>
+		</if>
+	</select>
+	
 	<select id="listSido"  resultType="sidoDto">
 		select sido_code, sido_name
 		from sido;

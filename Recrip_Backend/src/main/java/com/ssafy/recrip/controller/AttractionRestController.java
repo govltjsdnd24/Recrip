@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.recrip.model.AttractionDto;
 import com.ssafy.recrip.model.GugunDto;
 import com.ssafy.recrip.model.RankDto;
 import com.ssafy.recrip.model.SidoDto;
@@ -33,6 +35,30 @@ public class AttractionRestController {
 	public AttractionRestController(AttractionService service) {
 		this.service=service;
 	}
+	
+	@PostMapping("/attrinfolist")
+	public ResponseEntity<Map<String, Object>> attrinfolist(@RequestBody Map<String, Object> param) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		System.out.println(param);
+		try {
+			List<AttractionDto> result = service.attrInfoList(param);
+			if(result != null) {
+				map.put("resdata", result);
+				map.put("resmsg", "조회 성공");
+			} else {
+				map.put("resdata", "0");
+				map.put("resmsg", "조회 실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
 	
 	@GetMapping("/restattrsido")
 	public ResponseEntity<Map<String,Object>> restattrsido () {

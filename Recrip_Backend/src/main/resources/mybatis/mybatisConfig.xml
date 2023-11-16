@@ -14,6 +14,7 @@
   	<typeAlias type="com.ssafy.recrip.model.WishHisDto" alias="wishHisDto"/>
   	<typeAlias type="com.ssafy.recrip.model.MessageDto" alias="messageDto"/>
   	<typeAlias type="com.ssafy.recrip.model.CourseDto" alias="courseDto"/>
+  	<typeAlias type="com.ssafy.recrip.model.AttractionDto" alias="attractionDto"/>
   </typeAliases>
   <mappers>
     <mapper resource="mybatis/BoardMapper.xml"/>
