@@ -1,50 +1,95 @@
 /* 1. header */
+
+@font-face {
+    font-family: 'JeonjuCraftGoR';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/JeonjuCraftGoR.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MICEGothicBold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/MICEGothic Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KBO-Dia-Gothic_bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OAGothic-ExtraBold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/OAGothic-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}
+
+.but {
+    overflow-y: hidden;
+    line-height: 1;
+    text-align: center;
+    margin: 0;
+}
+
+@keyframes reveal {
+    0% {
+        transform: translate(0, 30%);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
 .header {
-  padding: 8px 16px;
-  background-color: whitesmoke;
-  font-size: 1.25rem;
+    padding: 8px 16px;
+    background-color: white;
+    font-size: 1.25rem;
 }
 
 .header-nav {
-  margin-left: 50px;
+    margin-left: 50px;
 }
 
 .service-logo {
-  width: 150px;
-  margin-left: 50px;
+    width: 150px;
+    margin-left: 50px;
 }
 
 .nav-img {
-  width: 30px;
-  margin-right: 10px;
+    width: 30px;
+    margin-right: 10px;
 }
 
 .flex {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .gap {
-  margin: 0 20px;
+    margin: 0 20px;
 }
 
 .header-users-img {
-  cursor: pointer;
-  width: 40px;
+    cursor: pointer;
+    width: 40px;
 }
 
 .header-dropdown-wrap {
-  position: relative;
+    position: relative;
 }
 
 .header-dropdown {
-  position: absolute;
-  width: 60px;
-  top: 20px;
-  right: 60px;
+    position: absolute;
+    width: 60px;
+    top: 20px;
+    right: 60px;
 }
 
 .header-dropdown-button {
-  cursor: pointer;
+    cursor: pointer;
 }

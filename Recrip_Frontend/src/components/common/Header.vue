@@ -157,8 +157,10 @@ const clickcancel = (target) => {
 
 const clickuser = () => {
     const dropdown = $('.header-dropdown');
-    if (dropdown.style.display == 'none') dropdown.style.display = 'block';
-    else if (dropdown.style.display == 'block') dropdown.style.display = 'none';
+    if (dropdown.style.display == 'none') {
+        dropdown.style.animation = 'reveal 0.5s cubic-bezier(0.77, 0, 0.175, 1) 0s';
+        dropdown.style.display = 'block';
+    } else if (dropdown.style.display == 'block') dropdown.style.display = 'none';
 };
 </script>
 
@@ -183,25 +185,25 @@ const clickuser = () => {
                             <li class="gap">
                                 <a href="" class="flex text-decoration-none link-dark">
                                     <!-- <img class="nav-img" src="@/assets/images/nav/calendar.png" alt="calendar" /> -->
-                                    <span class="nav">내 계획 관리</span>
+                                    <span class="nav" style="font-family: JeonjuCraftGoR">내 계획 관리</span>
                                 </a>
                             </li>
                             <li class="gap">
                                 <router-link to="/map" class="flex text-decoration-none link-dark">
                                     <!-- <img class="nav-img" src="@/assets/images/nav/map.png" alt="map" /> -->
-                                    <span class="nav">지역별 여행지</span>
+                                    <span class="nav" style="font-family: JeonjuCraftGoR">지역별 여행지</span>
                                 </router-link>
                             </li>
                             <li class="gap">
                                 <a href="" class="flex text-decoration-none link-dark">
                                     <!-- <img class="nav-img" src="@/assets/images/nav/camera.png" alt="camera" /> -->
-                                    <span class="nav">여행 게시판</span>
+                                    <span class="nav" style="font-family: JeonjuCraftGoR">여행 게시판</span>
                                 </a>
                             </li>
                             <li class="gap">
                                 <router-link to="/boardlist" class="flex text-decoration-none link-dark">
                                     <!-- <img class="nav-img" src="@/assets/images/nav/chatting.png" alt="chatting" /> -->
-                                    <span class="nav">자유 게시판</span>
+                                    <span class="nav" style="font-family: JeonjuCraftGoR">자유 게시판</span>
                                 </router-link>
                             </li>
                         </ul>
@@ -224,10 +226,10 @@ const clickuser = () => {
                     <div v-if="isLogin == false">
                         <div class="header-dropdown mx-4" style="display: none">
                             <button @click="modalOn('.modal-signin')" style="overflow: auto; white-space: nowrap">
-                                로그인
+                                <span class="but" style="font-family: OAGothic-ExtraBold">로그인</span>
                             </button>
                             <button @click="modalOn('.modal-signup')" style="overflow: auto; white-space: nowrap">
-                                회원가입
+                                <span class="but" style="font-family: OAGothic-ExtraBold">회원가입</span>
                             </button>
                         </div>
                     </div>
@@ -271,8 +273,8 @@ const clickuser = () => {
                     />
                 </div>
                 <div class="modal-input-wrap">
-                    <button @click="login()" class="modal-submit login">로그인</button>
-                    <button class="modal-cancel" @click="modalOff('.modal-signin')">취소</button>
+                    <button @click="login()" class="modal-submit login but">로그인</button>
+                    <button class="modal-cancel but" @click="modalOff('.modal-signin')">취소</button>
                 </div>
             </div>
         </div>
