@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.http.HttpHeaders;
 
 import com.ssafy.recrip.model.BoardDto;
 import com.ssafy.recrip.model.CourseDto;
@@ -62,17 +62,18 @@ public class MemberRestController {
 //		return res;
 //	}
 	
+	
 	@GetMapping("/download")
 	public ResponseEntity<byte[]> download(@RequestParam String fileName) throws IllegalStateException, IOException, SQLException {
-	    Map<String, Object> map = new HashMap<>();
-	    try {
-	        map = s3service.getFile(fileName);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        map.put("resmsg", e.toString());
-	    }
-	    ResponseEntity<byte[]> download=new ResponseEntity<byte[]>((byte[])map.get("bytes"),(HttpHeaders)map.get("headers"),HttpStatus.OK);
-	    return download;
+		Map<String, Object> map = new HashMap<>();
+		try {
+			map = s3service.getFile(fileName);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", e.toString());
+		}
+		ResponseEntity<byte[]> download=new ResponseEntity<byte[]>((byte[])map.get("bytes"),(HttpHeaders)map.get("headers"),HttpStatus.OK);
+		return download;
 	}
 	
 	@GetMapping("/restmemlogin")
