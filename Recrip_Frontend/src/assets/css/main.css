@@ -8,6 +8,17 @@
     font-family: MICEGothicBold;
 }
 
+.pagination .page-link {
+    background: white;
+    color: black;
+}
+
+.pagination > li.active > a {
+    background: gray;
+    color: #fff;
+    border: 1px solid darkgray;
+}
+
 h1,
 h2,
 h3,
