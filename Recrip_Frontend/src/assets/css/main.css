@@ -19,6 +19,15 @@
     border: 1px solid darkgray;
 }
 
+.pagination > li.active > a:hover {
+    background-color: black;
+    color: white;
+}
+
+.pagination > li > a:hover {
+    color: black;
+}
+
 h1,
 h2,
 h3,
