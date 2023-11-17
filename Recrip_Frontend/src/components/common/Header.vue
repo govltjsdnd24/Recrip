@@ -216,10 +216,10 @@ const filechange = (e) => {
                                 </router-link>
                             </li>
                             <li class="gap">
-                                <a href="" class="flex text-decoration-none link-dark">
+                                <router-link to="/reviewboardlist" class="flex text-decoration-none link-dark">
                                     <!-- <img class="nav-img" src="@/assets/images/nav/camera.png" alt="camera" /> -->
                                     <span class="nav" style="font-family: JeonjuCraftGoR">여행 게시판</span>
-                                </a>
+                                </router-link>
                             </li>
                             <li class="gap">
                                 <router-link to="/boardlist" class="flex text-decoration-none link-dark">
@@ -230,7 +230,7 @@ const filechange = (e) => {
                         </ul>
                     </nav>
                 </div>
-
+                
                 <!-- auth menus (dropdown) -->
                 <nav>
                     <div style="display: flex; align-items: center">
