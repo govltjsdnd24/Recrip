@@ -129,11 +129,17 @@ const CommentDelete = (commentno) => {
                                 </p>
                             </div>
                         </div>
-                        <div class="divider mb-3"></div>
+
                         <div class="text-secondary" id="content">
                             {{ article.content }}
                         </div>
-                        <div class="divider mt-3 mb-3"></div>
+                        <!-- <div class="divider mt-3 mb-3"></div> -->
+                        <br />
+                        <br />
+                        <hr />
+                        <br />
+                        <br />
+                        <br />
                         <div><h3>첨부파일</h3></div>
                         <br />
                         <div v-for="file in files" :key="file.filename">
@@ -141,16 +147,15 @@ const CommentDelete = (commentno) => {
                                 file.filename
                             }}</a>
                         </div>
-                        <div class="divider mt-3 mb-3"></div>
                         <div class="d-flex justify-content-end">
                             <router-link to="/boardlist">
-                                <button type="button" class="btn btn-outline-primary mb-3">글목록</button>
+                                <button type="button" class="btn btn-dark mb-3">글목록</button>
                             </router-link>
                             <template v-if="userinfo.userid == article.userid">
                                 <router-link :to="{ name: 'BoardModify', params: { articleno: article.articleno } }">
-                                    <button type="button" class="btn btn-outline-success mb-3 ms-1">글수정</button>
+                                    <button type="button" class="btn btn-secondary mb-3 ms-1">글수정</button>
                                 </router-link>
-                                <button type="button" class="btn btn-outline-danger mb-3 ms-1" @click="DeleteBoard">
+                                <button type="button" class="btn btn-danger mb-3 ms-1" @click="DeleteBoard">
                                     글삭제
                                 </button>
                             </template>
@@ -175,7 +180,7 @@ const CommentDelete = (commentno) => {
                                 ></textarea>
                                 <label for="floatingInputGroup1">댓글</label>
                             </div>
-                            <button type="button" class="btn btn-primary" @click="CommentWrite">작성</button>
+                            <button type="button" class="btn btn-outline-dark" @click="CommentWrite">작성</button>
                         </div>
                     </form>
                 </template>
