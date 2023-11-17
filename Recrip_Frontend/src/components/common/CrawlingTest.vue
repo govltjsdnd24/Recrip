@@ -28,13 +28,15 @@ onMounted(() => {
 
 <template>
     <div>
-        <a-card v-for="data in crawlings" :key="data.href" hoverable style="width: 300px">    
-            <template #cover>
-                <a :href="data.href"><img alt="" :src="data.src" style="width: 300px; height: 300px;" /></a>
-                </template>
-                <a :href="data.href"><a-card-meta :title="data.alt">
-                </a-card-meta></a>
-        </a-card>
+        <template v-for="(data, index) in crawlings" :key="data.href">
+            <a-card hoverable style="width: 300px" v-if="index != 0">    
+                <template #cover>
+                    <a :href="data.href"><img alt="" :src="data.src" style="width: 300px; height: 300px;" /></a>
+                    </template>
+                    <a :href="data.href"><a-card-meta :title="data.alt">
+                    </a-card-meta></a>
+            </a-card>
+        </template>
     </div>
 </template>
 
