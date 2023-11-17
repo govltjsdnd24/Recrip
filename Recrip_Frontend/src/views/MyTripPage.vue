@@ -87,6 +87,13 @@ const onPageChange = (val) => {
     }
 }
 
+const reviewwrite = (attr) => {
+    console.log(attr);
+}
+
+const deleteattr = (index) => {
+    console.log(index);
+}
 </script>
 
 <template>
@@ -99,11 +106,15 @@ const onPageChange = (val) => {
     </div>
     
     <div class="row" style="width: 1900px; height: 1000px;" >
-        <template v-for="attr in list" :key="attr.content_id">
+        <template v-for="(attr, index) in list" :key="attr.content_id">
        <div class="col-2">
             <a-card hoverable style="width: 300px">
                 <template #cover>
                 <img :alt="attr.title" :src="attr.first_image" style="width: 300px; height: 300px;"/>
+                </template>
+                <template #actions>
+                    <button @click="reviewwrite(attr)">review</button>
+                    <button @click="deleteattr(index)">delete</button>
                 </template>
                 <a-card-meta :title="attr.title">
                 <template #description>{{attr.addr1}}</template>
