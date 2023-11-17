@@ -1,6 +1,8 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, h } from 'vue';
+import { SettingOutlined, EditOutlined, EllipsisOutlined } from '@ant-design/icons-vue';
+import { SearchOutlined } from '@ant-design/icons-vue';
 
 const serviceKey = 'YmLOCrrmdh8DGzVmGbT0Xu9jfrsXGgdJ6GsHZ%2FDGzKW82R5KrnlJU0dar8fqQ0nYXpb9fjuYjDQx1QuSigbTkw%3D%3D';
 const areaUrl =
@@ -15,7 +17,7 @@ const mapContainer = ref(null);
 
 const sido_code = ref([{}]);
 const gugun_code = ref([{}]);
-const carousel = ref([{}]);
+const carousel = ref([]);
 
 onMounted(() => {
     sidoCall();
@@ -113,29 +115,29 @@ function makeList(data) {
 
     positions = [];
     data.resdata.forEach((area) => {
-        let markerInfo = {
-            title: area.title,
-            latlng: new kakao.maps.LatLng(area.latitude, area.longitude),
-            content_type_id: area.content_type_id,
-            addr1: area.addr1,
+      let markerInfo = {
+          title: area.title,
+          latlng: new kakao.maps.LatLng(area.latitude, area.longitude),
+          content_type_id: area.content_type_id,
+          addr1: area.addr1,
+          content_id: area.content_id,
+          img: area.first_image,
         };
         positions.push(markerInfo);
     });
     displayMarker();
 }
 
-function closeOverlay(overlay) {
-    overlay.setMap(null);
-}
+
 
 function displayMarker() {
     // 마커 이미지의 이미지 주소입니다
 
-    for (var i = 0; i < positions.length; i++) {
+    for (let i = 0; i < positions.length; i++) {
         // 마커 이미지의 이미지 크기 입니다
-        var imageSize = new kakao.maps.Size(40, 40);
-        var marker = '';
-        var markertxt = '';
+        let imageSize = new kakao.maps.Size(40, 40);
+        let marker = '';
+        let markertxt = '';
         switch (positions[i].content_type_id) {
             case '12':
                 marker = '/src/assets/images/marker/관광.png';
@@ -173,62 +175,106 @@ function displayMarker() {
                 break;
         }
         // 마커 이미지를 생성합니다
-        var markerImage = new kakao.maps.MarkerImage(marker, imageSize);
-
-        var content =
-            '<div class="card">' +
-            '    <div class="card-title">여행지</div>' +
-            '<div onclick="closeOverlay(' +
-            overlays[i] +
-            ')" title="닫기" >닫기</div>' +
-            '    <div class="card-text">' +
-            '        <div class="card-text">이름:' +
-            positions[i].title +
-            '</div>' +
-            '    </div>' +
-            '    <ul>' +
-            '        <li class="up">' +
-            '            <span class="card-text">종류</span>' +
-            '            <span class="title">' +
-            markertxt +
-            '</span>' +
-            '        </li>' +
-            '        <li>' +
-            '            <span class="number">주소</span>' +
-            '            <span class="title">' +
-            positions[i].addr1 +
-            '</span>' +
-            '        </li>' +
-            '    </ul>' +
-            '</div><br/><br/>';
+        let markerImage = new kakao.maps.MarkerImage(marker, imageSize);
 
         // 마커를 생성합니다
-        markers.value.push(
-            new kakao.maps.Marker({
-                map: map, // 마커를 표시할 지도
-                position: positions[i].latlng, // 마커를 표시할 위치
-                title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                image: markerImage, // 마커 이미지
-            })
-        );
-        var overlayPosition = new kakao.maps.LatLng(positions[i].latlng.lat, positions[i].latlng.lat);
+        let markerobject = new kakao.maps.Marker({
+          map: map, // 마커를 표시할 지도
+          position: positions[i].latlng, // 마커를 표시할 위치
+          title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          image: markerImage, // 마커 이미지
+        });
 
-        overlays.value.push(
-            new kakao.maps.CustomOverlay({
-                map: map,
-                position: positions[i].latlng,
-                content: content,
-                yAnchor: 1,
-            })
-        );
+        markers.value.push(markerobject);
+
+      var closeBtn = document.createElement('button');
+      closeBtn.appendChild(document.createTextNode('닫기'));
+      // closeBtn.setAttribute('data-bs-toggle', "offcanvas");
+      // closeBtn.setAttribute('data-bs-target',"#offcanvasScrolling");
+      // closeBtn.setAttribute('aria-controls',"offcanvasScrolling");
+
+          // 닫기 이벤트 추가
+      closeBtn.onclick = function () {
+        overlay.setMap(null);
+      };
+
+      var addBtn = document.createElement('button');
+      addBtn.appendChild(document.createTextNode('찜'));
+
+      addBtn.onclick = function () {
+        selectspot.value.push(positions[i]);
+      };
+
+      let content = document.createElement('div');
+      content.setAttribute('class', 'card');
+
+      let cardtitle = document.createElement('div');
+      cardtitle.setAttribute('class', 'card-title');
+      cardtitle.appendChild(document.createTextNode("관광지"));
+
+      content.appendChild(cardtitle);
+      content.appendChild(addBtn);
+      content.appendChild(closeBtn);
+
+      let cardtext = document.createElement('div');
+      cardtext.setAttribute('class', 'card-text');
+      cardtext.appendChild(document.createTextNode('이름 : ' + positions[i].title));
+      content.appendChild(cardtext);
+
+      let ul = document.createElement('ul');
+      let li = document.createElement('li');
+      li.setAttribute('class', 'up');
+      ul.appendChild(li);
+
+      let span1 = document.createElement('span');
+      span1.setAttribute('class', 'card-text');
+      span1.appendChild(document.createTextNode('종류 : ' + markertxt));
+      li.appendChild(span1);
+
+      let li2 = document.createElement('li');
+      let span2 = document.createElement('span');
+      span2.setAttribute('class', 'card-text');
+      span2.appendChild(document.createTextNode('주소 : ' + positions[i].addr1));
+      li2.appendChild(span2);
+
+      ul.appendChild(li2);
+      content.appendChild(ul);
+
+        let overlay = new kakao.maps.CustomOverlay({
+          map: map,
+          position: positions[i].latlng,
+          content: content,
+          yAnchor: 1,
+        });
+
+        overlay.setMap(null);
+
+      kakao.maps.event.addListener(markerobject, 'click', function () {
+        
+          overlay.setMap(map);
+        });
+      
+        overlays.value.push(overlay);
     }
 
+  console.log(markers.value);
+  console.log(overlays.value);
+
+    for (let index = 0; index < markers.value.length; index++) {
+      
+    }
     // 커스텀 오버레이를 생성합니다
 
     // 첫번째 검색 정보를 이용하여 지도 중심을 이동 시킵니다
     map.setCenter(positions[0].latlng);
     map.setLevel(6);
+
+    const closeOverlay = () => {
+        console.log(123123)
+    }
 }
+
+
 
 const moveCenter = (lat, lng) => {
     map.setCenter(new kakao.maps.LatLng(lat, lng));
@@ -246,6 +292,21 @@ const selectall = (e) => {
         });
     }
 };
+
+const selectspot = ref([]);
+const selectcourse = ref([]);
+
+
+const selectdelete = (index) => {
+  console.log('삭제 전',selectspot.value[index], index);
+  selectspot.value.splice(index, 1);
+  console.log('삭제 후',selectspot.value);
+}
+
+const selectadd = (index) => {
+  console.log(index);
+  selectcourse.value.push(selectspot.value[index]);
+}
 </script>
 
 <template>
@@ -255,6 +316,7 @@ const selectall = (e) => {
 
         <!-- address options -->
         <div class="map-select-list">
+          <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" style="margin: 30px;">찜목록</button>
             <select class="map-select" name="search-area" id="search-area" required @change="sidochange">
                 <option value="" disabled selected>시도 선택</option>
                 <option v-for="sido in sido_code" :key="sido.sido_code" :value="sido.sido_code">
@@ -268,7 +330,8 @@ const selectall = (e) => {
                 </option>
             </select>
             <input class="map-select" name="search-keyword" id="search-keyword" placeholder="검색어를 입력해주세요." />
-            <button id="btn-search" style="font-size: 1.5rem; cursor: pointer" @click="Search">검색</button>
+            <a-button type="primary" :icon="h(SearchOutlined)" @click="Search">Search</a-button>
+          <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrollingend" aria-controls="offcanvasScrollingend" style="margin: 30px;">여행 계획</button>
         </div>
 
         <!-- result filter options -->
@@ -333,6 +396,55 @@ const selectall = (e) => {
             <button class="carousel-button carousel-button-right">&gt;</button>
         </div>
     </main>
+    
+
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+      <div class="offcanvas-header">
+        <h1>찜 목록</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div v-for="(data , index) in selectspot" :key="data.content_id" style="margin: 20px;">
+          <a-card hoverable style="width: 100%">
+            <template #cover>
+              <img
+                alt="no image"
+                :src="data.img"
+              />
+            </template>
+            <template #actions>
+              <button @click="selectadd(index)">버튼</button>
+              <button @click="selectdelete(index)">삭제</button>
+            </template>
+            <a-card-meta :title="data.title" :description="data.addr1"></a-card-meta>
+          </a-card>
+        </div>
+      </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" id="offcanvasScrollingend" aria-labelledby="offcanvasScrollingLabel">
+      <div class="offcanvas-header">
+        <h1>여행 계획</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div v-for="data in selectcourse" :key="data.content_id" style="margin: 20px;">
+          
+          <a-card hoverable style="width: 100%">
+            <template #cover>
+              <img
+                alt="no image"
+                :src="data.img"
+              />
+            </template>
+            <template #actions>
+            </template>
+            <a-card-meta :title="data.title" :description="data.addr1"></a-card-meta>
+          </a-card>
+          
+        </div>
+      </div>
+    </div>
 </template>
 
 <style scoped>

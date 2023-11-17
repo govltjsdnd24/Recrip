@@ -8,7 +8,7 @@ const current = ref(1);
 
 <template>
     <div class="row justify-content-center">
-	<div class="row" style="width: 1900px; height: 500px;">
+	<div class="row" style="width: 1900px; height: 1000px;">
         <div class="col-2">
             <a-card hoverable style="width: 300px">
                 <template #cover>
@@ -59,8 +59,6 @@ const current = ref(1);
                 </a-card-meta>
             </a-card>
         </div>
-    </div>
-    <div class="row md-2" style="width: 1900px; height: 500px;">
         <div class="col-2">
             <a-card hoverable style="width: 300px">
                 <template #cover>
@@ -112,6 +110,7 @@ const current = ref(1);
             </a-card>
         </div>
     </div>
+    
     <div class="row">
         <table class="text-center">
             <PageNavigation
