@@ -202,7 +202,9 @@ function displayMarker() {
       addBtn.appendChild(document.createTextNode('찜'));
 
       addBtn.onclick = function () {
+        //찜 누름
         selectspot.value.push(positions[i]);
+        console.log(positions[i].latlng);
       };
 
       let content = document.createElement('div');
@@ -249,12 +251,13 @@ function displayMarker() {
 
         overlay.setMap(null);
 
-      kakao.maps.event.addListener(markerobject, 'click', function () {
-        
-          overlay.setMap(map);
-        });
       
-        overlays.value.push(overlay);
+
+      kakao.maps.event.addListener(markerobject, 'click', function () {
+        overlay.setMap(map);
+      });
+
+      overlays.value.push(overlay);
     }
 
   console.log(markers.value);
@@ -306,6 +309,7 @@ const selectdelete = (index) => {
 const selectadd = (index) => {
   console.log(index);
   selectcourse.value.push(selectspot.value[index]);
+  //계획 추가
 }
 </script>
 
@@ -404,18 +408,16 @@ const selectadd = (index) => {
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
-        <div v-for="(data , index) in selectspot" :key="data.content_id" style="margin: 20px;">
+        <div v-for="(data , index) in selectspot.slice().reverse()" :key="data.content_id" style="margin: 20px;">
           <a-card hoverable style="width: 100%">
             <template #cover>
-              <img
-                alt="no image"
-                :src="data.img"
-              />
+              <img alt="no image" :src="data.img"/>
             </template>
             <template #actions>
               <button @click="selectadd(index)">버튼</button>
               <button @click="selectdelete(index)">삭제</button>
             </template>
+            <p><a-rate :value="data.content_type_id" allow-half disabled/></p>
             <a-card-meta :title="data.title" :description="data.addr1"></a-card-meta>
           </a-card>
         </div>
@@ -432,10 +434,7 @@ const selectadd = (index) => {
           
           <a-card hoverable style="width: 100%">
             <template #cover>
-              <img
-                alt="no image"
-                :src="data.img"
-              />
+              <img alt="no image" :src="data.img" />
             </template>
             <template #actions>
             </template>
