@@ -1,8 +1,9 @@
 <script setup>
 import PageNavigation from "../components/common/PageNavigation.vue";
-import { ref } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 import axios from "axios";
 import { LoginInfo } from '../store/login';
+import router from "../router";
 
 const info = LoginInfo();
 const { isLogin, loginInfo, IsLogin, getLoginInfo, setLogOut, setLoginInfo } = info;
@@ -13,6 +14,13 @@ const total = ref();
 const current = ref(1);
 const list = ref();
 
+onBeforeMount(() => {
+    if(getLoginInfo.userid == null) {
+        alert("로그인이 필요합니다.");
+        router.push('/')
+    }
+})
+
 const HistoryLoad = () => {
     if(type.value != 'history') {
         current.value = 1;
@@ -20,15 +28,13 @@ const HistoryLoad = () => {
     type.value = 'history';
     var url = '/api/historylist'
     axios.get(url,{params : {
-        userid:getLoginInfo.userid,
+        userid: getLoginInfo.userid,
         current: current.value,
         size: 10,
         table: 'historylist'
     }}).then(response => {
-        console.log(response.data)
         list.value = response.data.resmsg;
         total.value = response.data.totalpage;
-        console.log(list.value);
     });
 }
 
@@ -44,10 +50,8 @@ const WishLoad = () => {
         size: 10,
         table: 'wishlist'
     }}).then(response => {
-        console.log(response.data)
         list.value = response.data.resmsg;
         total.value = response.data.totalpage;
-        console.log(list.value);
     });
 }
 
@@ -63,10 +67,8 @@ const CourseLoad = () => {
         size: 10,
         table: 'courselist'
     }}).then(response => {
-        console.log(response.data)
         list.value = response.data.resmsg;
         total.value = response.data.totalpage;
-        console.log(list.value);
     });
 }
 
