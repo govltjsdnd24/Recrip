@@ -30,7 +30,6 @@ function range(start, end) {
 }
 
 function onPageChange(pg) {
-  console.log(pg + "로 이동!!!");
   emit("pageChange", pg);
 }
 </script>
