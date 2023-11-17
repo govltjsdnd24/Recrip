@@ -34,6 +34,11 @@ const router = createRouter({
       name: 'BoardModify',
       component: () => import('../views/BoardModify.vue')
     },
+    {
+      path: '/reviewboardlist',
+      name: 'ReviewBoardList',
+      component: () => import('../views/ReviewBoardList.vue')
+    },
   ]
 })
 
