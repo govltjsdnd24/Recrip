@@ -44,6 +44,11 @@ const router = createRouter({
       name: 'CrawlingTest',
       component: () => import('../components/common/CrawlingTest.vue')
     },
+    {
+      path: '/mytrippage',
+      name: 'MyTripPage',
+      component: () => import('../views/MyTripPage.vue')
+    },
   ]
 })
 

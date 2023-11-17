@@ -1,0 +1,130 @@
+<script setup>
+import PageNavigation from "../components/common/PageNavigation.vue";
+import { ref } from 'vue';
+import axios from "axios";
+import { LoginInfo } from '../store/login';
+
+const info = LoginInfo();
+const { isLogin, loginInfo, IsLogin, getLoginInfo, setLogOut, setLoginInfo } = info;
+
+const type = ref('');
+
+const total = ref();
+const current = ref(1);
+const list = ref();
+
+const HistoryLoad = () => {
+    if(type.value != 'history') {
+        current.value = 1;
+    }
+    type.value = 'history';
+    var url = '/api/historylist'
+    axios.get(url,{params : {
+        userid:getLoginInfo.userid,
+        current: current.value,
+        size: 10,
+        table: 'historylist'
+    }}).then(response => {
+        console.log(response.data)
+        list.value = response.data.resmsg;
+        total.value = response.data.totalpage;
+        console.log(list.value);
+    });
+}
+
+const WishLoad = () => {
+    if(type.value != 'wish') {
+        current.value = 1;
+    }
+    type.value = 'wish';
+    var url = '/api/wishlist'
+    axios.get(url,{params : {
+        userid:getLoginInfo.userid,
+        current: current.value,
+        size: 10,
+        table: 'wishlist'
+    }}).then(response => {
+        console.log(response.data)
+        list.value = response.data.resmsg;
+        total.value = response.data.totalpage;
+        console.log(list.value);
+    });
+}
+
+const CourseLoad = () => {
+    if(type.value != 'course') {
+        current.value = 1;
+    }
+    type.value = 'course';
+    var url = '/api/courselist'
+    axios.get(url,{params : {
+        userid:getLoginInfo.userid,
+        current: current.value,
+        size: 10,
+        table: 'courselist'
+    }}).then(response => {
+        console.log(response.data)
+        list.value = response.data.resmsg;
+        total.value = response.data.totalpage;
+        console.log(list.value);
+    });
+}
+
+const onPageChange = (val) => {
+    current.value = val;
+    switch(type.value) {
+        case 'history':
+            HistoryLoad();
+            break;
+        case 'wish':
+            WishLoad();
+            break;
+        case 'course':
+            CourseLoad();
+            break;
+    }
+}
+
+</script>
+
+<template>
+    <div class="row justify-content-center">
+    <div> 
+        각 페이지 전환
+        <a-button type="primary" style="margin: 20px;" @click="HistoryLoad">Histroy</a-button>
+        <a-button type="primary" style="margin: 20px;" @click="WishLoad">Wish</a-button>
+        <a-button type="primary" style="margin: 20px;" @click="CourseLoad">Course</a-button>
+    </div>
+    
+    <div class="row" style="width: 1900px; height: 1000px;" >
+        <template v-for="attr in list" :key="attr.content_id">
+       <div class="col-2">
+            <a-card hoverable style="width: 300px">
+                <template #cover>
+                <img :alt="attr.title" :src="attr.first_image" style="width: 300px; height: 300px;"/>
+                </template>
+                <a-card-meta :title="attr.title">
+                <template #description>{{attr.addr1}}</template>
+                </a-card-meta>
+            </a-card>
+        </div>
+        </template>
+    </div>
+    
+    <div class="row">
+        <table class="text-center">
+            <PageNavigation
+              :current-page="current"
+              :total-page="total"
+              @pageChange="onPageChange"
+              ></PageNavigation>
+        </table>
+    </div>
+</div>
+</template>
+
+<style scoped>
+div {
+    margin:  20px;
+}
+</style>

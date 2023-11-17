@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.recrip.mapper.MemberMapper;
+import com.ssafy.recrip.model.AttractionDto;
 import com.ssafy.recrip.model.CourseDto;
 import com.ssafy.recrip.model.MemberDto;
 import com.ssafy.recrip.model.MessageDto;
@@ -61,21 +62,27 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public List<WishHisDto> histroyList(String userid) {
+	public List<WishHisDto> historyList(Map<String,Object> param) {
 		// TODO Auto-generated method stub
-		return session.getMapper(MemberMapper.class).histroyList(userid);
+		int current = (Integer.parseInt((String) param.get("current")) - 1) * Integer.parseInt((String) param.get("size"));
+		param.put("current", current);
+		return session.getMapper(MemberMapper.class).historyList(param);
 	}
 
 	@Override
-	public List<WishHisDto> wishList(String userid) {
+	public List<WishHisDto> wishList(Map<String,Object> param) {
 		// TODO Auto-generated method stub
-		return session.getMapper(MemberMapper.class).wishList(userid);
+		int current = (Integer.parseInt((String) param.get("current")) - 1) * Integer.parseInt((String) param.get("size"));
+		param.put("current", current);
+		return session.getMapper(MemberMapper.class).wishList(param);
 	}
 
 	@Override
-	public List<CourseDto> courseList(String userid) {
+	public List<CourseDto> courseList(Map<String,Object> param) {
 		// TODO Auto-generated method stub
-		return session.getMapper(MemberMapper.class).courseList(userid);
+		int current = (Integer.parseInt((String) param.get("current")) - 1) * Integer.parseInt((String) param.get("size"));
+		param.put("current", current);
+		return session.getMapper(MemberMapper.class).courseList(param);
 	}
 
 	@Override
@@ -136,6 +143,18 @@ public class MemberServiceImpl implements MemberService{
 	public int messagedelete(String messageno) {
 		// TODO Auto-generated method stub
 		return session.getMapper(MemberMapper.class).messagedelete(messageno);
+	}
+
+	@Override
+	public int getTotalCount(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).getTotalCount(param);
+	}
+
+	@Override
+	public AttractionDto getAttrInfo(String contentid) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).getAttrInfo(contentid);
 	}
 
 }

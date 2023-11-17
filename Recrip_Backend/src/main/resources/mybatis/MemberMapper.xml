@@ -36,17 +36,20 @@
 		where userid = #{userid}
 		AND isdelete = true;
 	</delete>
-	<select id="histroyList" parameterType="String" resultType="wishHisDto">
+	<select id="historyList" parameterType="map" resultType="wishHisDto">
 		select * from historylist
 		where userid = #{userid}
+		limit ${current}, ${size}
 	</select>
-	<select id="wishList" parameterType="String" resultType="wishHisDto">
+	<select id="wishList" parameterType="map" resultType="wishHisDto">
 		select * from wishlist
 		where userid = #{userid}
+		limit ${current}, ${size}
 	</select>
-	<select id="courseList" parameterType="String" resultType="courseDto">
+	<select id="courseList" parameterType="map" resultType="courseDto">
 		select * from courselist
 		where userid = #{userid}
+		limit ${current}, ${size}
 	</select>
 	<insert id="histroyInsert" parameterType="wishHisDto">
 		insert into historylist (userid, contentid) values (#{userid}, #{contentid})
@@ -79,5 +82,14 @@
 	<delete id="messagedelete" parameterType="string">
 		delete from message where messageno = #{messageno}
 	</delete>
+	<select id="getTotalCount" parameterType="map" resultType="int">
+		select count(contentid)
+		from ${table}
+		where userid = #{userid}
+	</select>
+	<select id="getAttrInfo" parameterType="string" resultType="attractionDto">
+		select * from attraction_info
+		where content_id = #{contentid}
+	</select>
 </mapper>
   

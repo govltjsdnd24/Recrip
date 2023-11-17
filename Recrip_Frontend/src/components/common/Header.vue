@@ -204,10 +204,10 @@ const filechange = (e) => {
                     <nav class="header-nav">
                         <ul class="flex">
                             <li class="gap">
-                                <a href="" class="flex text-decoration-none link-dark">
+                                <router-link to="/mytrippage" class="flex text-decoration-none link-dark">
                                     <!-- <img class="nav-img" src="@/assets/images/nav/calendar.png" alt="calendar" /> -->
                                     <span class="nav" style="font-family: JeonjuCraftGoR">내 계획 관리</span>
-                                </a>
+                                </router-link>
                             </li>
                             <li class="gap">
                                 <router-link to="/map" class="flex text-decoration-none link-dark">

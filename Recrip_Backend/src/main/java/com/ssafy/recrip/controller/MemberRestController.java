@@ -2,6 +2,7 @@ package com.ssafy.recrip.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.recrip.model.AttractionDto;
 import com.ssafy.recrip.model.BoardDto;
 import com.ssafy.recrip.model.CourseDto;
 import com.ssafy.recrip.model.MemberDto;
@@ -229,13 +231,23 @@ public class MemberRestController {
 		return res;
 	}
 	
-	@GetMapping("/histroylist")
-	public ResponseEntity<Map<String, Object>> histroylist(String userid) throws IllegalStateException, IOException, SQLException {
+	@GetMapping("/historylist")
+	public ResponseEntity<Map<String, Object>> historylist(@RequestParam Map<String, Object> param) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			List<WishHisDto> list = service.histroyList(userid);
-			if(list.size()>0) {
-				map.put("resmsg", list);
+			System.out.println(param);
+			List<WishHisDto> list = service.historyList(param);
+			List<AttractionDto> result = new ArrayList<>();
+			
+			for (WishHisDto dto : list) {
+				AttractionDto a = service.getAttrInfo(dto.getContentid());
+				result.add(a);
+			}
+			
+			int totalpage = service.getTotalCount(param) / Integer.parseInt((String) param.get("size")) + 1;
+			if(list.size() > 0) {
+				map.put("resmsg", result);
+				map.put("totalpage", totalpage);
 				map.put("resdata", "1");
 			} else {
 				map.put("resmsg", "조회 실패");
@@ -252,12 +264,23 @@ public class MemberRestController {
 	}
 	
 	@GetMapping("/wishlist")
-	public ResponseEntity<Map<String, Object>> wishlist(String userid) throws IllegalStateException, IOException, SQLException {
+	public ResponseEntity<Map<String, Object>> wishlist(@RequestParam Map<String, Object> param) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			List<WishHisDto> list = service.wishList(userid);
+			System.out.println(param);
+			List<WishHisDto> list = service.wishList(param);
+			List<AttractionDto> result = new ArrayList<>();
+			
+			for (WishHisDto dto : list) {
+				AttractionDto a = service.getAttrInfo(dto.getContentid());
+				result.add(a);
+			}
+			
+			int totalpage = service.getTotalCount(param) / Integer.parseInt((String) param.get("size")) + 1;
+			
 			if(list.size()>0) {
-				map.put("resmsg", list);
+				map.put("resmsg", result);
+				map.put("totalpage",totalpage);
 				map.put("resdata", "1");
 			} else {
 				map.put("resmsg", "조회 실패");
@@ -274,12 +297,23 @@ public class MemberRestController {
 	}
 	
 	@GetMapping("/courselist")
-	public ResponseEntity<Map<String, Object>> courselist(String userid) throws IllegalStateException, IOException, SQLException {
+	public ResponseEntity<Map<String, Object>> courselist(@RequestParam Map<String, Object> param) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			List<CourseDto> list = service.courseList(userid);
+			System.out.println(param);
+			List<CourseDto> list = service.courseList(param);
+			List<AttractionDto> result = new ArrayList<>();
+			
+			for (CourseDto dto : list) {
+				AttractionDto a = service.getAttrInfo(dto.getContentid());
+				result.add(a);
+			}
+			
+			int totalpage = service.getTotalCount(param) / Integer.parseInt((String) param.get("size")) + 1;
+			
 			if(list.size()>0) {
-				map.put("resmsg", list);
+				map.put("resmsg", result);
+				map.put("totalpage",totalpage);
 				map.put("resdata", "1");
 			} else {
 				map.put("resmsg", "조회 실패");
