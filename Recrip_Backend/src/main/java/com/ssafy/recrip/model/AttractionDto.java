@@ -25,4 +25,7 @@ public class AttractionDto {
 	String latitude;
 	String longitude;
 	String mlevel;
+	String rating;
+	String count;
+	String starscore;
 }
