@@ -1,14 +1,39 @@
 :root {
-    --main-text-color: #2C3E50;
-    --main-text-grey: #6C757D;
+    --main-text-color: #2c3e50;
+    --main-text-grey: #6c757d;
 }
 
 * {
     box-sizing: border-box;
-    font-family: yg-jalnan;
+    font-family: MICEGothicBold;
 }
 
-h1, h2, h3, h4, h5, h6 {
+.pagination .page-link {
+    background: white;
+    color: black;
+}
+
+.pagination > li.active > a {
+    background: gray;
+    color: #fff;
+    border: 1px solid darkgray;
+}
+
+.pagination > li.active > a:hover {
+    background-color: black;
+    color: white;
+}
+
+.pagination > li > a:hover {
+    color: black;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     margin-top: 0;
 }
 h2 {
@@ -84,14 +109,14 @@ p {
 .love p:nth-child(2) {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
-    color: #6C757D;
+    color: #6c757d;
 }
 
-.love p:nth-child(3), .love p:nth-child(4) {
+.love p:nth-child(3),
+.love p:nth-child(4) {
     font-size: 1rem;
     color: var(--main-text-color);
 }
-
 
 .divider {
     width: 100%;
@@ -145,11 +170,10 @@ p {
     -webkit-transition-timing-function: ease;
 }
 
-.center-grid-image:hover{
+.center-grid-image:hover {
     -webkit-filter: none;
     filter: none;
 }
-
 
 .divider-container {
     background-color: #ecf7fc;
