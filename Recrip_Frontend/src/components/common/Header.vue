@@ -10,20 +10,60 @@ const $ = (query) => document.querySelector(query);
 
 //const userInfo = ref(JSON.parse(sessionStorage.getItem('userInfo')));
 const userInfo = ref(getLoginInfo);
+const messages=ref();
 
 onMounted(() => {
-    console.log('hello');
     if (isLogin != false) {
         userInfo.value = getLoginInfo;
+        getMessageList();
         if (userInfo.value != null) {
-            console.log('LOADED:' + userInfo != null ? userInfo.value.userid : '', userInfo.value);
             modified_profile.value = userInfo.value.profile;
             modified_name.value = userInfo.value.username;
             modified_pwd.value = userInfo.value.userpwd;
         }
     }
-    console.log('asdasdsadasd', userInfo.value);
+    
 });
+
+const message_list=() =>{
+    
+    getMessageList();
+    modalOn('.modal-list');
+}
+
+const toid=ref('');
+const subject=ref('');
+const content=ref('');
+
+const sendmessage = () => {
+    var url = '/api/messageinsert';
+    async function getTodo(url) {
+        const response = await axios.post(url, {fromid:userInfo.value.userid, toid: toid.value, subject: subject.value, content: content.value});
+        console.log(response);
+        messages.value = response.data.resdata.list;
+    }
+    getTodo(url).catch((error) => {
+        console.log(error);
+    });
+    modalOff('.modal-message');
+};
+
+
+
+const getMessageList = () => {
+    var url = '/api/messagelist';
+    const param=ref(userInfo.value.userid);
+    
+    async function getTodo(url) {
+        const response = await axios.get(url, { params: {userid:param.value} });
+        
+        console.log( response.data.resmsg);
+        messages.value = response.data.resmsg;
+    }
+    getTodo(url).catch((error) => {
+        console.log(error);
+    });
+};
 
 const login_userid = ref('');
 const login_userpwd = ref('');
@@ -31,7 +71,7 @@ const profile = ref(info.getLoginInfo.profile);
 
 function login() {
     getUserInfo();
-    console.log(profile.value);
+    getMessageList();
 }
 
 const getUserInfo = () => {
@@ -201,6 +241,7 @@ const filechange = (e) => {
                     </router-link>
 
                     <!-- nav menus -->
+                    
                     <nav class="header-nav">
                         <ul class="flex">
                             <li class="gap">
@@ -235,6 +276,13 @@ const filechange = (e) => {
                 <nav>
                     <div style="display: flex; align-items: center">
                         <div v-if="isLogin != false">
+                            <span> 
+                            <img class="header-users-img" src="@/assets/images/nav/write_message.png" style="width:35px" @click="modalOn('.modal-message')" />
+                            &nbsp;
+                            </span> 
+                        <span style="margin-right:1px">
+                            <img class="header-users-img" src="@/assets/images/nav/list_message.png" style="width:30px" @click="message_list()" />
+                        </span>
                             <span style="margin: 15px">
                                 <img :src="profile" style="width: 50px; border-radius: 50%" />
                             </span>
@@ -371,18 +419,118 @@ const filechange = (e) => {
                 <div class="modal-input-wrap">
                     <label class="modal-label" for="edit-profile">프로필사진</label>
                     <input type="file" id="upload" name="upload" @change="filechange" />
-                    <!-- <input
-                        class="modal-input"
-                        type="text"
-                        placeholder="이메일"
-                        id="edit-profile"
-                        name="profile"
-                        v-model="modified_profile"
-                    /> -->
                 </div>
                 <div class="modal-input-wrap">
                     <button @click="signup()" class="modal-submit signin">회원가입</button>
                     <button class="modal-cancel" @click="modalOff('.modal-signup')">취소</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 쪽지 -->
+        <div
+            class="modal modal-wrap modal-message"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="myLargeModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal1 modal-dialogue">
+                <header class="modal-header">
+                    <h2>쪽지</h2>
+                    <button class="modal-close-btn" @click="modalOff('.modal-message')">X</button>
+                </header>
+                <div class="modal-input-wrap">
+                    <label class="modal-label" for="modal-id">받는사람</label>
+                    <input
+                        margin-right="5px"
+                        class="modal-input"
+                        type="text"
+                        placeholder="아이디"
+                        id="toid"
+                        name="toid"
+                        v-model="toid"
+                    />
+                </div>
+                <div class="modal-input-wrap">
+                    <label class="modal-label" for="modal-id"
+                        >제목&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label
+                    >
+                    <input
+                        margin-right="5px"
+                        class="modal-input"
+                        type="text"
+                        placeholder="제목"
+                        id="subject"
+                        name="subject"
+                        v-model="subject"
+                    />
+                </div>
+                <div class="modal-input-wrap">
+                    <label class="modal-label" for="modal-pw">내용</label>
+                    <input
+                        class="modal-input"
+                        type="text"
+                        placeholder="내용"
+                        id="content"
+                        name="content"
+                        v-model="content"
+                        style="width: 370px; height: 200px"
+                    />
+                </div>
+                <div class="modal-input-wrap" style="justify-content: center">
+                    <button @click="sendmessage()" class="modal-submit login but">보내기</button>
+                    <button class="modal-cancel but" @click="modalOff('.modal-message')">취소</button>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="modal modal-wrap modal-list"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="myLargeModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal1 modal-dialogue">
+                <header class="modal-header" >
+                    <h2>쪽지 목록</h2>
+                    <button class="modal-close-btn" style="margin-left:300px; margin-bottom:30px" @click="modalOff('.modal-list')">X</button>
+                    <MessageOutlined />
+                </header>
+                <div>
+                    <table class="flex row" >
+                        <div class="column">
+                            <tr class="flex mx-5">
+                                <th>보낸 사람</th>
+                                <th> 제목</th>
+                                <th> 내용</th>
+                                <th> 보낸 시간</th>
+                            </tr>
+                            <br/>
+                         </div>
+                            <template
+                            
+                                v-for="message in messages"
+                                :key="message.messageno"
+                                
+                            >
+                            <div class="column">
+                            <tr  class="flex mx-5" >
+                                <td>
+                                    {{ message.fromid}} &nbsp;&nbsp;
+                                </td>
+                                <td>{{ message.subject }}</td>
+                                <td>{{ message.content}}</td>
+                                <td>{{ message.date }}</td> 
+                            </tr>
+                            <br>
+                        </div>
+                        </template>
+                    </table>
+                </div>
+                <div class="modal-input-wrap" style="justify-content: center">
+                    <button class="modal-cancel but" @click="modalOff('.modal-list')">나가기</button>
                 </div>
             </div>
         </div>
@@ -434,14 +582,6 @@ const filechange = (e) => {
                 <div class="modal-input-wrap">
                     <label class="modal-label" for="edit-profile">프로필사진</label>
                     <input type="file" id="upload" name="upload" @change="filechange" />
-                    <!-- <input
-                        class="modal-input"
-                        type="text"
-                        placeholder="이메일"
-                        id="edit-profile"
-                        name="profile"
-                        v-model="modified_profile"
-                    /> -->
                 </div>
                 <div class="modal-input-wrap" style="justify-content: center">
                     <button type="button" @click="modify()" class="modal-submit modify">수정</button>
