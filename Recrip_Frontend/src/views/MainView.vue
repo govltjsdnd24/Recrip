@@ -1,9 +1,15 @@
 <script setup>
-import { onMounted, onBeforeUnmount } from 'vue';
+import { onMounted, onBeforeUnmount,ref } from 'vue';
+import axios from 'axios';
+import cheerio from "cheerio";
+
 var index = 0;
 var timer = setInterval(displayImages, 4000);
+const crawlings = ref([{}]);
+
 onMounted(() => {
     displayImages();
+    getNews();
 });
 
 function displayImages() {
@@ -19,6 +25,25 @@ function displayImages() {
     images[index - 1].style.display = 'block';
 }
 
+function getNews() {
+    axios.get('/test').then(response => {
+        //console.log(response.request.response)
+        const data = response.request.response;
+        const $ = cheerio.load(data);
+        //console.log(data);
+        const result = $(".card_group > li > figure").toArray();
+        //console.log(result);
+        for (let index = 5; index < 14; index++) {
+            let row = {
+                href: result[index].children[1].attribs.href,
+                alt: result[index].children[1].children[1].attribs.alt,
+                src: result[index].children[1].children[1].attribs.src
+            }
+            crawlings.value.push(row);
+        }
+    })
+}
+
 onBeforeUnmount(() => {
     clearInterval(timer);
 });
@@ -32,17 +57,17 @@ onBeforeUnmount(() => {
                 <img src="@/assets/images/top2.png" alt="Palm Trees" />
             </div>
             <div class="image-on-text">
-                <p>지금</p>
-                <p>Enjoy!!!Trip</p>
-                <p>과 함께 우리지역의 관광지를 알아보고 나만의 여행 계획을 만들어보세요!!!</p>
+                <p>최고의 여행 계획을 원하세요? </p>
+                <p>Recrip</p>
+                <p>에게 맡기세요.</p>
             </div>
             <div class="image fadeslide">
                 <img src="@/assets/images/top.png" alt="Mountain Top" />
             </div>
             <div class="image-on-text">
-                <p>지금</p>
-                <p>Enjoy!!!Trip</p>
-                <p>과 함께 우리지역의 관광지를 알아보고 나만의 여행 계획을 만들어보세요!!!</p>
+                <p>최고의 여행 계획을 원하세요? </p>
+                <p>Recrip</p>
+                <p>에게 맡기세요.</p>
             </div>
         </div>
         <div class="wrapper">
@@ -147,99 +172,31 @@ onBeforeUnmount(() => {
         </div>
         <div class="divider-container">
             <div class="divider"></div>
-            <h2>핫플 자랑하기</h2>
-            <h3>나만 알고있는 핫플!!! 자랑해 주세요.</h3>
+            <h2>여행 뉴스</h2>
         </div>
-        <div class="place-wrapper">
-            <div
-                class="place-card"
-                style="background-image: url(src/assets/images/hotplace/1.jpg); background-size: cover"
-            >
-                <div class="place-info-container">
-                    <h4>거북이 마을</h4>
-                    <p>거북이 마을 수선화 축제에요 시간 나면 꼭 한번 가보세요 너무너무 이뻐염~</p>
-                </div>
-            </div>
+        <div class="place-wrapper" > 
+            <template v-for="(data, index) in crawlings" :key="data.href">
+                <a-card hoverable v-if="index != 0" class="place-card">    
+                    <template #cover>
+                        <a :href="data.href" target="_blank">
+                            <img
+                                :src="data.src"
+                                alt=""
+                                style="width: 100%; height: 80%; object-fit: cover;"
+                            />
+                        </a>
+                        </template>
+                        <a :href="data.href" style="text-decoration: none; " >
+                            <a-card-meta :title="data.alt" style="text-align: center; text-decoration: none;">
+                        </a-card-meta></a>
+                </a-card>
+            </template>
+        </div>
 
-            <div
-                class="place-card"
-                style="background-image: url(src/assets/images/hotplace/2.jpg); background-size: cover"
-            >
-                <div class="place-info-container">
-                    <h4>거북이 마을</h4>
-                    <p>거북이 마을 수선화 축제에요 시간 나면 꼭 한번 가보세요 너무너무 이뻐염~</p>
-                </div>
-            </div>
-            <div
-                class="place-card"
-                style="background-image: url(src/assets/images/hotplace/3.jpg); background-size: cover"
-            >
-                <div class="place-info-container">
-                    <h4>멀티 캠퍼스</h4>
-                    <p>좋아</p>
-                </div>
-            </div>
-            <div
-                class="place-card"
-                style="background-image: url(src/assets/images/hotplace/4.jpg); background-size: cover"
-            >
-                <div class="place-info-container">
-                    <h4>멀티 캠퍼스</h4>
-                    <p>좋아</p>
-                </div>
-            </div>
-            <div
-                class="place-card"
-                style="background-image: url(src/assets/images/hotplace/5.jpg); background-size: cover"
-            >
-                <div class="place-info-container">
-                    <h4>대동집</h4>
-                    <p>맛나요</p>
-                </div>
-            </div>
-            <div
-                class="place-card"
-                style="background-image: url(src/assets/images/hotplace/6.jpg); background-size: cover"
-            >
-                <div class="place-info-container">
-                    <h4>거북이마을</h4>
-                    <p>거북이 마을 수선화 축제에요 시간 나면 꼭 한번 가보세요 너무너무 이뻐염~</p>
-                </div>
-            </div>
-            <div
-                class="place-card"
-                style="background-image: url(src/assets/images/hotplace/7.jpg); background-size: cover"
-            >
-                <div class="place-info-container">
-                    <h4>고척 스카이돔</h4>
-                    <p>
-                        고척 스카이돔 야구장입니다~~~~~ 키움 히어로즈 경기보러오세요~~ 여름에 아주 시원합니다 크림새우가
-                        맛있으니까 와서 먹어보세용~~!!!!!!!!
-                    </p>
-                </div>
-            </div>
-            <div
-                class="place-card"
-                style="background-image: url(src/assets/images/hotplace/8.jpg); background-size: cover"
-            >
-                <div class="place-info-container">
-                    <h4>영월 한반도 지형</h4>
-                    <p>한반도 모양인 지형을 볼 수 있어용</p>
-                </div>
-            </div>
-            <div
-                class="place-card"
-                style="background-image: url(src/assets/images/hotplace/9.jpg); background-size: cover"
-            >
-                <div class="place-info-container">
-                    <h4>멀캠</h4>
-                    <p>키보드</p>
-                </div>
-            </div>
-        </div>
+        
         <div class="bottom_contact">
-            <p>언제든 연락주세요.!</p>
-            <p>Enjoy!!! Trip은 여러분의 많은 참여를 기다립니다.</p>
+            <p>언제든 연락주세요</p>
+            <p>Recrip은 여러분의 많은 참여를 기다립니다.</p>
             <p>숨어있는 지역 명소와 함께 즐기고 싶은 여행일정이 있다면 언제든지 환영입니다.</p>
             <p>02-1234-5678</p>
         </div>

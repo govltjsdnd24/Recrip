@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-image: url(../images/top.png);
+    background-image: url("https://source.unsplash.com/random/1920x600");
     background-size: cover;
 }
 
