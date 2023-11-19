@@ -6,7 +6,7 @@ import PageNavigation from '../components/common/PageNavigation.vue';
 import VSelect from '../components/common/VSelect.vue';
 import { LoginInfo } from '../store/login';
 const info = LoginInfo();
-const { isLogin, loginInfo, IsLogin, getLoginInfo, setLogOut, setLoginInfo } = info;
+const { isLogin, loginInfo, IsLogin, getLoginInfo, } = info;
 const articles = ref();
 const userinfo = ref();
 const currentpage = ref(1);

@@ -168,5 +168,10 @@ public class BoardServiceImpl implements BoardService {
 		// TODO Auto-generated method stub
 		return session.getMapper(BoardMapper.class).freeBoardLastArticleno();
 	}
+
+	@Override
+	public int reviewBoardLastArticleno() {
+		return session.getMapper(BoardMapper.class).reviewBoardLastArticleno();
+	}
 	
 }

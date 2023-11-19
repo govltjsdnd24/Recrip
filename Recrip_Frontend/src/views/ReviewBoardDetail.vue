@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeMount } from 'vue';
+import { ref, onMounted, onBeforeMount, watch} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import { LoginInfo } from '../store/login';
@@ -18,7 +18,7 @@ const comment = ref('');
 
 onBeforeMount(() => {
     userinfo.value = getLoginInfo;
-    var url = `/api/freeboardview?articleno=${articleno}`;
+    var url = `/api/reviewboardview?articleno=${articleno}`;
 
     async function getArticle(url) {
         const response = await axios.get(url);
@@ -29,7 +29,7 @@ onBeforeMount(() => {
         console.log(error);
     });
 
-    var comm = `/api/freecommentlist?articleno=${articleno}`;
+    var comm = `/api/reviewcommentlist?articleno=${articleno}`;
 
     async function getComment(comm) {
         const response = await axios.get(comm);
@@ -40,7 +40,7 @@ onBeforeMount(() => {
         console.log(error);
     });
 
-    var filelist = `/api/freeboardfilelist?articleno=${articleno}`;
+    var filelist = `/api/reviewboardfilelist?articleno=${articleno}`;
 
     async function getfiles(filelist) {
         const response = await axios.get(filelist);
@@ -55,7 +55,7 @@ onBeforeMount(() => {
 });
 
 const DeleteBoard = () => {
-    var url = `/api/freeboarddelete?articleno=${articleno}`;
+    var url = `/api/reviewboarddelete?articleno=${articleno}`;
 
     async function getArticle(url) {
         const response = await axios.delete(url);
@@ -68,11 +68,11 @@ const DeleteBoard = () => {
 };
 
 const golist = () => {
-    router.push('/boardlist');
+    router.push('/reviewlist');
 };
 
 const CommentWrite = () => {
-    var url = '/api/freecommentwrite';
+    var url = '/api/reviewcommentwrite';
 
     async function articleUpdate(url) {
         const response = await axios.post(url, {
@@ -93,7 +93,7 @@ const gozero = () => {
 };
 
 const CommentDelete = (commentno) => {
-    var url = `/api/freecommentdelete?commentno=${commentno}`;
+    var url = `/api/reviewcommentdelete?commentno=${commentno}`;
 
     async function CommentDelete(url) {
         const response = await axios.delete(url);
@@ -104,6 +104,20 @@ const CommentDelete = (commentno) => {
 
     setTimeout(gozero, 100);
 };
+
+
+    const getImageSource =(filename) =>{
+        console.log("FILENOM: "+filename);
+        return 'http://192.168.0.3:8080/trip/download?fileName=' + filename;
+    };
+
+    watch(files,(files)=>{
+        files.forEach(file => {
+            getImageSource(file);
+        });
+    })
+
+
 </script>
 
 <template>
@@ -140,19 +154,17 @@ const CommentDelete = (commentno) => {
                         <br />
                         <br />
                         <br />
-                        <div><h3>첨부파일</h3></div>
+                        <div><h3>첨부 이미지</h3></div>
                         <br />
                         <div v-for="file in files" :key="file.filename">
-                            <a :href="'http://192.168.0.3:8080/trip/download?fileName=' + file.filename">{{
-                                file.filename
-                            }}</a>
+                            <img :src="file.url" style="max-width: 500px;"/>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <router-link to="/boardlist">
+                            <router-link to="/reviewboardlist">
                                 <button type="button" class="btn btn-dark mb-3">글목록</button>
                             </router-link>
                             <template v-if="userinfo.userid == article.userid">
-                                <router-link :to="{ name: 'BoardModify', params: { articleno: article.articleno } }">
+                                <router-link :to="{ name: 'ReviewBoardModify', params: { articleno: article.articleno } }">
                                     <button type="button" class="btn btn-secondary mb-3 ms-1">글수정</button>
                                 </router-link>
                                 <button type="button" class="btn btn-danger mb-3 ms-1" @click="DeleteBoard">

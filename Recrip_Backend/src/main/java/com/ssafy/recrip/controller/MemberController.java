@@ -37,13 +37,13 @@ import io.swagger.annotations.Api;
 @CrossOrigin("*")
 @RestController
 @Api(tags = {"Recrip Member API"})
-public class MemberRestController {
+public class MemberController {
 	
 	private MemberService service;
 	private S3UpDownloadService s3service;
 	
 	@Autowired
-	public MemberRestController(MemberService service, S3UpDownloadService s3service) {
+	public MemberController(MemberService service, S3UpDownloadService s3service) {
 		this.service = service;
 		this.s3service=s3service;
 	}
@@ -463,12 +463,14 @@ public class MemberRestController {
 		
 		return res;
 	}
-	
+
 	@GetMapping("/messagelist")
-	public ResponseEntity<Map<String, Object>> messagelist(String userid) throws IllegalStateException, IOException, SQLException {
+	public ResponseEntity<Map<String, Object>> messagelist(@RequestParam String userid) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
+			System.out.println(userid);
 			List<MessageDto> list = service.messageList(userid);
+			System.out.println("LIST: "+list);
 			if(list.size()>0) {
 				map.put("resmsg", list);
 				map.put("resdata", "1");
@@ -490,6 +492,7 @@ public class MemberRestController {
 	public ResponseEntity<Map<String, Object>> messageinsert(@RequestBody MessageDto dto) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		try {
+			System.out.println(dto);
 			int result = service.messageinsert(dto);
 			if(result != 0) {
 				map.put("resdata", "1");

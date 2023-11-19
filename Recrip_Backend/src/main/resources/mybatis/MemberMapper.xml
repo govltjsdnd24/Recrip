@@ -74,7 +74,7 @@
 	</select>
 	<select id="messageList" parameterType="String" resultType="messageDto">
 		select * from message
-		where isdelete = 0 and to = #{userid}
+		where isdelete = 0 and toid = #{userid}
 	</select>
 	<insert id="messageinsert" parameterType="messageDto">
 		insert into message (fromid, toid, subject, content) values (#{fromid}, #{toid}, #{subject}, #{content})
