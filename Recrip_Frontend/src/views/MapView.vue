@@ -10,8 +10,13 @@ const areaUrl =
     serviceKey +
     '&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
 
+//const src =
+//    '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=4fd0aaf2d6c6b86333a1b8f0115bac76&libraries=services,clusterer,drawing';
+
 const src =
-    '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=4fd0aaf2d6c6b86333a1b8f0115bac76&libraries=services,clusterer,drawing';
+    '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=068c718ed6d3a38278cc1820746952f0&libraries=services,clusterer,drawing';
+
+
 var map = ref(null);
 const mapContainer = ref(null);
 
@@ -311,6 +316,10 @@ const selectadd = (index) => {
   selectcourse.value.push(selectspot.value[index]);
   //계획 추가
 }
+
+const coursedelete = (index) => {
+    selectcourse.value.splice(index, 1);
+}
 </script>
 
 <template>
@@ -414,8 +423,8 @@ const selectadd = (index) => {
               <img alt="no image" :src="data.img"/>
             </template>
             <template #actions>
-              <button @click="selectadd(index)">버튼</button>
-              <button @click="selectdelete(index)">삭제</button>
+              <button @click="selectadd(selectspot.length - index - 1)">일정 추가</button>
+              <button @click="selectdelete(selectspot.length - index - 1)">삭제</button>
             </template>
             <p><a-rate :value="data.content_type_id" allow-half disabled/></p>
             <a-card-meta :title="data.title" :description="data.addr1"></a-card-meta>
@@ -430,13 +439,14 @@ const selectadd = (index) => {
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
-        <div v-for="data in selectcourse" :key="data.content_id" style="margin: 20px;">
+        <div v-for="data , index in selectcourse" :key="data.content_id" style="margin: 20px;">
           
           <a-card hoverable style="width: 100%">
             <template #cover>
               <img alt="no image" :src="data.img" />
             </template>
             <template #actions>
+                <button @click="coursedelete(index)">삭제</button>
             </template>
             <a-card-meta :title="data.title" :description="data.addr1"></a-card-meta>
           </a-card>
