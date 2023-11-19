@@ -110,4 +110,8 @@
   	<select id="freeBoardLastArticleno" resultType="int">
   		select articleno from freeboard order by articleno desc limit 1;
   	</select>
+  	
+  	<select id="reviewBoardLastArticleno" resultType="int">
+  		select articleno from reviewboard order by articleno desc limit 1;
+  	</select>
 </mapper>

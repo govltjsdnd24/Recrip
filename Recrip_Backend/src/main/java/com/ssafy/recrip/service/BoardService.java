@@ -32,4 +32,5 @@ public interface BoardService {
 	int freeBoardFileWrite(FileDto dto);
 	int reviewBoardFileWrite(FileDto dto);
 	int freeBoardLastArticleno();
+	int reviewBoardLastArticleno();
 }

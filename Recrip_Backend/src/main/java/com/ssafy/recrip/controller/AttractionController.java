@@ -27,12 +27,12 @@ import io.swagger.annotations.Api;
 @CrossOrigin("*")
 @RestController
 @Api(tags = {"Recrip Attraction API"})
-public class AttractionRestController {
+public class AttractionController {
 	
 	private AttractionService service;
 
 	@Autowired
-	public AttractionRestController(AttractionService service) {
+	public AttractionController(AttractionService service) {
 		this.service=service;
 	}
 	

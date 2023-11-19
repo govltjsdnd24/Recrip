@@ -37,13 +37,13 @@ import io.swagger.annotations.Api;
 @CrossOrigin("*")
 @RestController
 @Api(tags = {"Recrip Member API"})
-public class MemberRestController {
+public class MemberController {
 	
 	private MemberService service;
 	private S3UpDownloadService s3service;
 	
 	@Autowired
-	public MemberRestController(MemberService service, S3UpDownloadService s3service) {
+	public MemberController(MemberService service, S3UpDownloadService s3service) {
 		this.service = service;
 		this.s3service=s3service;
 	}

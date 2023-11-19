@@ -34,4 +34,5 @@ public interface BoardMapper {
 	int freeBoardFileWrite(FileDto dto);
 	int reviewBoardFileWrite(FileDto dto);
 	int freeBoardLastArticleno();
+	int reviewBoardLastArticleno();
 }
