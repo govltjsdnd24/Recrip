@@ -28,10 +28,10 @@ onBeforeMount(() => {
         class="article-title link-dark"
       >
        
-        <a-card hoverable style="width: 300px;">
+        <a-card hoverable style="width: 300px; min-height:300px">
             <template #cover >
-                <img v-if="files[0] !=null" :src="files[0].url">
-                <img v-else alt="example" src="https://source.unsplash.com/random" style="object-fit:fit"/>
+                <img v-if="files[0] !=null" :src="files[0].url" style="max-height: 200px;">
+                <img v-else alt="example" src="https://source.unsplash.com/random" style="object-fit:fit; max-height: 200px;"/>
             </template>
             <a-card-meta :title=subject>
                 <template #description>{{article.registdate}}</template>

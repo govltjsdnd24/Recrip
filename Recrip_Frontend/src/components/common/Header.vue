@@ -111,13 +111,16 @@ const signup_pwd = ref('');
 const signup_profile = ref('');
 
 function signup() {
+    const multipartFile = new FormData();
+    console.log('mofile', file.value[0]);
+    multipartFile.append('multipartFile', file.value[0]);
+    multipartFile.append('userid', signup_id.value);
+    multipartFile.append('username', signup_name.value);
+    multipartFile.append('userpwd', signup_pwd.value);
     axios
-        .post('/api/restmeminsert', {
-            profile: signup_profile.value,
-            userid: signup_id.value,
-            username: signup_name.value,
-            userpwd: signup_pwd.value,
-        })
+        .post('/api/restmeminsert', multipartFile,
+                { headers: { 'Content-Type': 'multipart/form-data' } }
+        )
         .then((response) => {
             if (response.data.resdata == 1) {
                 modalOff('.modal-signin');
@@ -145,12 +148,6 @@ function modify() {
             '/api/restmemupdate',
             multipartFile,
             { headers: { 'Content-Type': 'multipart/form-data' } }
-            //     {
-            //     userid: this.userInfo.userid,
-            //     isdeleted: false,
-            //     username: modified_name.value,
-            //     userpwd: modified_pwd.value,
-            // }
         )
         .then((response) => {
             if (response.data.resdata == 1) {
@@ -424,6 +421,8 @@ const filechange = (e) => {
                     <button @click="signup()" class="modal-submit signin">회원가입</button>
                     <button class="modal-cancel" @click="modalOff('.modal-signup')">취소</button>
                 </div>
+
+
             </div>
         </div>
 
