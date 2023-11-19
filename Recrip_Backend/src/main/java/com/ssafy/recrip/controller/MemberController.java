@@ -124,8 +124,13 @@ public class MemberController {
 	}
 	
 	@PostMapping("/restmeminsert")
-	public ResponseEntity<Map<String, Object>> restmeminsert(@RequestBody MemberDto dto, @RequestParam(required = false) MultipartFile multipartFile) throws Exception {
+	public ResponseEntity<Map<String, Object>> restmeminsert(@RequestParam(required = false) MultipartFile multipartFile, @RequestParam String userid, @RequestParam String username, @RequestParam String userpwd) throws Exception {
 		Map<String, Object> map = new HashMap<>();
+		MemberDto dto=new MemberDto();
+		dto.setUserid(userid);
+		dto.setUsername(username);
+		dto.setUserpwd(userpwd);
+		System.out.println("SIGNUP: "+dto);
 		try {
 			String upload;
 			if(multipartFile!=null) {
@@ -160,7 +165,6 @@ public class MemberController {
 		try {
 			System.out.println(dto);
 			if(multipartFile!=null) {
-				System.out.println("muti " +multipartFile.getOriginalFilename());
 				String upload = s3service.saveFile(multipartFile);
 				dto.setProfile(upload);
 			}
