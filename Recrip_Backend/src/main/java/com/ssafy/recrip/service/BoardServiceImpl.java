@@ -191,5 +191,58 @@ public class BoardServiceImpl implements BoardService {
 		System.out.println(map);
 		session.getMapper(BoardMapper.class).addscore(map);
 	}
+
+	@Override
+	public int freeBoardHit(String articleno) {
+		return session.getMapper(BoardMapper.class).freeBoardHit(articleno);
+		
+	}
+
+	@Override
+	public int reviewBoardHit(String articleno) {
+		return session.getMapper(BoardMapper.class).reviewBoardHit(articleno);
+	}
+
+	@Override
+	public int freeBoardLikeCheck(String articleno) {
+		Integer result=session.getMapper(BoardMapper.class).freeBoardLikeCheck(articleno);
+		return result!=null?result.intValue():0;
+	}
+
+	@Override
+	public int freeBoardLike(String articleno) {
+		return session.getMapper(BoardMapper.class).freeBoardLike(articleno);
+	}
+
+	@Override
+	public int reviewBoardLikeCheck(String articleno) {
+		Integer result=session.getMapper(BoardMapper.class).reviewBoardLikeCheck(articleno);
+		return result!=null?result.intValue():0;
+	}
+
+	@Override
+	public int reviewBoardLike(String articleno) {
+		return session.getMapper(BoardMapper.class).reviewBoardLike(articleno);
+	}
+
+	@Override
+	public int freeBoardLikeAdd(String articleno, String userid) {
+		return session.getMapper(BoardMapper.class).freeBoardLikeAdd(articleno,userid);
+	}
+
+	@Override
+	public int reviewBoardLikeAdd(String articleno, String userid) {
+		return session.getMapper(BoardMapper.class).reviewBoardLikeAdd(articleno,userid);
+	}
+
+	@Override
+	public int freeBoardLikeCount(String articleno) {
+		return session.getMapper(BoardMapper.class).freeBoardLikeCount(articleno);
+	}
+
+	@Override
+	public int reviewBoardLikeCount(String articleno) {
+		return session.getMapper(BoardMapper.class).reviewBoardLikeCount(articleno);
+	}
 	
 }
