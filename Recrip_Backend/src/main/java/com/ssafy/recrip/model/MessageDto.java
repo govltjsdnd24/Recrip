@@ -12,6 +12,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageDto {
+	private String messageno;
 	private String fromid;
 	private String toid;
 	private String subject;
