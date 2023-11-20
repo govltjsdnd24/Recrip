@@ -83,6 +83,9 @@ const gugunchange = (e) => {
 };
 
 const Search = () => {
+    if (polyline.value != null) {
+        polyline.value.setMap(null);
+    }
     markers.value.forEach((marker) => {
         marker.setMap(null);
     });
@@ -405,6 +408,7 @@ const coursesave = () => {
             "Authorization": `KakaoAK ${key}`
         }
     }).then(response => {
+        console.log(response);
         if (polyline.value != null) {
             polyline.value.setMap(null);
         }
@@ -448,6 +452,9 @@ const coursesave = () => {
 
         // 지도에 선을 표시합니다 
         polyline.value.setMap(map); 
+
+        map.setCenter(linepath[0]);
+        map.setLevel(3);
     });
 
     
