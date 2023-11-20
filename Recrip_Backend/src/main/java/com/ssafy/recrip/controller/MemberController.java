@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
@@ -378,10 +381,21 @@ public class MemberController {
 	}
 	
 	@PostMapping("/courseinsert")
-	public ResponseEntity<Map<String, Object>> courseinsert(@RequestBody CourseDto dto) throws Exception {
+	public ResponseEntity<Map<String, Object>> courseinsert(@RequestBody String dto) throws Exception {
 		Map<String, Object> map = new HashMap<>();
+		JSONParser parser = new JSONParser();
+		JSONObject object = (JSONObject) parser.parse(dto);
+		
+		JSONArray list = (JSONArray) parser.parse((String) object.get("dto"));
+		
+		List<CourseDto> param = new ArrayList<CourseDto>();
+		
+		for (Object obj : list) {
+			CourseDto d = new CourseDto();
+			d.setContentid((String) obj);
+		}
 		try {
-			int result = service.courseInsert(dto);
+			int result = service.courseInsert(param);
 			if(result != 0) {
 				map.put("resdata", "1");
 				map.put("resmsg", "등록 성공");

@@ -307,11 +307,8 @@ const selectall = (e) => {
 const selectspot = ref([]);
 const selectcourse = ref([]);
 
-
 const selectdelete = (index) => {
-  console.log('삭제 전',selectspot.value[index], index);
   selectspot.value.splice(index, 1);
-  console.log('삭제 후',selectspot.value);
 }
 
 const selectadd = (index) => {
@@ -325,6 +322,20 @@ const selectadd = (index) => {
 const coursedelete = (index) => {
     selectcourse.value.splice(index, 1);
 }
+
+const coursesave = () => {
+    let course = [];
+    selectcourse.value.forEach((attr) => {
+        course.push(attr.content_id);
+    });
+    console.log(course);
+    let url = '/api/courseinsert';
+    axios.post(url, {
+        headers: {
+            "Content-Type": "application/json",
+        }, dto: JSON.stringify(course)
+    }).then(response => console.log(response)).catch(error => console.log(error));
+}
 </script>
 
 <template>
@@ -334,7 +345,7 @@ const coursedelete = (index) => {
 
         <!-- address options -->
         <div class="map-select-list">
-          <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" style="margin: 30px;">찜목록</button>
+          <button class="btn btn-info" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" style="margin: 30px;">찜목록</button>
             <select class="map-select" name="search-area" id="search-area" required @change="sidochange">
                 <option value="" disabled selected>시도 선택</option>
                 <option v-for="sido in sido_code" :key="sido.sido_code" :value="sido.sido_code">
@@ -349,7 +360,7 @@ const coursedelete = (index) => {
             </select>
             <input class="map-select" name="search-keyword" id="search-keyword" placeholder="검색어를 입력해주세요." />
             <a-button type="primary" :icon="h(SearchOutlined)" @click="Search">Search</a-button>
-          <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrollingend" aria-controls="offcanvasScrollingend" style="margin: 30px;">여행 계획</button>
+          <button class="btn btn-info" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrollingend" aria-controls="offcanvasScrollingend" style="margin: 30px;">여행 계획</button>
         </div>
 
         <!-- result filter options -->
@@ -441,6 +452,7 @@ const coursedelete = (index) => {
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" id="offcanvasScrollingend" aria-labelledby="offcanvasScrollingLabel">
       <div class="offcanvas-header">
         <h1>여행 계획</h1>
+        <p><button class="btn btn-primary" @click="coursesave">여행 계획 저장</button></p>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">

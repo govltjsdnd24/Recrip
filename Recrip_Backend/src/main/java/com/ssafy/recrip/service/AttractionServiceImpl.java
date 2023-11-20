@@ -65,12 +65,8 @@ public class AttractionServiceImpl implements AttractionService {
 		
 		Map<String, Object> result = session.getMapper(BoardMapper.class).findscore(content_id);
 		
-		System.out.println(String.valueOf(result.get("rating")));
 		map.put("rating", String.valueOf(Integer.parseInt(String.valueOf(result.get("rating"))) + 4));
 		map.put("content_id", content_id);
-		
-		System.out.println(result);
-		System.out.println(map);
 		
 		return session.getMapper(AttractionMapper.class).addrating(map);
 	}

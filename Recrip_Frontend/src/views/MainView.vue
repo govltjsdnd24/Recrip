@@ -54,7 +54,7 @@ onBeforeUnmount(() => {
         <!--슬라이더-->
         <div class="image-slideshow">
             <div class="image fadeslide">
-                <img src="@/assets/images/top2.png" alt="Palm Trees" />
+                <img src="https://source.unsplash.com/1920x1080?beach" alt="Palm Trees" />
             </div>
             <div class="image-on-text">
                 <p>최고의 여행 계획을 원하세요? </p>
@@ -62,7 +62,23 @@ onBeforeUnmount(() => {
                 <p>에게 맡기세요.</p>
             </div>
             <div class="image fadeslide">
-                <img src="@/assets/images/top.png" alt="Mountain Top" />
+                <img src="https://source.unsplash.com/1920x1080?city" alt="Mountain Top" />
+            </div>
+            <div class="image-on-text">
+                <p>최고의 여행 계획을 원하세요? </p>
+                <p>Recrip</p>
+                <p>에게 맡기세요.</p>
+            </div>
+            <div class="image fadeslide">
+                <img src="https://source.unsplash.com/1920x1080?mountain" alt="Palm Trees" />
+            </div>
+            <div class="image-on-text">
+                <p>최고의 여행 계획을 원하세요? </p>
+                <p>Recrip</p>
+                <p>에게 맡기세요.</p>
+            </div>
+            <div class="image fadeslide">
+                <img src="https://source.unsplash.com/1920x1080?castle" alt="Mountain Top" />
             </div>
             <div class="image-on-text">
                 <p>최고의 여행 계획을 원하세요? </p>

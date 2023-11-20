@@ -175,7 +175,6 @@ public class AttractionController {
 	@GetMapping("/addscore")
 	public ResponseEntity<Map<String,Object>> addscore (@RequestParam String content_id) {
 		Map<String,Object>map =new HashMap<>();
-		System.out.println(content_id);
 		try {
 			int result = service.addscore(content_id);
 			if(result != 0) {

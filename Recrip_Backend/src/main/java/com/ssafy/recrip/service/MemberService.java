@@ -21,7 +21,7 @@ public interface MemberService {
 	List<CourseDto> courseList(Map<String, Object> param);
 	int histroyInsert(WishHisDto dto);
 	int wishInsert(WishHisDto dto);
-	int courseInsert(CourseDto dto);
+	int courseInsert(List<CourseDto> dto);
 	int historydelete(String contentid);
 	int wishdelete(String contentid);
 	int coursedelete(String groupno);

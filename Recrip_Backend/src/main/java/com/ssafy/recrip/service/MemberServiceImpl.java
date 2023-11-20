@@ -98,15 +98,30 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public int courseInsert(CourseDto dto) {
+	public int courseInsert(List<CourseDto> dto) {
 		// TODO Auto-generated method stub
-		String groupno = session.getMapper(MemberMapper.class).findMaxGroupno();
-		if(groupno == null) {
-			dto.setGroupno("1");
-		} else {
-			dto.setGroupno(String.valueOf(Integer.parseInt(groupno)+1));
+		try {
+			String groupno = session.getMapper(MemberMapper.class).findMaxGroupno();
+			if(groupno == null) {
+				for (CourseDto courseDto : dto) {
+					courseDto.setGroupno("1");
+				}
+			} else {
+				for (CourseDto courseDto : dto) {
+					courseDto.setGroupno(String.valueOf(Integer.parseInt(groupno)+1));
+				}
+			}
+			for (CourseDto courseDto : dto) {
+				System.out.println(courseDto);
+				session.getMapper(MemberMapper.class).courseInsert(courseDto);
+			}
+			
+			return 1;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return 0;
 		}
-		return session.getMapper(MemberMapper.class).courseInsert(dto);
 	}
 
 	@Override
