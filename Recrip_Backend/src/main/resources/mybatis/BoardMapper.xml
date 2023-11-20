@@ -37,8 +37,8 @@
   	</insert>
   	
   	<insert id="reviewBoardWrite" parameterType="boardDto">
-  		insert into reviewboard (userid, subject, content)
-  		values (#{userid}, #{subject}, #{content})
+  		insert into reviewboard (userid, subject, content, starscore, contentid)
+  		values (#{userid}, #{subject}, #{content}, #{starscore}, #{contentid})
   	</insert>
   	
   	<update id="freeBoardDelete" parameterType="string">

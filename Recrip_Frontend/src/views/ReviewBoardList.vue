@@ -29,7 +29,6 @@ const onPageChange = (val) => {
 
 const selectOption = ref([
     { text: '검색조건', value: '' },
-    { text: '글번호', value: 'articleno' },
     { text: '제목', value: 'subject' },
     { text: '작성자아이디', value: 'userid' },
 ]);
@@ -76,13 +75,6 @@ const changeKey = (val) => {
                 </div>
                 <div class="col-lg-8 col-md-10 col-sm-12">
                     <div class="row align-self-center mb-2">
-                        <template v-if="IsLogin == true">
-                            <div class="col text-start">
-                                <router-link :to="{ name: 'ReviewBoardWrite' }">
-                                    <button type="button" class="btn btn-dark btn-sm">글쓰기</button>
-                                </router-link>
-                            </div>
-                        </template>
                         <div class="col-md-5 offset-5">
                             <form class="d-flex col">
                                 <VSelect :selectOption="selectOption" @onKeySelect="changeKey"  style="height:30px; margin-top:20px"/>

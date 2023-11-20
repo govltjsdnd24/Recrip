@@ -17,4 +17,6 @@ public class BoardDto {
 	String registdate;
 	String hit;
 	boolean isdelete;
+	String starscore;
+	String contentid;
 }
