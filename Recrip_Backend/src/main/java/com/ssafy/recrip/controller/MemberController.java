@@ -339,6 +339,7 @@ public class MemberController {
 	@PostMapping("/historyinsert")
 	public ResponseEntity<Map<String, Object>> historyinsert(@RequestBody WishHisDto dto) throws Exception {
 		Map<String, Object> map = new HashMap<>();
+		System.out.println(dto);
 		try {
 			int result = service.histroyInsert(dto);
 			if(result != 0) {
@@ -388,12 +389,16 @@ public class MemberController {
 		
 		JSONArray list = (JSONArray) parser.parse((String) object.get("dto"));
 		
+		System.out.println(list);
 		List<CourseDto> param = new ArrayList<CourseDto>();
 		
 		for (Object obj : list) {
 			CourseDto d = new CourseDto();
-			d.setContentid((String) obj);
+			d.setContentid((String)((JSONObject) obj).get("content_id"));
+			d.setUserid((String)((JSONObject) obj).get("userid"));
+			param.add(d);
 		}
+		
 		try {
 			int result = service.courseInsert(param);
 			if(result != 0) {

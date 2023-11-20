@@ -3,6 +3,9 @@ import axios from 'axios';
 import { onMounted, ref, h } from 'vue';
 import { SettingOutlined, EditOutlined, EllipsisOutlined } from '@ant-design/icons-vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
+import { LoginInfo } from '../store/login';
+const info = LoginInfo();
+const { isLogin, loginInfo, IsLogin, getLoginInfo, } = info;
 
 const serviceKey = 'YmLOCrrmdh8DGzVmGbT0Xu9jfrsXGgdJ6GsHZ%2FDGzKW82R5KrnlJU0dar8fqQ0nYXpb9fjuYjDQx1QuSigbTkw%3D%3D';
 const areaUrl =
@@ -206,13 +209,22 @@ function displayMarker() {
       var addBtn = document.createElement('button');
       addBtn.appendChild(document.createTextNode('찜'));
 
-      addBtn.onclick = function () {
-        //찜 누름
-        selectspot.value.push(positions[i]);
-          console.log(positions[i].latlng);
-          let url = `/api/addscore?content_id=${positions[i].content_id}`;
-          axios.get(url).then(response => console.log(response)).catch(error => console.log(error));
-          overlay.setMap(null);
+        addBtn.onclick = function () {
+            //찜 누름
+            selectspot.value.push(positions[i]);
+            console.log(positions[i].latlng);
+            let url = `/api/addscore?content_id=${positions[i].content_id}`;
+            axios.get(url).then(response => console.log(response)).catch(error => console.log(error));
+
+            if (getLoginInfo.userid != null) {
+                let url2 = '/api/wishinsert';
+                axios.post(url2, {
+                    userid: getLoginInfo.userid,
+                    contentid: positions[i].content_id
+                }).then(response => console.log(response)).catch(error => console.log(error))
+            }
+          
+        overlay.setMap(null);
       };
 
       let content = document.createElement('div');
@@ -262,7 +274,14 @@ function displayMarker() {
       
 
       kakao.maps.event.addListener(markerobject, 'click', function () {
-        overlay.setMap(map);
+          overlay.setMap(map);
+          if (getLoginInfo.userid != null) {
+              let url = '/api/historyinsert';
+              axios.post(url, {
+                  userid: getLoginInfo.userid,
+                  contentid: positions[i].content_id
+              }).then(response => console.log(response)).catch(error => console.log(error))
+          }
       });
 
       overlays.value.push(overlay);
@@ -323,10 +342,16 @@ const coursedelete = (index) => {
     selectcourse.value.splice(index, 1);
 }
 
+const polyline = ref();
+
 const coursesave = () => {
     let course = [];
     selectcourse.value.forEach((attr) => {
-        course.push(attr.content_id);
+        let c = {
+            content_id: attr.content_id,
+            userid: getLoginInfo.userid
+        };
+        course.push(c);
     });
     console.log(course);
     let url = '/api/courseinsert';
@@ -334,8 +359,103 @@ const coursesave = () => {
         headers: {
             "Content-Type": "application/json",
         }, dto: JSON.stringify(course)
-    }).then(response => console.log(response)).catch(error => console.log(error));
+    }).then(response => {
+        if (response.data.resdata == 1) {
+            alert("여행 계획을 저장했습니다. 해당 계획을 지도에 출력합니다.");
+        }
+    }).catch(error => console.log(error));
+
+    let mobility = 'https://apis-navi.kakaomobility.com/v1/waypoints/directions';
+    let key = '935d83ed14edef82a34131e921e9f2bd';
+
+    let waypoints = [];
+    console.log(selectcourse.value);
+
+    for (let i = 1; i < selectcourse.value.length - 1; i++) {
+        let way = {
+            "name": selectcourse.value[i].title,
+            "x": selectcourse.value[i].latlng.La,
+            "y": selectcourse.value[i].latlng.Ma
+        }
+        waypoints.push(way);
+    }
+
+    console.log(waypoints);
+
+    axios.post(mobility, {
+        "origin": {
+            "name": selectcourse.value[0].title,
+            "x": selectcourse.value[0].latlng.La,
+            "y": selectcourse.value[0].latlng.Ma
+        },
+        "destination": {
+            "name":selectcourse.value[selectcourse.value.length-1].title,
+            "x": selectcourse.value[selectcourse.value.length-1].latlng.La,
+            "y": selectcourse.value[selectcourse.value.length-1].latlng.Ma
+        },
+        "waypoints": waypoints,
+        "priority": "RECOMMEND",
+        "car_fuel": "GASOLINE",
+        "car_hipass": false,
+        "alternatives": false,
+        "road_details": false
+    }, {
+        headers: {
+            "Content-Type": 'application/json',
+            "Authorization": `KakaoAK ${key}`
+        }
+    }).then(response => {
+        if (polyline.value != null) {
+            polyline.value.setMap(null);
+        }
+        markers.value.forEach((marker) => {
+            marker.setMap(null);
+        });
+
+        console.log("마커", markers.value[0]);
+
+        for (let i = 0; i < selectcourse.value.length; i++) {
+            for (let j = 0; j < markers.value.length; j++) {
+                if (selectcourse.value[i].title == markers.value[j].Gb) {
+                    markers.value[j].setMap(map);
+                    break;
+                }
+            }
+        }
+
+        var sections = response.data.routes[0].sections;
+        console.log(response.data.routes[0].sections[0].roads);
+        var linepath = [];
+
+        sections.forEach(roads => {
+            roads.roads.forEach((road) => {
+                for (let i = 0; i < road.vertexes.length; i += 2) {
+                    linepath.push(new kakao.maps.LatLng(road.vertexes[i + 1], road.vertexes[i]));
+                }
+            })
+        })
+        
+        console.log(linepath);
+
+        // 지도에 표시할 선을 생성합니다
+        polyline.value = new kakao.maps.Polyline({
+            path: linepath, // 선을 구성하는 좌표배열 입니다
+            strokeWeight: 5, // 선의 두께 입니다
+            strokeColor: '#000000', // 선의 색깔입니다
+            strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+            strokeStyle: 'solid' // 선의 스타일입니다
+        });
+
+        // 지도에 선을 표시합니다 
+        polyline.value.setMap(map); 
+    });
+
+    
+
+        
 }
+
+
 </script>
 
 <template>
@@ -394,7 +514,7 @@ const coursesave = () => {
         </form>
 
         <!-- kakao map -->
-        <div class="container">
+        <div>
             <!-- kakao map start -->
             <div ref="mapContainer" style="width: 100%; height: 700px"></div>
             <!-- kakao map end -->
