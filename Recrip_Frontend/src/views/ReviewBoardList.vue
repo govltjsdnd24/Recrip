@@ -52,7 +52,7 @@ const getReviews= function() {
 
 const param = ref({
     pgno: currentpage.value,
-    spp: VITE_ARTICLE_LIST_SIZE,
+    spp: 9,
     key: '',
     word: '',
     table: 'reviewboard',

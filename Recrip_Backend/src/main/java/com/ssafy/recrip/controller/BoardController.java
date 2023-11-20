@@ -54,7 +54,7 @@ public class BoardController {
 		Map<String, Object> map = new HashMap<>();
 		
 		try {
-			int dupl=service.freeBoardLikeCheck(articleno);
+			int dupl=service.freeBoardLikeCheck(articleno,userid);
 			if(dupl==0) {
 				service.freeBoardLike(articleno);
 				service.freeBoardLikeAdd(articleno,userid);
@@ -78,7 +78,7 @@ public class BoardController {
 		Map<String, Object> map = new HashMap<>();
 		
 		try {
-			int dupl=service.reviewBoardLikeCheck(articleno);
+			int dupl=service.reviewBoardLikeCheck(articleno,userid);
 			if (dupl==0) {
 				service.reviewBoardLike(articleno);
 				service.reviewBoardLikeAdd(articleno,userid);
@@ -90,6 +90,22 @@ public class BoardController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			map.put("resmsg", "입력실패");
+			map.put("resdata", "0");
+		}
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		return res;
+	}
+	
+	@GetMapping("/reviewboardmostlikes")
+	public ResponseEntity<Map<String, Object>> reviewboardmostlikes() throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			List<BoardDto> dtoList=service.reviewBoardMostLikes();
+			map.put("resmsg",dtoList);
+			map.put("resdata", "1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회실패");
 			map.put("resdata", "0");
 		}
 		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
@@ -470,9 +486,9 @@ public class BoardController {
 	@GetMapping("/reviewboardfilelist")
 	public ResponseEntity<Map<String, Object>> reviewboardfilelist(String articleno) throws Exception {
 		Map<String, Object> map = new HashMap<>();
+		System.out.println("here");
 		try {
 			List<FileDto> list = service.reviewBoardFileList(articleno);
-			//System.out.println(list);
 			map.put("resdata", list);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {

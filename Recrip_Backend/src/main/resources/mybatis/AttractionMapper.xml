@@ -17,6 +17,10 @@
 		</if>
 	</select>
 	
+	<select id="attrRankList"  resultType="attractionDto">
+		select * from attraction_info ORDER BY rating DESC LIMIT 6;
+	</select>
+	
 	<select id="listSido"  resultType="sidoDto">
 		select sido_code, sido_name
 		from sido;

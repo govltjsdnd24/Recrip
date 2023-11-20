@@ -100,6 +100,7 @@ const changeKey = (val) => {
                                 <th scope="col">제목</th>
                                 <th scope="col">작성자</th>
                                 <th scope="col">조회수</th>
+                                <th scope="col">추천수</th>
                                 <th scope="col">작성일</th>
                             </tr>
                         </thead>

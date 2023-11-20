@@ -15,6 +15,7 @@ const article = ref({});
 const comments = ref([{}]);
 const files = ref([{}]);
 const comment = ref('');
+const likecount = ref(0);
 
 onBeforeMount(() => {
     userinfo.value = getLoginInfo;
@@ -51,8 +52,40 @@ onBeforeMount(() => {
         console.log(error);
     });
 
-    console.log(comments.value);
+    var likeurl = `/api/reviewboardlikecount?articleno=${articleno}`;
+    getLikes(likeurl);
 });
+
+async function getLikes(url) {
+    const response = await axios.get(url);
+    likecount.value = response.data.resmsg;
+}
+
+const likeBoard = () => {
+    var url = `/api/reviewboardlike?articleno=${articleno}&userid=${getLoginInfo.userid}`;
+    var likeurl = `/api/reviewboardlikecount?articleno=${articleno}`;
+
+    async function getArticle(url) {
+        const response = await axios.get(url);
+        if(getLoginInfo.userid==null) {
+            alert("좋아요를 누르시려면 우선 로그인이 되어있어야 합니다.")
+        } else if (response.data.resmsg == '입력성공') {
+            if(alert('해당 게시물이 좋아요 처리 되었습니다.')){}
+            else{
+                getLikes(likeurl);
+                router.go(0);
+            }
+        } else if (response.data.resmsg == '중복확인') alert('이미 해당 게시물에 좋아요를 하셨습니다.');
+        else
+            alert('좋아요 실패');
+    }
+    getArticle(url).catch((error) => {
+        alert('좋아요 실패');
+        console.log(error);
+    });
+    getLikes(likeurl);
+    router.push(0);
+};
 
 const DeleteBoard = () => {
     var url = `/api/reviewboarddelete?articleno=${articleno}`;
@@ -137,6 +170,7 @@ const CommentDelete = (commentno) => {
                                     class="avatar me-2 float-md-start bg-light p-2"
                                     src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"
                                 />
+                                <p> 조회: {{ article.hit }} &nbsp; 추천: {{ article.likes }}</p>
                                 <p>
                                     <span class="fw-bold" id="user">{{ article.userid }}</span> <br />
                                     <span class="text-secondary fw-light" id="date"> {{ article.date }} </span>
@@ -158,6 +192,14 @@ const CommentDelete = (commentno) => {
                         <br />
                         <div v-for="file in files" :key="file.filename">
                             <img :src="file.url" style="max-width: 500px;"/>
+                        </div>
+                        <div class="d-flex justify-content-end mb-2 mr-2">
+                            좋아요 &nbsp;
+                            <img
+                                src="@/assets/images/heart.png"
+                                style="width: 30px; cursor: pointer"
+                                @click="likeBoard"
+                            />
                         </div>
                         <div class="d-flex justify-content-end">
                             <router-link to="/reviewboardlist">
@@ -203,9 +245,9 @@ const CommentDelete = (commentno) => {
                         <li class="list-group-item" v-for="comment in comments" :key="comment.commentno">
                             <div class="media mt-3 mb-3">
                                 <div class="media-body">
-                                    <h3 class="mt-0">{{ comment.userid }}</h3>
-                                    <h4>{{ comment.content }}</h4>
-                                    <h5>{{ comment.registdate }}</h5>
+                                    <h5 class="mt-0">{{ comment.userid }}</h5>
+                                    <p>{{ comment.content }}</p>
+                                    <p>{{ comment.registdate }}</p>
                                 </div>
                             </div>
                             <!-- <c:if test="${userinfo.userid eq comment.userid }"> -->

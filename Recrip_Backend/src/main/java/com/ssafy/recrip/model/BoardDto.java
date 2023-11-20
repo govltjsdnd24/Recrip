@@ -16,6 +16,7 @@ public class BoardDto {
 	String content;
 	String registdate;
 	String hit;
+	String likes;
 	boolean isdelete;
 	String starscore;
 	String contentid;

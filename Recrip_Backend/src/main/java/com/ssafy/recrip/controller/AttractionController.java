@@ -63,6 +63,28 @@ public class AttractionController {
 		return res;
 	}
 	
+	@GetMapping("/attrranklist")
+	public ResponseEntity<Map<String, Object>> attrranklist() throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			List<AttractionDto> result = service.attrRankList();
+			if(result != null) {
+				map.put("resdata", result);
+				map.put("resmsg", "조회 성공");
+			} else {
+				map.put("resdata", "0");
+				map.put("resmsg", "조회 실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
 	
 	@GetMapping("/restattrsido")
 	public ResponseEntity<Map<String,Object>> restattrsido () {

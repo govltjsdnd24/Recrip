@@ -35,7 +35,10 @@ onBeforeMount(() => {
             </template>
             <p><a-rate :value="article.starscore/10" allow-half disabled/></p>
             <a-card-meta :title=subject>
-                <template #description>{{article.registdate}}</template>
+                <template #description>
+                    <p>조회수: {{ article.hit }} &nbsp; 추천수: {{ article.likes }}</p>
+                    <p>{{article.registdate}}</p>  
+                </template>
             </a-card-meta>
         </a-card>
     </router-link>
@@ -45,5 +48,8 @@ onBeforeMount(() => {
 <style scoped>
 a {
   text-decoration: none;
+}
+p {
+  margin:0px;
 }
 </style>

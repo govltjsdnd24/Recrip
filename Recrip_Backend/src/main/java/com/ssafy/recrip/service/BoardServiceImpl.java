@@ -204,8 +204,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int freeBoardLikeCheck(String articleno) {
-		Integer result=session.getMapper(BoardMapper.class).freeBoardLikeCheck(articleno);
+	public int freeBoardLikeCheck(String articleno,String userid) {
+		Integer result=session.getMapper(BoardMapper.class).freeBoardLikeCheck(articleno,userid);
 		return result!=null?result.intValue():0;
 	}
 
@@ -215,8 +215,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int reviewBoardLikeCheck(String articleno) {
-		Integer result=session.getMapper(BoardMapper.class).reviewBoardLikeCheck(articleno);
+	public int reviewBoardLikeCheck(String articleno,String userid) {
+		Integer result=session.getMapper(BoardMapper.class).reviewBoardLikeCheck(articleno,userid);
 		return result!=null?result.intValue():0;
 	}
 
@@ -243,6 +243,11 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int reviewBoardLikeCount(String articleno) {
 		return session.getMapper(BoardMapper.class).reviewBoardLikeCount(articleno);
+	}
+
+	@Override
+	public List<BoardDto> reviewBoardMostLikes() {
+		return session.getMapper(BoardMapper.class).reviewBoardMostLikes();
 	}
 	
 }

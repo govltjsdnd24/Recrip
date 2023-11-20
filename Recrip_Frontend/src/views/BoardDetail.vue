@@ -53,13 +53,6 @@ onBeforeMount(() => {
     });
 
     var likeurl = `/api/freeboardlikecount?articleno=${articleno}`;
-    // async function getLikes(likeurl) {
-    //     const response = await axios.get(likeurl);
-    //     likecount.value = response.data.resmsg;
-    // }
-    // getLikes(likeurl).catch((error) => {
-    //     console.log(error);
-    // });
     getLikes(likeurl);
 });
 
@@ -74,16 +67,24 @@ const likeBoard = () => {
 
     async function getArticle(url) {
         const response = await axios.get(url);
-        if (response.data.resmsg == '입력성공') {
-            alert('해당 게시물이 좋아요 처리 되었습니다.');
+        if(getLoginInfo.userid==null) {
+            alert("좋아요를 누르시려면 우선 로그인이 되어있어야 합니다.")
+        } else if (response.data.resmsg == '입력성공') {
+            if(alert('해당 게시물이 좋아요 처리 되었습니다.')){}
+            else{
+                getLikes(likeurl);
+                router.go(0);
+            }
         } else if (response.data.resmsg == '중복확인') alert('이미 해당 게시물에 좋아요를 하셨습니다.');
-        else alert('좋아요 실패');
+        else
+            alert('좋아요 실패');
     }
     getArticle(url).catch((error) => {
         alert('좋아요 실패');
         console.log(error);
     });
     getLikes(likeurl);
+    router.push(0);
 };
 
 const DeleteBoard = () => {
@@ -159,7 +160,7 @@ const CommentDelete = (commentno) => {
                                     <span class="fw-bold" id="user">{{ article.userid }}</span> <br />
                                     <span class="text-secondary fw-light" id="date"> {{ article.date }} </span>
                                 </p>
-                                <p class="" style="text-align: start">좋아요: {{ likecount }}</p>
+                                <p class="" style="text-align: start">조회: {{article.hit}} &nbsp; 추천: {{ likecount }}</p>
                             </div>
                         </div>
 

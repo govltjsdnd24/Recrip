@@ -70,4 +70,9 @@ public class AttractionServiceImpl implements AttractionService {
 		
 		return session.getMapper(AttractionMapper.class).addrating(map);
 	}
+
+	@Override
+	public List<AttractionDto> attrRankList() {
+		return session.getMapper(AttractionMapper.class).attrRankList();
+	}
 }

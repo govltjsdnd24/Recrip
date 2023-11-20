@@ -1,16 +1,58 @@
 <script setup>
-import { onMounted, onBeforeUnmount,ref } from 'vue';
+import { onBeforeMount, onMounted,onBeforeUnmount,ref } from 'vue';
 import axios from 'axios';
 import cheerio from "cheerio";
 
 var index = 0;
 var timer = setInterval(displayImages, 4000);
 const crawlings = ref([{}]);
+var attrRank=ref([]);
+var reviewList=ref([]);
+var reviewPics=ref([]);
 
-onMounted(() => {
-    displayImages();
+onBeforeMount(() => {
     getNews();
+    getAttrRank();
+    getReviewMostLikes();
+    getReviewPictures();
 });
+onMounted(()=>{
+    displayImages();
+})
+
+function getReviewMostLikes(){
+    var url = '/api/reviewboardmostlikes';
+    async function reviewLikes(url) {
+        const response = await axios.get(url);
+        reviewList.value=response.data.resmsg;
+    }
+    reviewLikes(url).catch((error) => {
+        console.log(error);
+    });
+}
+
+function getReviewPictures(){
+    for (let index = 0; index < reviewList.value.length; index++) {
+            let url=`/api/reviewboardfilelist?articleno=${reviewList.value[index].articleno}`;
+            axios.get(url)
+            .then((response)=>{
+                reviewPics.value[index]=response.data.resdata[0].url;
+            }).catch((error)=>{
+                console.log(error);
+            })
+        }
+}
+
+function getAttrRank(){
+    var url = '/api/attrranklist';
+    async function rankList(url) {
+        const response = await axios.get(url);
+        attrRank.value=response.data.resdata;
+    }
+    rankList(url).catch((error) => {
+        console.log(error);
+    });
+}
 
 function displayImages() {
     let i;
@@ -27,12 +69,9 @@ function displayImages() {
 
 function getNews() {
     axios.get('/test').then(response => {
-        //console.log(response.request.response)
         const data = response.request.response;
         const $ = cheerio.load(data);
-        //console.log(data);
         const result = $(".card_group > li > figure").toArray();
-        //console.log(result);
         for (let index = 5; index < 14; index++) {
             let row = {
                 href: result[index].children[1].attribs.href,
@@ -90,101 +129,116 @@ onBeforeUnmount(() => {
             <div class="sidebar">
                 <div class="divider"></div>
                 <div class="love">
-                    <p>지역사랑!</p>
-                    <h2>우리 지역 관광지</h2>
-                    <p>우리지역의 숨어있는 아름다운 관광지를 알려드립니다.</p>
+                    <p></p>
+                    <h2>관광지 랭킹</h2>
+                    <p>지금 가장 핫한 관광지를 소개합니다!</p>
                     <p>관광지 주변의 맛집, 숙박업소와 여행코스, 지역 축제등을 보실수도 있습니다.</p>
                 </div>
                 <div style="height: 16px"></div>
-                <button class="custom-button">더보기..</button>
             </div>
             <div class="box wrapper2">
                 <div class="main-image-container">
                     <div
                         class="center-grid-image"
-                        style="background-image: url(http://tong.visitkorea.or.kr/cms/resource/25/2747925_image2_1.JPG)"
+                        :style="{ backgroundImage: `url(${attrRank[0].first_image})` }"
                     ></div>
-                    <p>멋 진</p>
+                    <p> 1위: {{ attrRank[0].title}}</p>
                 </div>
                 <div class="main-image-container">
                     <div
                         class="center-grid-image"
-                        style="background-image: url(http://tong.visitkorea.or.kr/cms/resource/62/1588262_image2_1.jpg)"
+                        :style="{ backgroundImage: `url(${attrRank[1].first_image})` }"
                     ></div>
-                    <p>곳으로</p>
+                    <p>2위: {{ attrRank[1].title}}</p>
                 </div>
                 <div class="main-image-container">
                     <div
                         class="center-grid-image"
-                        style="background-image: url(http://tong.visitkorea.or.kr/cms/resource/87/2782287_image2_1.jpg)"
+                        :style="{ backgroundImage: `url(${attrRank[2].first_image})` }"
                     ></div>
-                    <p>놀 러</p>
+                    <p>3위: {{ attrRank[2].title}}</p>
                 </div>
                 <div class="main-image-container">
                     <div
                         class="center-grid-image"
-                        style="background-image: url(http://tong.visitkorea.or.kr/cms/resource/91/1944891_image2_1.jpg)"
+                        :style="{ backgroundImage: `url(${attrRank[3].first_image})` }"
                     ></div>
-                    <p>가보자</p>
+                    <p>4위: {{ attrRank[3].title}}</p>
                 </div>
                 <div class="main-image-container">
                     <div
                         class="center-grid-image"
-                        style="background-image: url(http://tong.visitkorea.or.kr/cms/resource/86/2762786_image2_1.JPG)"
+                        :style="{ backgroundImage: `url(${attrRank[4].first_image})` }"
                     ></div>
-                    <p>야</p>
+                    <p>5위: {{ attrRank[4].title}}</p>
                 </div>
                 <div class="main-image-container">
                     <div
                         class="center-grid-image"
-                        style="background-image: url(http://tong.visitkorea.or.kr/cms/resource/96/2705196_image2_1.jpg)"
+                        :style="{ backgroundImage: `url(${attrRank[5].first_image})` }"
                     ></div>
-                    <p>호</p>
+                    <p>6위: {{ attrRank[5].title}}</p>
                 </div>
             </div>
         </div>
         <div class="divider-container" style="background-color: #ffffff">
             <div class="divider"></div>
-            <h2>나만의 여행 계획!!!</h2>
-            <h3>여행 경로, 숙박, 광광지, 예상금액등 나만의 멋진 계획을 세워 공유해 주세요!!!</h3>
+            <h2>인기 리뷰</h2>
+            <h3>제일 핫한 후기들을 둘러보세요!</h3>
         </div>
         <div class="plan-wrapper">
+            <router-link
+                :to="{ name: 'ReviewBoardView', params: { articleno: reviewList[0].articleno } }"
+                class="article-title link-dark"
+                style="text-decoration: none;"
+            >
             <div class="card">
-                <img src="@/assets/images/maps/map1.png" alt="Avatar" style="width: 100%" />
+                <img :src=reviewPics[0] alt="Avatar" style="width: 100%" />
                 <div class="card-info">
-                    <h4>
-                        <b>플랜 A</b>
-                    </h4>
-                    <p>즐거운 여행</p>
+                    <h4>{{ reviewList[0].subject }} </h4>
+                    <p>추천수: {{ reviewList[0].likes }}</p>
                 </div>
             </div>
+            </router-link>
+            <router-link
+                :to="{ name: 'ReviewBoardView', params: { articleno: reviewList[1].articleno } }"
+                class="article-title link-dark"
+                style="text-decoration: none;"
+            >
             <div class="card">
-                <img src="@/assets/images/maps/map2.png" alt="Avatar" style="width: 100%" />
+                <img :src=reviewPics[1] alt="Avatar" style="width: 100%" />
                 <div class="card-info">
-                    <h4>
-                        <b>플랜 B</b>
-                    </h4>
-                    <p>즐거운 여행</p>
+                    <h4>{{ reviewList[1].subject }} </h4>
+                    <p>추천수: {{ reviewList[1].likes }}</p>
                 </div>
             </div>
+            </router-link>
+            <router-link
+                :to="{ name: 'ReviewBoardView', params: { articleno: reviewList[2].articleno } }"
+                class="article-title link-dark"
+                style="text-decoration: none;"
+            >
             <div class="card">
-                <img src="@/assets/images/maps/map3.png" alt="Avatar" style="width: 100%" />
+                <img :src=reviewPics[2] alt="Avatar" style="width: 100%" />
                 <div class="card-info">
-                    <h4>
-                        <b>플랜 C</b>
-                    </h4>
-                    <p>즐거운 여행</p>
+                    <h4>{{ reviewList[2].subject }} </h4>
+                    <p>추천수: {{ reviewList[2].likes }}</p>
                 </div>
             </div>
+            </router-link>
+            <router-link
+                :to="{ name: 'ReviewBoardView', params: { articleno: reviewList[3].articleno } }"
+                class="article-title link-dark"
+                style="text-decoration: none;"
+            >
             <div class="card">
-                <img src="@/assets/images/maps/map4.png" alt="Avatar" style="width: 100%" />
+                <img :src=reviewPics[3] alt="Avatar" style="width: 100%" />
                 <div class="card-info">
-                    <h4>
-                        <b>플랜 D</b>
-                    </h4>
-                    <p>즐거운 여행</p>
+                    <h4>{{ reviewList[3].subject }} </h4>
+                    <p>추천수: {{ reviewList[3].likes }}</p>
                 </div>
             </div>
+            </router-link>
         </div>
         <div class="divider-container">
             <div class="divider"></div>
@@ -192,7 +246,7 @@ onBeforeUnmount(() => {
         </div>
         <div class="place-wrapper" > 
             <template v-for="(data, index) in crawlings" :key="data.href">
-                <a-card hoverable v-if="index != 0" class="place-card">    
+                <a-card hoverable v-if="index != 0 && index<10" class="place-card">    
                     <template #cover>
                         <a :href="data.href" target="_blank">
                             <img

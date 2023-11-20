@@ -36,13 +36,14 @@ public interface BoardService {
 	void addscore(String contentid, String starscore);
 	int freeBoardHit(String articleno);
 	int reviewBoardHit(String articleno);
-	int freeBoardLikeCheck(String articleno);
+	int freeBoardLikeCheck(String articleno, String userid);
 	int freeBoardLike(String articleno);
-	int reviewBoardLikeCheck(String articleno);
+	int reviewBoardLikeCheck(String articleno,String userid);
 	int reviewBoardLike(String articleno);
 	int freeBoardLikeAdd(String articleno, String userid);
 	int reviewBoardLikeAdd(String articleno, String userid);
 	int freeBoardLikeCount(String articleno);
 	int reviewBoardLikeCount(String articleno);
+	List<BoardDto> reviewBoardMostLikes();
 	
 }
