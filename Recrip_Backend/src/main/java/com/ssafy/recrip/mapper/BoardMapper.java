@@ -37,4 +37,14 @@ public interface BoardMapper {
 	int reviewBoardLastArticleno();
 	Map<String, Object> findscore(String content_id);
 	int addscore(Map<String,String> param);
+	int freeBoardHit(String articleno);
+	int reviewBoardHit(String articleno);
+	Integer freeBoardLikeCheck(String articleno);
+	int freeBoardLike(String articleno);
+	Integer reviewBoardLikeCheck(String articleno);
+	int reviewBoardLike(String articleno);
+	int freeBoardLikeAdd(String articleno, String userid);
+	int reviewBoardLikeAdd(String articleno, String userid);
+	int freeBoardLikeCount(String articleno);
+	int reviewBoardLikeCount(String articleno);
 }

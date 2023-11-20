@@ -58,8 +58,48 @@
   	</update>
   	
   	<select id="freeBoardView" parameterType="string" resultType="boardDto">
-  		select * from freeboard where isdelete = false and articleno = #{articleno}
+  		select * from freeboard where isdelete = false and articleno = #{articleno};
   	</select>
+  	
+  	<update id="freeBoardHit" parameterType="string">
+  		UPDATE freeboard SET hit=hit+1 where isdelete = false and articleno = #{articleno};
+  	</update>
+  	
+  	<update id="reviewBoardHit" parameterType="string">
+  		UPDATE reviewboard SET hit=hit+1 where isdelete = false and articleno = #{articleno};
+  	</update>
+  	
+  	<select id="freeBoardLikeCheck" parameterType="string" resultType="int">
+  		select COUNT(userid) from freeboardlikes where articleno = #{articleno};
+  	</select>
+  	
+  	<select id="freeBoardLikeCount" parameterType="string" resultType="int">
+  		select likes from freeboard where articleno = #{articleno};
+  	</select>
+  	
+  	<select id="reviewBoardLikeCount" parameterType="string" resultType="int">
+  		select likes from reviewboard where articleno = #{articleno};
+  	</select>
+  	
+  	<select id="reviewBoardLikeCheck" parameterType="string" resultType="int">
+  		select COUNT(userid) from reviewboardlikes where articleno = #{articleno};
+  	</select>
+  	
+  	<update id="freeBoardLike" parameterType="string">
+  		UPDATE freeboard SET likes=likes+1 where isdelete = false and articleno = #{articleno};
+  	</update>
+  	
+  	<update id="reviewBoardLike" parameterType="string">
+  		UPDATE reviewboard SET likes=likes+1 where isdelete = false and articleno = #{articleno};
+  	</update>
+  	
+  	<insert id="freeBoardLikeAdd" parameterType="string">
+  		insert into freeboardlikes (articleno, userid) VALUES(${articleno},'${userid}');
+  	</insert>
+  	
+  	<insert id="reviewBoardLikeAdd" parameterType="string">
+  		insert into reviewboardlikes (articleno, userid) VALUES(${articleno},'${userid}');
+  	</insert>
   	
   	<select id="reviewBoardView" parameterType="string" resultType="boardDto">
   		select * from reviewboard where isdelete = false and articleno = #{articleno}

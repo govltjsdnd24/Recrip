@@ -44,6 +44,8 @@ const sendmessage = () => {
         });
         if (response.data.resmsg == '등록 오류 발생') {
             alert('해당 아이디가 존재하지 않습니다.');
+        } else {
+            alert('쪽지가 전송되었습니다.');
         }
         messages.value = response.data.resdata.list;
         content.value = '';
@@ -80,9 +82,11 @@ async function deleteMessage(messageno) {
     getTodo(url).catch((error) => {
         console.log(error);
     });
-    modalOff('.modal-list');
-    await message_list();
+
+    await getMessageList();
     alert('메시지가 삭제되었습니다');
+    modalOff('.modal-list');
+    message_list();
 }
 
 const login_userid = ref('');

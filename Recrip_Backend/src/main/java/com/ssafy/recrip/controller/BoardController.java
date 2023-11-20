@@ -48,6 +48,88 @@ public class BoardController {
 		this.service = service;
 		this.s3service = s3service;
 	}
+	
+	@GetMapping("/freeboardlike")
+	public ResponseEntity<Map<String, Object>> freeboardlike(@RequestParam String articleno, @RequestParam String userid) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		
+		try {
+			int dupl=service.freeBoardLikeCheck(articleno);
+			if(dupl==0) {
+				service.freeBoardLike(articleno);
+				service.freeBoardLikeAdd(articleno,userid);
+				map.put("resmsg", "입력성공");
+			}
+			else if(dupl==1)
+				map.put("resmsg","중복확인");
+			
+			map.put("resdata", "1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "입력실패");
+			map.put("resdata", "0");
+		}
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		return res;
+	}
+	
+	@GetMapping("/reviewboardlike")
+	public ResponseEntity<Map<String, Object>> reviewboardlike(@RequestParam String articleno,@RequestParam String userid) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		
+		try {
+			int dupl=service.reviewBoardLikeCheck(articleno);
+			if (dupl==0) {
+				service.reviewBoardLike(articleno);
+				service.reviewBoardLikeAdd(articleno,userid);
+				map.put("resmsg", "입력성공");
+			}
+			else 
+				map.put("resmsg","중복확인");
+			map.put("resdata", "1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "입력실패");
+			map.put("resdata", "0");
+		}
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		return res;
+	}
+	
+	@GetMapping("/freeboardlikecount")
+	public ResponseEntity<Map<String, Object>> freeboardlikecount(@RequestParam String articleno) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		
+		try {
+			int result=service.freeBoardLikeCount(articleno);
+			System.out.println("RESULT: "+result);
+			map.put("resmsg", result);
+			map.put("resdata", "1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "입력실패");
+			map.put("resdata", "0");
+		}
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		return res;
+	}
+	
+	@GetMapping("/reviewboardlikecount")
+	public ResponseEntity<Map<String, Object>> reviewboardlikecount(@RequestParam String articleno) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		
+		try {
+			int result=service.reviewBoardLikeCount(articleno);
+			map.put("resmsg", result);
+			map.put("resdata", "1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "입력실패");
+			map.put("resdata", "0");
+		}
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		return res;
+	}
 
 	@PostMapping("/freeboardwrite")
 	public ResponseEntity<Map<String, Object>> freeboardwrite(@RequestParam String userid , @RequestParam String subject, @RequestParam String content, @RequestParam(required = false) List<MultipartFile> multipartFile) throws IllegalStateException, IOException, SQLException {
@@ -147,6 +229,7 @@ public class BoardController {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			BoardDto dto = service.freeBoardView(articleno);
+			service.freeBoardHit(articleno);
 			map.put("resdata", dto);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {
@@ -166,6 +249,7 @@ public class BoardController {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			BoardDto dto = service.reviewBoardView(articleno);
+			service.reviewBoardHit(articleno);
 			map.put("resdata", dto);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {
