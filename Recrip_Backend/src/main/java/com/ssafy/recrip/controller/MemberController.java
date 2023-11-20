@@ -472,9 +472,7 @@ public class MemberController {
 	public ResponseEntity<Map<String, Object>> messagelist(@RequestParam String userid) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			System.out.println(userid);
 			List<MessageDto> list = service.messageList(userid);
-			System.out.println("LIST: "+list);
 			if(list.size()>0) {
 				map.put("resmsg", list);
 				map.put("resdata", "1");
@@ -519,6 +517,7 @@ public class MemberController {
 	public ResponseEntity<Map<String, Object>> messagedelete(String messageno) throws SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
+			System.out.println("MESS: "+messageno);
 			int result = service.messagedelete(messageno);
 			if(result != 0) {
 				map.put("resdata", "1");

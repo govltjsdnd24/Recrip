@@ -10,7 +10,7 @@ const $ = (query) => document.querySelector(query);
 
 //const userInfo = ref(JSON.parse(sessionStorage.getItem('userInfo')));
 const userInfo = ref(getLoginInfo);
-const messages=ref();
+const messages = ref();
 
 onMounted(() => {
     if (isLogin != false) {
@@ -22,25 +22,33 @@ onMounted(() => {
             modified_pwd.value = userInfo.value.userpwd;
         }
     }
-    
 });
 
-const message_list=() =>{
-    
+const message_list = () => {
     getMessageList();
     modalOn('.modal-list');
-}
+};
 
-const toid=ref('');
-const subject=ref('');
-const content=ref('');
+const toid = ref('');
+const subject = ref('');
+const content = ref('');
 
 const sendmessage = () => {
     var url = '/api/messageinsert';
     async function getTodo(url) {
-        const response = await axios.post(url, {fromid:userInfo.value.userid, toid: toid.value, subject: subject.value, content: content.value});
-        console.log(response);
+        const response = await axios.post(url, {
+            fromid: userInfo.value.userid,
+            toid: toid.value,
+            subject: subject.value,
+            content: content.value,
+        });
+        if (response.data.resmsg == '등록 오류 발생') {
+            alert('해당 아이디가 존재하지 않습니다.');
+        }
         messages.value = response.data.resdata.list;
+        content.value = '';
+        toid.value = '';
+        subject.value = '';
     }
     getTodo(url).catch((error) => {
         console.log(error);
@@ -48,22 +56,34 @@ const sendmessage = () => {
     modalOff('.modal-message');
 };
 
-
-
 const getMessageList = () => {
     var url = '/api/messagelist';
-    const param=ref(userInfo.value.userid);
-    
+    const param = ref(userInfo.value.userid);
+
     async function getTodo(url) {
-        const response = await axios.get(url, { params: {userid:param.value} });
-        
-        console.log( response.data.resmsg);
+        const response = await axios.get(url, { params: { userid: param.value } });
+
         messages.value = response.data.resmsg;
     }
     getTodo(url).catch((error) => {
         console.log(error);
     });
 };
+
+async function deleteMessage(messageno) {
+    var url = '/api/messagedelete';
+
+    async function getTodo(url) {
+        const response = await axios.delete(url, { params: { messageno: messageno } });
+        messages.value = response.data.resmsg;
+    }
+    getTodo(url).catch((error) => {
+        console.log(error);
+    });
+    modalOff('.modal-list');
+    await message_list();
+    alert('메시지가 삭제되었습니다');
+}
 
 const login_userid = ref('');
 const login_userpwd = ref('');
@@ -118,9 +138,7 @@ function signup() {
     multipartFile.append('username', signup_name.value);
     multipartFile.append('userpwd', signup_pwd.value);
     axios
-        .post('/api/restmeminsert', multipartFile,
-                { headers: { 'Content-Type': 'multipart/form-data' } }
-        )
+        .post('/api/restmeminsert', multipartFile, { headers: { 'Content-Type': 'multipart/form-data' } })
         .then((response) => {
             if (response.data.resdata == 1) {
                 modalOff('.modal-signin');
@@ -144,11 +162,7 @@ function modify() {
     multipartFile.append('username', modified_name.value);
     multipartFile.append('userpwd', modified_pwd.value);
     axios
-        .put(
-            '/api/restmemupdate',
-            multipartFile,
-            { headers: { 'Content-Type': 'multipart/form-data' } }
-        )
+        .put('/api/restmemupdate', multipartFile, { headers: { 'Content-Type': 'multipart/form-data' } })
         .then((response) => {
             if (response.data.resdata == 1) {
                 modified_profile.value = response.data.profile;
@@ -199,8 +213,11 @@ function modalOff(className) {
     targetModal.style.display = 'none';
 }
 
+function modalReload(className) {
+    const targetModal = $(className);
+}
+
 const clickcancel = (target) => {
-    console.log(target);
     defaultPrevented();
     const targetModal = target.parentNode.parentNode.parentNode.parentNode;
     targetModal.style.display = 'none';
@@ -218,7 +235,6 @@ const clickuser = () => {
 const file = ref();
 const filechange = (e) => {
     file.value = e.target.files;
-    console.log('FILE', file.value);
 };
 </script>
 
@@ -238,7 +254,7 @@ const filechange = (e) => {
                     </router-link>
 
                     <!-- nav menus -->
-                    
+
                     <nav class="header-nav">
                         <ul class="flex">
                             <li class="gap">
@@ -268,18 +284,28 @@ const filechange = (e) => {
                         </ul>
                     </nav>
                 </div>
-                
+
                 <!-- auth menus (dropdown) -->
                 <nav>
                     <div style="display: flex; align-items: center">
                         <div v-if="isLogin != false">
-                            <span> 
-                            <img class="header-users-img" src="@/assets/images/nav/write_message.png" style="width:35px" @click="modalOn('.modal-message')" />
-                            &nbsp;
-                            </span> 
-                        <span style="margin-right:1px">
-                            <img class="header-users-img" src="@/assets/images/nav/list_message.png" style="width:30px" @click="message_list()" />
-                        </span>
+                            <span>
+                                <img
+                                    class="header-users-img"
+                                    src="@/assets/images/nav/write_message.png"
+                                    style="width: 35px"
+                                    @click="modalOn('.modal-message')"
+                                />
+                                &nbsp;
+                            </span>
+                            <span style="margin-right: 1px">
+                                <img
+                                    class="header-users-img"
+                                    src="@/assets/images/nav/list_message.png"
+                                    style="width: 30px"
+                                    @click="message_list()"
+                                />
+                            </span>
                             <span style="margin: 15px">
                                 <img :src="profile" style="width: 50px; border-radius: 50%" />
                             </span>
@@ -421,8 +447,6 @@ const filechange = (e) => {
                     <button @click="signup()" class="modal-submit signin">회원가입</button>
                     <button class="modal-cancel" @click="modalOff('.modal-signup')">취소</button>
                 </div>
-
-
             </div>
         </div>
 
@@ -467,15 +491,15 @@ const filechange = (e) => {
                 </div>
                 <div class="modal-input-wrap">
                     <label class="modal-label" for="modal-pw">내용</label>
-                    <input
+                    <textarea
                         class="modal-input"
-                        type="text"
-                        placeholder="내용"
                         id="content"
                         name="content"
                         v-model="content"
                         style="width: 370px; height: 200px"
-                    />
+                    >
+내용</textarea
+                    >
                 </div>
                 <div class="modal-input-wrap" style="justify-content: center">
                     <button @click="sendmessage()" class="modal-submit login but">보내기</button>
@@ -492,39 +516,47 @@ const filechange = (e) => {
             aria-hidden="true"
         >
             <div class="modal1 modal-dialogue">
-                <header class="modal-header" >
+                <header class="modal-header">
                     <h2>쪽지 목록</h2>
-                    <button class="modal-close-btn" style="margin-left:300px; margin-bottom:30px" @click="modalOff('.modal-list')">X</button>
+                    <button
+                        class="modal-close-btn"
+                        style="margin-left: 300px; margin-bottom: 30px"
+                        @click="modalOff('.modal-list')"
+                    >
+                        X
+                    </button>
                     <MessageOutlined />
                 </header>
                 <div>
-                    <table class="flex row" >
+                    <table class="flex row">
                         <div class="column">
                             <tr class="flex mx-5">
                                 <th>보낸 사람</th>
-                                <th> 제목</th>
-                                <th> 내용</th>
-                                <th> 보낸 시간</th>
+                                <th>제목</th>
+                                <th>내용</th>
+                                <th>보낸 시간</th>
                             </tr>
-                            <br/>
-                         </div>
-                            <template
-                            
-                                v-for="message in messages"
-                                :key="message.messageno"
-                                
-                            >
-                            <div class="column">
-                            <tr  class="flex mx-5" >
-                                <td>
-                                    {{ message.fromid}} &nbsp;&nbsp;
-                                </td>
-                                <td>{{ message.subject }}</td>
-                                <td>{{ message.content}}</td>
-                                <td>{{ message.date }}</td> 
-                            </tr>
-                            <br>
+                            <hr />
                         </div>
+
+                        <template v-for="message in messages" :key="message.messageno">
+                            <div class="column">
+                                <tr class="flex mx-5">
+                                    <td class="col-md">{{ message.fromid }} &nbsp;&nbsp;</td>
+                                    <td class="col-md">{{ message.subject }}</td>
+                                    <td class="col-md">{{ message.content }}</td>
+                                    <td class="col-md">{{ message.date }}</td>
+                                </tr>
+                            </div>
+                            <button
+                                v-if="message.messageno != null"
+                                type="button"
+                                class="btn btn-secondary"
+                                @click="deleteMessage(message.messageno)"
+                                style="width: 100px; margin-left: 190px"
+                            >
+                                확인
+                            </button>
                         </template>
                     </table>
                 </div>
