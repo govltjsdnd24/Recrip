@@ -61,12 +61,14 @@ public class BoardController {
 			service.freeBoardWrite(dto);
 			int articleno = service.freeBoardLastArticleno();
 			
-			for (MultipartFile files : multipartFile) {
-				FileDto fileDto = new FileDto();
-				fileDto.setArticleno(String.valueOf(articleno));
-				fileDto.setFilename(files.getOriginalFilename());
-				fileDto.setUrl(s3service.saveFile(files));
-				service.freeBoardFileWrite(fileDto);
+			if(multipartFile != null) {
+				for (MultipartFile files : multipartFile) {
+					FileDto fileDto = new FileDto();
+					fileDto.setArticleno(String.valueOf(articleno));
+					fileDto.setFilename(files.getOriginalFilename());
+					fileDto.setUrl(s3service.saveFile(files));
+					service.freeBoardFileWrite(fileDto);
+				}
 			}
 			
 			map.put("resmsg", "입력성공");
@@ -83,23 +85,28 @@ public class BoardController {
 	}
 	
 	@PostMapping("/reviewboardwrite")
-	public ResponseEntity<Map<String, Object>> reviewboardwrite(@RequestParam String userid , @RequestParam String subject, @RequestParam String content, @RequestParam(required = false) List<MultipartFile> multipartFile) throws IllegalStateException, IOException, SQLException {
+	public ResponseEntity<Map<String, Object>> reviewboardwrite(@RequestParam String userid , @RequestParam String subject, @RequestParam String content, @RequestParam String contentid, @RequestParam String starscore, @RequestParam(required = false) List<MultipartFile> multipartFile) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		BoardDto dto=new BoardDto();
 		dto.setUserid(userid);
 		dto.setSubject(subject);
 		dto.setContent(content);
+		dto.setStarscore(starscore);
+		
+		System.out.println(dto);
 		
 		try {
 			service.reviewBoardWrite(dto);
 			
 			int articleno = service.reviewBoardLastArticleno();
-			for (MultipartFile files : multipartFile) {
-				FileDto fileDto = new FileDto();
-				fileDto.setArticleno(String.valueOf(articleno));
-				fileDto.setFilename(files.getOriginalFilename());
-				fileDto.setUrl(s3service.saveFile(files));
-				service.reviewBoardFileWrite(fileDto);
+			if(multipartFile != null) {
+				for (MultipartFile files : multipartFile) {
+					FileDto fileDto = new FileDto();
+					fileDto.setArticleno(String.valueOf(articleno));
+					fileDto.setFilename(files.getOriginalFilename());
+					fileDto.setUrl(s3service.saveFile(files));
+					service.reviewBoardFileWrite(fileDto);
+				}
 			}
 			map.put("resmsg", "입력성공");
 			map.put("resdata", "1");

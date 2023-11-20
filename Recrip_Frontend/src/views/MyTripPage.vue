@@ -3,8 +3,9 @@ import PageNavigation from "../components/common/PageNavigation.vue";
 import { ref, onBeforeMount } from 'vue';
 import axios from "axios";
 import { LoginInfo } from '../store/login';
-import router from "../router";
+import { useRoute, useRouter } from 'vue-router';
 
+const router = useRouter();
 const info = LoginInfo();
 const { isLogin, loginInfo, IsLogin, getLoginInfo, setLogOut, setLoginInfo } = info;
 
@@ -89,6 +90,7 @@ const onPageChange = (val) => {
 
 const reviewwrite = (attr) => {
     console.log(attr);
+    router.push({name:'ReviewBoardWrite', state: { attr: JSON.stringify(attr) }});
 }
 
 const deleteattr = (index) => {
