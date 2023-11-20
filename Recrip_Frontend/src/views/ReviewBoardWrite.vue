@@ -36,7 +36,7 @@ const BoardWrite = () => {
 	multipartFile.append('userid', userinfo.value.userid);
 	multipartFile.append('subject', subject.value);
 	multipartFile.append('content', content.value);	
-	multipartFile.append('starscore', starscore.value);
+	multipartFile.append('starscore', starscore.value * 10);
 	multipartFile.append('contentid', attr.content_id);
 
     var url = '/api/reviewboardwrite';
@@ -55,7 +55,7 @@ const BoardWrite = () => {
         console.log(error);
     }); 
 	
-	//setTimeout(golist, 100);
+	setTimeout(golist, 100);
 }
 
 const golist = () => {

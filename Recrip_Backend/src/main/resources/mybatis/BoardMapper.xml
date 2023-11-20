@@ -114,4 +114,10 @@
   	<select id="reviewBoardLastArticleno" resultType="int">
   		select articleno from reviewboard order by articleno desc limit 1;
   	</select>
+  	<select id="findscore" parameterType="String" resultType="map">
+  		select rating, count, starscore from attraction_info where content_id = #{content_id}
+  	</select>
+  	<update id="addscore" parameterType="map">
+  		update attraction_info set rating = #{rating}, count = #{count}, starscore = #{score} where content_id = #{content_id}
+  	</update>
 </mapper>

@@ -173,5 +173,23 @@ public class BoardServiceImpl implements BoardService {
 	public int reviewBoardLastArticleno() {
 		return session.getMapper(BoardMapper.class).reviewBoardLastArticleno();
 	}
+
+	@Override
+	public void addscore(String contentid, String starscore) {
+		Map<String,String> map = new HashMap<>();
+		map.put("content_id", contentid);
+		map.put("starscore", String.valueOf(Double.parseDouble(starscore) * 4));
+		
+		Map<String, Object> result = session.getMapper(BoardMapper.class).findscore(contentid);
+		System.out.println(result);
+		
+		System.out.println(String.valueOf(result.get("rating")));
+		map.put("rating", String.valueOf(Integer.parseInt(String.valueOf(result.get("rating")))+Double.parseDouble(map.get("starscore"))));
+		map.put("count", String.valueOf(Integer.parseInt(String.valueOf(result.get("count"))+1)));
+		map.put("score", String.valueOf(Double.parseDouble(starscore)*10));
+		
+		System.out.println(map);
+		session.getMapper(BoardMapper.class).addscore(map);
+	}
 	
 }

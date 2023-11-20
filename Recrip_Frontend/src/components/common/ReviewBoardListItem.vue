@@ -33,7 +33,7 @@ onBeforeMount(() => {
                 <img v-if="files[0] !=null" :src="files[0].url" style="max-height: 200px;">
                 <img v-else alt="example" src="https://source.unsplash.com/random" style="object-fit:fit; max-height: 200px;"/>
             </template>
-            <p><a-rate :value="article.starscore" allow-half disabled/></p>
+            <p><a-rate :value="article.starscore/10" allow-half disabled/></p>
             <a-card-meta :title=subject>
                 <template #description>{{article.registdate}}</template>
             </a-card-meta>

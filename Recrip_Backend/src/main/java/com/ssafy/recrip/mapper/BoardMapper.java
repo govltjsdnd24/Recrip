@@ -35,4 +35,6 @@ public interface BoardMapper {
 	int reviewBoardFileWrite(FileDto dto);
 	int freeBoardLastArticleno();
 	int reviewBoardLastArticleno();
+	Map<String, Object> findscore(String content_id);
+	int addscore(Map<String,String> param);
 }

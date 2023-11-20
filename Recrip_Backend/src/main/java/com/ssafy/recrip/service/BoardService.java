@@ -33,4 +33,5 @@ public interface BoardService {
 	int reviewBoardFileWrite(FileDto dto);
 	int freeBoardLastArticleno();
 	int reviewBoardLastArticleno();
+	void addscore(String contentid, String starscore);
 }

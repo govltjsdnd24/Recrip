@@ -92,8 +92,7 @@ public class BoardController {
 		dto.setSubject(subject);
 		dto.setContent(content);
 		dto.setStarscore(starscore);
-		
-		System.out.println(dto);
+		dto.setContentid(contentid);
 		
 		try {
 			service.reviewBoardWrite(dto);
@@ -108,6 +107,9 @@ public class BoardController {
 					service.reviewBoardFileWrite(fileDto);
 				}
 			}
+			
+			service.addscore(contentid,starscore);
+			
 			map.put("resmsg", "입력성공");
 			map.put("resdata", "1");
 		} catch (Exception e) {
@@ -123,7 +125,7 @@ public class BoardController {
 	
 	@GetMapping("/boardlist")
 	public ResponseEntity<Map<String, Object>> boardlist(@RequestParam Map<String, String> map) throws Exception {
-		System.out.println(map);
+		//System.out.println(map);
 		Map<String, Object> resultmap = new HashMap<>();
 		try {
 			Map<String, Object> result = service.boardList(map);
@@ -255,7 +257,7 @@ public class BoardController {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			List<CommentDto> list = service.freeCommentList(articleno);
-			System.out.println(list);
+			//System.out.println(list);
 			map.put("resdata", list);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {
@@ -274,7 +276,7 @@ public class BoardController {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			List<CommentDto> list = service.reviewCommentList(articleno);
-			System.out.println(list);
+			//System.out.println(list);
 			map.put("resdata", list);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {
@@ -367,7 +369,7 @@ public class BoardController {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			List<FileDto> list = service.freeBoardFileList(articleno);
-			System.out.println(list);
+			//System.out.println(list);
 			map.put("resdata", list);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {
@@ -386,7 +388,7 @@ public class BoardController {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			List<FileDto> list = service.reviewBoardFileList(articleno);
-			System.out.println(list);
+			//System.out.println(list);
 			map.put("resdata", list);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {
