@@ -1,5 +1,6 @@
 package com.ssafy.recrip.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.recrip.mapper.AttractionMapper;
+import com.ssafy.recrip.mapper.BoardMapper;
 import com.ssafy.recrip.model.AttractionDto;
 import com.ssafy.recrip.model.GugunDto;
 import com.ssafy.recrip.model.RankDto;
@@ -56,5 +58,20 @@ public class AttractionServiceImpl implements AttractionService {
 		return session.getMapper(AttractionMapper.class).attrInfoList(map);
 	}
 
-
+	@Override
+	public int addscore(String content_id) {
+		// TODO Auto-generated method stub
+		Map<String, String> map = new HashMap<>();
+		
+		Map<String, Object> result = session.getMapper(BoardMapper.class).findscore(content_id);
+		
+		System.out.println(String.valueOf(result.get("rating")));
+		map.put("rating", String.valueOf(Integer.parseInt(String.valueOf(result.get("rating"))) + 4));
+		map.put("content_id", content_id);
+		
+		System.out.println(result);
+		System.out.println(map);
+		
+		return session.getMapper(AttractionMapper.class).addrating(map);
+	}
 }

@@ -15,4 +15,5 @@ public interface AttractionService {
 	int insertRank(RankDto rankDto);
 	List<RankDto> selectRank();
 	int updateRank(RankDto rankDto);
+	int addscore(String content_id);
 }
