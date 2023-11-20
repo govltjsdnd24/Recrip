@@ -39,4 +39,7 @@
 		update attrank set score = #{score}, sido_code = #{sido_code}, gugun_code = #{gugun_code}
 		where content_id = #{content_id}
 	</update>
+	<update id="addrating" parameterType="map">
+		update attraction_info set rating = #{rating} where content_id = #{content_id}
+	</update>
 </mapper>

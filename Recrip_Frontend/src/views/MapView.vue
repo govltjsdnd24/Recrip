@@ -209,7 +209,10 @@ function displayMarker() {
       addBtn.onclick = function () {
         //찜 누름
         selectspot.value.push(positions[i]);
-        console.log(positions[i].latlng);
+          console.log(positions[i].latlng);
+          let url = `/api/addscore?content_id=${positions[i].content_id}`;
+          axios.get(url).then(response => console.log(response)).catch(error => console.log(error));
+          overlay.setMap(null);
       };
 
       let content = document.createElement('div');
@@ -312,9 +315,11 @@ const selectdelete = (index) => {
 }
 
 const selectadd = (index) => {
-  console.log(index);
+  console.log(selectspot.value[index]);
   selectcourse.value.push(selectspot.value[index]);
-  //계획 추가
+    //계획 추가
+    let url = `/api/addscore?content_id=${selectspot.value[index].content_id}`;
+    axios.get(url).then(response => console.log(response)).catch(error => console.log(error));
 }
 
 const coursedelete = (index) => {

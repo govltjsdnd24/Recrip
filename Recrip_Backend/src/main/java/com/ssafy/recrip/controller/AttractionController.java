@@ -30,12 +30,16 @@ import io.swagger.annotations.Api;
 public class AttractionController {
 	
 	private AttractionService service;
-
-	@Autowired
-	public AttractionController(AttractionService service) {
-		this.service=service;
-	}
+	private BoardController boardservice;
 	
+	@Autowired
+	public AttractionController(AttractionService service, BoardController boardservice) {
+		super();
+		this.service = service;
+		this.boardservice = boardservice;
+	}
+
+
 	@PostMapping("/attrinfolist")
 	public ResponseEntity<Map<String, Object>> attrinfolist(@RequestBody Map<String, Object> param) throws Exception {
 		Map<String, Object> map = new HashMap<>();
@@ -165,6 +169,28 @@ public class AttractionController {
 		
 		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 		
+		return res;
+	}
+	
+	@GetMapping("/addscore")
+	public ResponseEntity<Map<String,Object>> addscore (@RequestParam String content_id) {
+		Map<String,Object>map =new HashMap<>();
+		System.out.println(content_id);
+		try {
+			int result = service.addscore(content_id);
+			if(result != 0) {
+				map.put("resdata", "1");
+				map.put("resmsg", "랭크 수정 성공");
+			} else {
+				map.put("resdata", "0");
+				map.put("resmsg", "랭크 수정 실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "랭크 리스트 불러오는 중 오류 발생");
+		}
+		
+		ResponseEntity<Map<String,Object>> res= new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 		return res;
 	}
 }
