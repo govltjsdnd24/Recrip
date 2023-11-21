@@ -202,6 +202,7 @@ const CommentDelete = (commentno) => {
 
     setTimeout(gozero, 100);
 };
+
 </script>
 
 <template>
@@ -374,6 +375,13 @@ const CommentDelete = (commentno) => {
             </div>
         </div>
     </main>
+    <div>
+    <draggable v-model="cards" :options="{ animation: 200 }">
+      <div v-for="(card, index) in cards" :key="index" class="card">
+        {{ card }}
+      </div>
+    </draggable>
+  </div>
 </template>
 
 <style scoped></style>
