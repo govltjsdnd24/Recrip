@@ -39,8 +39,10 @@ const HistoryLoad = () => {
             },
         })
         .then((response) => {
+            console.log(response);
             list.value = response.data.resmsg;
             total.value = response.data.totalpage;
+            console.log(list.value);
         });
 };
 
@@ -124,7 +126,7 @@ const deleteattr = (index) => {
         <h5 v-if="isShown == false">보고 싶은 페이지를 선택해주세요.</h5>
 
         <div class="row" style="width: 1900px; height: 1000px">
-            <template v-for="(attr, index) in list" :key="attr.content_id">
+            <template v-for="(attr, index) in list" :key="index">
                 <div class="col-2">
                     <a-card hoverable style="max-width: 300px; margin: 0px">
                         <template #cover>

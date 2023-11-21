@@ -236,6 +236,7 @@ public class MemberController {
 	@GetMapping("/historylist")
 	public ResponseEntity<Map<String, Object>> historylist(@RequestParam Map<String, Object> param) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
+		System.out.println(param);
 		try {
 			List<WishHisDto> list = service.historyList(param);
 			List<AttractionDto> result = new ArrayList<>();
@@ -254,6 +255,7 @@ public class MemberController {
 				map.put("resmsg", "조회 실패");
 				map.put("resdata", "0");
 			}
+			System.out.println(result.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 			map.put("resmsg", "조회 중 오류 발생");
