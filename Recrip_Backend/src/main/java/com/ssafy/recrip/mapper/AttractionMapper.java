@@ -20,4 +20,5 @@ public interface AttractionMapper {
 	int updateRank(RankDto rankDto);
 	int addrating(Map<String,String> param);
 	List<AttractionDto> attrRankList();
+	List<AttractionDto> ratingCall(Map<String,String> param);
 }

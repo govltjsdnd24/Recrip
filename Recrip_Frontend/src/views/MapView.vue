@@ -27,10 +27,27 @@ const sido_code = ref([{}]);
 const gugun_code = ref([{}]);
 const carousel = ref([]);
 
+const ratinglist = ref([]);
+const rating = ref({
+    sidocode: 0,
+    guguncode: 0
+})
+
 onMounted(() => {
+    ratingcall();
     sidoCall();
     setMap();
 });
+
+function ratingcall() {
+    let url = `/api/ratingcall?sidocode=${rating.value.sidocode}&guguncode=${rating.value.guguncode}`
+    axios.get(url).then(response => {
+        console.log(response)
+        ratinglist.value = response.data.resdata;
+    });
+}
+
+
 
 function setMap() {
     // 카카오 맵 스크립트를 동적으로 로드합니다.
@@ -66,7 +83,7 @@ function sidoCall() {
 
 const sidochange = (e) => {
     console.log(e.target.value);
-
+    rating.value.sidocode = e.target.value;
     var url = `/api/restattrgugun?sido_code=${e.target.value}`;
     axios
         .get(url)
@@ -80,9 +97,13 @@ const sidochange = (e) => {
 
 const gugunchange = (e) => {
     console.log(e.target.value);
+    rating.value.guguncode = e.target.value;
 };
 
 const Search = () => {
+    console.log(rating.value)
+    ratingcall();
+
     if (polyline.value != null && polyline.value.length > 0) {
         polyline.value.forEach(poly => poly.setMap(null));
         polyline.value = [];
@@ -134,7 +155,7 @@ function makeList(data) {
           content_type_id: area.content_type_id,
           addr1: area.addr1,
           content_id: area.content_id,
-          img: area.first_image,
+          first_image: area.first_image,
           starscore: area.starscore,
           count: area.count,
         };
@@ -222,6 +243,8 @@ function displayMarker() {
             console.log(positions[i].latlng);
             let url = `/api/addscore?content_id=${positions[i].content_id}`;
             axios.get(url).then(response => console.log(response)).catch(error => console.log(error));
+
+            alert(`${positions[i].title}을(를) 찜목록에 저장했습니다.`);
 
             if (getLoginInfo.userid != null) {
                 let url2 = '/api/wishinsert';
@@ -542,7 +565,31 @@ const coursesave = () => {
     });  
 }
 
+function addwish(index) {
+    console.log(ratinglist.value[index]);
+    selectspot.value.push(ratinglist.value[index]);
+    let url = `/api/addscore?content_id=${ratinglist.value[index].content_id}`;
+    axios.get(url).then(response => console.log(response)).catch(error => console.log(error));
+    alert(`${ratinglist.value[index].title}을(를) 찜목록에 저장했습니다.`);
 
+    if (getLoginInfo.userid != null) {
+        let url2 = '/api/wishinsert';
+        axios.post(url2, {
+            userid: getLoginInfo.userid,
+            contentid: ratinglist.value[index].content_id
+        }).then(response => console.log(response)).catch(error => console.log(error))
+    }
+}
+
+function addcourse(index) {
+    selectcourse.value.push(ratinglist.value[index]);
+    alert(ratinglist.value[index].title + ' 을(를)  ' + selectcourse.value.length + '번째 일정으로 추가했습니다.');
+    //계획 추가
+    if (getLoginInfo.userid != null) {
+        let url = `/api/addscore?content_id=${ratinglist.value[index].content_id}`;
+        axios.get(url).then(response => console.log(response)).catch(error => console.log(error));
+    }
+}
 </script>
 
 <template>
@@ -552,6 +599,7 @@ const coursesave = () => {
 
         <!-- address options -->
         <div class="map-select-list">
+          <button class="btn btn-info" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrollingtop" aria-controls="offcanvasScrollingtop" style="margin: 30px;">랭킹보기</button>
           <button class="btn btn-info" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" style="margin: 30px;">찜목록</button>
             <select class="map-select" name="search-area" id="search-area" required @change="sidochange">
                 <option value="" disabled selected>시도 선택</option>
@@ -606,34 +654,9 @@ const coursesave = () => {
             <div ref="mapContainer" style="width: 100%; height: 700px"></div>
             <!-- kakao map end -->
         </div>
-
-        <!-- carousel wrap -->
-        <div class="carousel-wrap">
-            <!-- carousel left button -->
-            <button class="carousel-button carousel-button-left">&lt;</button>
-            <!-- carousel images -->
-            <ul class="carousel-flex">
-                <template v-if="carousel.length > 1">
-                    <li
-                        v-for="caro in carousel"
-                        :key="caro.title"
-                        class="carousel-single-wrap"
-                        @click="moveCenter(caro.latitude, caro.longitude)"
-                    >
-                        <p><img :src="caro.first_image" style="border-radius: 10px; width: 100%; height: 150px" /></p>
-                        <p>{{ caro.title }}</p>
-                        <p>{{ caro.addr1 }} {{ caro.addr2 }}</p>
-                        <p>{{ caro.latitude }}</p>
-                        <p>{{ caro.longitude }}</p>
-                    </li>
-                </template>
-            </ul>
-            <!-- carousel right button -->
-            <button class="carousel-button carousel-button-right">&gt;</button>
-        </div>
     </main>
     
-
+    <!-- 찜 목록 -->
     <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
       <div class="offcanvas-header">
         <h1>찜 목록</h1>
@@ -643,7 +666,7 @@ const coursesave = () => {
         <div v-for="(data , index) in selectspot.slice().reverse()" :key="data.content_id" style="margin: 20px;">
           <a-card hoverable style="width: 100%">
             <template #cover>
-              <img alt="no image" :src="data.img"/>
+              <img alt="no image" :src="data.first_image"/>
             </template>
             <template #actions>
               <button @click="selectadd(selectspot.length - index - 1)">일정 추가</button>
@@ -656,6 +679,31 @@ const coursesave = () => {
       </div>
     </div>
 
+    <!-- 랭킹 -->
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" id="offcanvasScrollingtop" aria-labelledby="offcanvasScrollingLabel">
+      <div class="offcanvas-header">
+        <h1>관광지 랭킹</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div v-for="(data , index) in ratinglist" :key="data.content_id" style="margin-bottom: 20px;">
+          <a-card hoverable style="width: 100%">
+            <template #cover>
+              <img alt="no image" :src="data.first_image"/>
+            </template>
+            <template #actions>
+              <button @click="addcourse(index)">일정 추가</button>
+              <button @click="addwish(index)">찜목록 추가</button>
+            </template>
+            <p><a-rate :value="data.starscore / 10" allow-half disabled/>&nbsp;&nbsp;({{ data.count }})</p>
+            <a-card-meta :title="data.title" :description="data.addr1"></a-card-meta>
+          </a-card>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 여행 계획 -->
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" id="offcanvasScrollingend" aria-labelledby="offcanvasScrollingLabel">
       <div class="offcanvas-header">
         <h1>여행 계획</h1>
@@ -667,7 +715,7 @@ const coursesave = () => {
           
           <a-card hoverable style="width: 100%">
             <template #cover>
-              <img alt="no image" :src="data.img" />
+              <img alt="no image" :src="data.first_image" />
             </template>
             <template #actions>
                 <button @click="coursedelete(index)">삭제</button>

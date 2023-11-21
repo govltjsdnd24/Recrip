@@ -302,6 +302,7 @@ public class MemberController {
 	public ResponseEntity<Map<String, Object>> courselist(@RequestParam Map<String, Object> param) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		int size = Integer.parseInt((String)param.get("size"));
+		
 		try {
 			List<CourseDto> list = service.courseList(param);
 			List<AttractionDto> result = new ArrayList<>();

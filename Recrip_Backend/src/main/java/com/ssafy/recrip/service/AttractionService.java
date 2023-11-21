@@ -17,4 +17,5 @@ public interface AttractionService {
 	int updateRank(RankDto rankDto);
 	int addscore(String content_id);
 	List<AttractionDto> attrRankList();
+	List<AttractionDto> ratingCall(Map<String,String> param);
 }

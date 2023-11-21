@@ -46,4 +46,13 @@
 	<update id="addrating" parameterType="map">
 		update attraction_info set rating = #{rating} where content_id = #{content_id}
 	</update>
+	
+	<select id="ratingCall" parameterType="map"  resultType="attractionDto">
+		select * from attraction_info 
+		where rating != 0 
+		<if test="sidocode != 0">
+			and sido_code = #{sidocode} and gugun_code = #{guguncode}
+		</if>
+		ORDER BY rating DESC LIMIT 10;
+	</select>
 </mapper>
