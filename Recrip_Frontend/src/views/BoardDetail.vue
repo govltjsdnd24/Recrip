@@ -202,6 +202,7 @@ const CommentDelete = (commentno) => {
 
     setTimeout(gozero, 100);
 };
+
 </script>
 
 <template>
@@ -300,6 +301,7 @@ const CommentDelete = (commentno) => {
                     <hr />
                     <h4>댓글 ({{ commentcount }})</h4>
                     <ul class="list-group">
+                        <template v-if="commentcount > 0">
                         <li class="list-group-item pt-0 pb-0" v-for="comment in comments" :key="comment.commentno">
                             <div class="media mt-3 mb-3">
                                 <div class="media-body">
@@ -367,11 +369,19 @@ const CommentDelete = (commentno) => {
                                 </div>
                             </div>
                         </li>
+                        </template>
                     </ul>
                 </div>
             </div>
         </div>
     </main>
+    <div>
+    <draggable v-model="cards" :options="{ animation: 200 }">
+      <div v-for="(card, index) in cards" :key="index" class="card">
+        {{ card }}
+      </div>
+    </draggable>
+  </div>
 </template>
 
 <style scoped></style>
