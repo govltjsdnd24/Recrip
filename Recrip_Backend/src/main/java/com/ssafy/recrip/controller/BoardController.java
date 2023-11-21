@@ -486,7 +486,6 @@ public class BoardController {
 	@GetMapping("/reviewboardfilelist")
 	public ResponseEntity<Map<String, Object>> reviewboardfilelist(String articleno) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		System.out.println("here");
 		try {
 			List<FileDto> list = service.reviewBoardFileList(articleno);
 			map.put("resdata", list);

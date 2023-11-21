@@ -43,7 +43,6 @@ public class AttractionController {
 	@PostMapping("/attrinfolist")
 	public ResponseEntity<Map<String, Object>> attrinfolist(@RequestBody Map<String, Object> param) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		System.out.println(param);
 		try {
 			List<AttractionDto> result = service.attrInfoList(param);
 			if(result != null) {

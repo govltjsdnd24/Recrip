@@ -54,7 +54,6 @@ public class MemberController {
 	@PostMapping("/upload")
 	public ResponseEntity<Map<String, Object>> upload(@RequestBody MultipartFile multipartFile) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
-		System.out.println(multipartFile);
 		try {
 			String upload = s3service.saveFile(multipartFile);
 			map.put("url", upload);
@@ -84,7 +83,6 @@ public class MemberController {
 	@PostMapping("/restmemlogin")
 	public ResponseEntity<Map<String, Object>> restmemlogin(@RequestBody MemberDto dto) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
-		System.out.println(dto);
 		try {
 			MemberDto login = service.login(dto);
 			if(login.getUserid().equals(dto.getUserid())) {
@@ -133,7 +131,6 @@ public class MemberController {
 		dto.setUserid(userid);
 		dto.setUsername(username);
 		dto.setUserpwd(userpwd);
-		System.out.println("SIGNUP: "+dto);
 		try {
 			String upload;
 			if(multipartFile!=null) {
@@ -166,12 +163,10 @@ public class MemberController {
 		dto.setUsername(username);
 		dto.setUserpwd(userpwd);
 		try {
-			System.out.println(dto);
 			if(multipartFile!=null) {
 				String upload = s3service.saveFile(multipartFile);
 				dto.setProfile(upload);
 			}
-			System.out.println(dto.getProfile());
 			int result = service.memberUpdate(dto);
 			if(result != 0) {
 				map.put("resdata", "1");
@@ -242,7 +237,6 @@ public class MemberController {
 	public ResponseEntity<Map<String, Object>> historylist(@RequestParam Map<String, Object> param) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			System.out.println(param);
 			List<WishHisDto> list = service.historyList(param);
 			List<AttractionDto> result = new ArrayList<>();
 			
@@ -274,7 +268,6 @@ public class MemberController {
 	public ResponseEntity<Map<String, Object>> wishlist(@RequestParam Map<String, Object> param) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			System.out.println(param);
 			List<WishHisDto> list = service.wishList(param);
 			List<AttractionDto> result = new ArrayList<>();
 			
@@ -307,7 +300,6 @@ public class MemberController {
 	public ResponseEntity<Map<String, Object>> courselist(@RequestParam Map<String, Object> param) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			System.out.println(param);
 			List<CourseDto> list = service.courseList(param);
 			List<AttractionDto> result = new ArrayList<>();
 			
@@ -513,7 +505,6 @@ public class MemberController {
 	public ResponseEntity<Map<String, Object>> messageinsert(@RequestBody MessageDto dto) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			System.out.println(dto);
 			int result = service.messageinsert(dto);
 			if(result != 0) {
 				map.put("resdata", "1");
@@ -536,7 +527,6 @@ public class MemberController {
 	public ResponseEntity<Map<String, Object>> messagedelete(String messageno) throws SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			System.out.println("MESS: "+messageno);
 			int result = service.messagedelete(messageno);
 			if(result != 0) {
 				map.put("resdata", "1");

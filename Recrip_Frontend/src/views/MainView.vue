@@ -1,14 +1,14 @@
 <script setup>
-import { onBeforeMount, onMounted,onBeforeUnmount,ref } from 'vue';
+import { onBeforeMount, onMounted, onBeforeUnmount, ref } from 'vue';
 import axios from 'axios';
-import cheerio from "cheerio";
+import cheerio from 'cheerio';
 
 var index = 0;
 var timer = setInterval(displayImages, 4000);
 const crawlings = ref([{}]);
-var attrRank=ref([]);
-var reviewList=ref([]);
-var reviewPics=ref([]);
+var attrRank = ref([]);
+var reviewList = ref([]);
+var reviewPics = ref([]);
 
 onBeforeMount(() => {
     getNews();
@@ -16,38 +16,43 @@ onBeforeMount(() => {
     getReviewMostLikes();
     getReviewPictures();
 });
-onMounted(()=>{
+onMounted(() => {
     displayImages();
-})
+});
 
-function getReviewMostLikes(){
+function getReviewMostLikes() {
     var url = '/api/reviewboardmostlikes';
     async function reviewLikes(url) {
         const response = await axios.get(url);
-        reviewList.value=response.data.resmsg;
+        reviewList.value = response.data.resmsg;
     }
     reviewLikes(url).catch((error) => {
         console.log(error);
     });
 }
 
-function getReviewPictures(){
+function getReviewPictures() {
     for (let index = 0; index < reviewList.value.length; index++) {
-            let url=`/api/reviewboardfilelist?articleno=${reviewList.value[index].articleno}`;
-            axios.get(url)
-            .then((response)=>{
-                reviewPics.value[index]=response.data.resdata[0].url;
-            }).catch((error)=>{
-                console.log(error);
+        let url = `/api/reviewboardfilelist?articleno=${reviewList.value[index].articleno}`;
+        axios
+            .get(url)
+            .then((response) => {
+                console.log(response.data.resdata[0]);
+                if (typeof response.data.resdata[0] != 'undefined')
+                    reviewPics.value[index] = response.data.resdata[0].url;
+                else reviewPics.value[index] = '/src/assets/images/Recrip.JPG';
             })
-        }
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 }
 
-function getAttrRank(){
+function getAttrRank() {
     var url = '/api/attrranklist';
     async function rankList(url) {
         const response = await axios.get(url);
-        attrRank.value=response.data.resdata;
+        attrRank.value = response.data.resdata;
     }
     rankList(url).catch((error) => {
         console.log(error);
@@ -68,19 +73,19 @@ function displayImages() {
 }
 
 function getNews() {
-    axios.get('/test').then(response => {
+    axios.get('/test').then((response) => {
         const data = response.request.response;
         const $ = cheerio.load(data);
-        const result = $(".card_group > li > figure").toArray();
+        const result = $('.card_group > li > figure').toArray();
         for (let index = 5; index < 14; index++) {
             let row = {
                 href: result[index].children[1].attribs.href,
                 alt: result[index].children[1].children[1].attribs.alt,
-                src: result[index].children[1].children[1].attribs.src
-            }
+                src: result[index].children[1].children[1].attribs.src,
+            };
             crawlings.value.push(row);
         }
-    })
+    });
 }
 
 onBeforeUnmount(() => {
@@ -96,7 +101,7 @@ onBeforeUnmount(() => {
                 <img src="https://source.unsplash.com/1920x1080?beach" alt="Palm Trees" />
             </div>
             <div class="image-on-text">
-                <p>최고의 여행 계획을 원하세요? </p>
+                <p>최고의 여행 계획을 원하세요?</p>
                 <p>Recrip</p>
                 <p>에게 맡기세요.</p>
             </div>
@@ -104,7 +109,7 @@ onBeforeUnmount(() => {
                 <img src="https://source.unsplash.com/1920x1080?city" alt="Mountain Top" />
             </div>
             <div class="image-on-text">
-                <p>최고의 여행 계획을 원하세요? </p>
+                <p>최고의 여행 계획을 원하세요?</p>
                 <p>Recrip</p>
                 <p>에게 맡기세요.</p>
             </div>
@@ -112,7 +117,7 @@ onBeforeUnmount(() => {
                 <img src="https://source.unsplash.com/1920x1080?mountain" alt="Palm Trees" />
             </div>
             <div class="image-on-text">
-                <p>최고의 여행 계획을 원하세요? </p>
+                <p>최고의 여행 계획을 원하세요?</p>
                 <p>Recrip</p>
                 <p>에게 맡기세요.</p>
             </div>
@@ -120,7 +125,7 @@ onBeforeUnmount(() => {
                 <img src="https://source.unsplash.com/1920x1080?castle" alt="Mountain Top" />
             </div>
             <div class="image-on-text">
-                <p>최고의 여행 계획을 원하세요? </p>
+                <p>최고의 여행 계획을 원하세요?</p>
                 <p>Recrip</p>
                 <p>에게 맡기세요.</p>
             </div>
@@ -142,42 +147,42 @@ onBeforeUnmount(() => {
                         class="center-grid-image"
                         :style="{ backgroundImage: `url(${attrRank[0].first_image})` }"
                     ></div>
-                    <p> 1위: {{ attrRank[0].title}}</p>
+                    <p>1위: {{ attrRank[0].title }}</p>
                 </div>
                 <div class="main-image-container">
                     <div
                         class="center-grid-image"
                         :style="{ backgroundImage: `url(${attrRank[1].first_image})` }"
                     ></div>
-                    <p>2위: {{ attrRank[1].title}}</p>
+                    <p>2위: {{ attrRank[1].title }}</p>
                 </div>
                 <div class="main-image-container">
                     <div
                         class="center-grid-image"
                         :style="{ backgroundImage: `url(${attrRank[2].first_image})` }"
                     ></div>
-                    <p>3위: {{ attrRank[2].title}}</p>
+                    <p>3위: {{ attrRank[2].title }}</p>
                 </div>
                 <div class="main-image-container">
                     <div
                         class="center-grid-image"
                         :style="{ backgroundImage: `url(${attrRank[3].first_image})` }"
                     ></div>
-                    <p>4위: {{ attrRank[3].title}}</p>
+                    <p>4위: {{ attrRank[3].title }}</p>
                 </div>
                 <div class="main-image-container">
                     <div
                         class="center-grid-image"
                         :style="{ backgroundImage: `url(${attrRank[4].first_image})` }"
                     ></div>
-                    <p>5위: {{ attrRank[4].title}}</p>
+                    <p>5위: {{ attrRank[4].title }}</p>
                 </div>
                 <div class="main-image-container">
                     <div
                         class="center-grid-image"
                         :style="{ backgroundImage: `url(${attrRank[5].first_image})` }"
                     ></div>
-                    <p>6위: {{ attrRank[5].title}}</p>
+                    <p>6위: {{ attrRank[5].title }}</p>
                 </div>
             </div>
         </div>
@@ -190,80 +195,79 @@ onBeforeUnmount(() => {
             <router-link
                 :to="{ name: 'ReviewBoardView', params: { articleno: reviewList[0].articleno } }"
                 class="article-title link-dark"
-                style="text-decoration: none;"
+                style="text-decoration: none"
             >
-            <div class="card">
-                <img :src=reviewPics[0] alt="Avatar" style="width: 100%" />
-                <div class="card-info">
-                    <h4>{{ reviewList[0].subject }} </h4>
-                    <p>추천수: {{ reviewList[0].likes }}</p>
+                <div class="card">
+                    <img :src="reviewPics[0]" alt="Avatar" style="width: 100%" />
+                    <div class="card-info">
+                        <h4>{{ reviewList[0].subject }}</h4>
+                        <p>추천수: {{ reviewList[0].likes }}</p>
+                    </div>
                 </div>
-            </div>
             </router-link>
             <router-link
                 :to="{ name: 'ReviewBoardView', params: { articleno: reviewList[1].articleno } }"
                 class="article-title link-dark"
-                style="text-decoration: none;"
+                style="text-decoration: none"
             >
-            <div class="card">
-                <img :src=reviewPics[1] alt="Avatar" style="width: 100%" />
-                <div class="card-info">
-                    <h4>{{ reviewList[1].subject }} </h4>
-                    <p>추천수: {{ reviewList[1].likes }}</p>
+                <div class="card">
+                    <img :src="reviewPics[1]" alt="Avatar" style="width: 100%" />
+                    <div class="card-info">
+                        <h4>{{ reviewList[1].subject }}</h4>
+                        <p>추천수: {{ reviewList[1].likes }}</p>
+                    </div>
                 </div>
-            </div>
             </router-link>
             <router-link
                 :to="{ name: 'ReviewBoardView', params: { articleno: reviewList[2].articleno } }"
                 class="article-title link-dark"
-                style="text-decoration: none;"
+                style="text-decoration: none"
             >
-            <div class="card">
-                <img :src=reviewPics[2] alt="Avatar" style="width: 100%" />
-                <div class="card-info">
-                    <h4>{{ reviewList[2].subject }} </h4>
-                    <p>추천수: {{ reviewList[2].likes }}</p>
+                <div class="card">
+                    <img :src="reviewPics[2]" alt="Avatar" style="width: 100%" />
+                    <div class="card-info">
+                        <h4>{{ reviewList[2].subject }}</h4>
+                        <p>추천수: {{ reviewList[2].likes }}</p>
+                    </div>
                 </div>
-            </div>
             </router-link>
             <router-link
                 :to="{ name: 'ReviewBoardView', params: { articleno: reviewList[3].articleno } }"
                 class="article-title link-dark"
-                style="text-decoration: none;"
+                style="text-decoration: none"
             >
-            <div class="card">
-                <img :src=reviewPics[3] alt="Avatar" style="width: 100%" />
-                <div class="card-info">
-                    <h4>{{ reviewList[3].subject }} </h4>
-                    <p>추천수: {{ reviewList[3].likes }}</p>
+                <div class="card">
+                    <img :src="reviewPics[3]" alt="Avatar" style="width: 100%" />
+                    <div class="card-info">
+                        <h4>{{ reviewList[3].subject }}</h4>
+                        <p>추천수: {{ reviewList[3].likes }}</p>
+                    </div>
                 </div>
-            </div>
             </router-link>
         </div>
         <div class="divider-container">
             <div class="divider"></div>
             <h2>여행 뉴스</h2>
         </div>
-        <div class="place-wrapper" > 
+        <div class="place-wrapper">
             <template v-for="(data, index) in crawlings" :key="data.href">
-                <a-card hoverable v-if="index != 0 && index<10" class="place-card">    
+                <a-card hoverable v-if="index != 0 && index < 10" class="place-card" style="width: 600px">
                     <template #cover>
                         <a :href="data.href" target="_blank">
                             <img
                                 :src="data.src"
                                 alt=""
-                                style="width: 100%; height: 80%; object-fit: cover;"
+                                style="width: 100%; height: 80%; max-height: 300px; max-width: 700px"
                             />
                         </a>
-                        </template>
-                        <a :href="data.href" style="text-decoration: none; " >
-                            <a-card-meta :title="data.alt" style="text-align: center; text-decoration: none;">
-                        </a-card-meta></a>
+                    </template>
+                    <a :href="data.href" style="text-decoration: none">
+                        <a-card-meta :title="data.alt" style="text-align: center; text-decoration: none"> </a-card-meta
+                    ></a>
                 </a-card>
             </template>
         </div>
 
-        
         <div class="bottom_contact">
             <p>언제든 연락주세요</p>
             <p>Recrip은 여러분의 많은 참여를 기다립니다.</p>
