@@ -106,11 +106,11 @@
   	</select>
   	
   	<select id="freeCommentList" parameterType="string" resultType="commentDto">
-  		select * from freecomment where isdelete = false and articleno = #{articleno}
+  		select * from freecomment where isdelete = false and articleno = #{articleno} AND depth=0;
   	</select>
   	
   	<select id="reviewCommentList" parameterType="string" resultType="commentDto">
-  		select * from reviewcomment where isdelete = false and articleno = #{articleno}
+  		select * from reviewcomment where isdelete = false and articleno = #{articleno} AND depth=0;
   	</select>
   	
   	<insert id="freeCommentWrite" parameterType="commentDto">
@@ -174,25 +174,18 @@
   		select COUNT(*) from reviewcomment where isdelete=0 AND articleno=${articleno};
   	</select>
   	
-  	<select id="freeCommentRoot" parameterType="String" resultType="commentDto">
-  		select * from freecomment where isdelete=0 AND articleno=${articleno} AND depth=0;
+  	<select id="freeCommentChildren" parameterType="string" resultType="commentDto">
+  		select * from freecomment where isdelete=0 AND articleno=${articleno} AND parentcomment IS NOT NULL;
   	</select>
-  	<select id="reviewCommentRoot" parameterType="String" resultType="commentDto">
-  		select * from reviewcomment where isdelete=0 AND articleno=${articleno} AND depth=0;
-  	</select>
-  	
-  	<select id="freeCommentLeaf" parameterType="commentDto" resultType="commentDto">
-  		select * from freecomment where isdelete=0 AND articleno=${articleno} AND parentcomment =${parentcomment};
-  	</select>
-  	<select id="reviewCommentLeaf" parameterType="commentDto" resultType="commentDto">
-  		select * from reviewcomment where isdelete=0 AND articleno=${articleno} AND parentcomment =${parentcomment};
+  	<select id="reviewCommentChildren" parameterType="string" resultType="commentDto">
+  		select * from reviewcomment where isdelete=0 AND articleno=${articleno} AND parentcomment IS NOT NULL;
   	</select>
   	
-  	<insert id="freeCommentLeafWrite" parameterType="commentDto">
-  		insert into freecomment (articleno, userid, content, parentcomment) values (#{articleno}, #{userid}, #{content}, #{parentcomment});
+  	<insert id="freeCommentChildWrite" parameterType="commentDto">
+  		insert into freecomment (articleno, userid, content, parentcomment,depth) values (#{articleno}, #{userid}, #{content}, #{parentcomment}, #{depth});
   	</insert>
-  	<insert id="reviewCommentLeafWrite" parameterType="commentDto">
-  		insert into reviewcomment (articleno, userid, content, parentcomment) values (#{articleno}, #{userid}, #{content}, #{parentcomment});
+  	<insert id="reviewCommentChildWrite" parameterType="commentDto">
+  		insert into reviewcomment (articleno, userid, content, parentcomment,depth) values (#{articleno}, #{userid}, #{content}, #{parentcomment}, #{depth});
   	</insert>
   	
 </mapper>

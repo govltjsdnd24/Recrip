@@ -16,4 +16,6 @@ public class CommentDto {
 	String content;
 	String registdate;	
 	boolean isdelete;
+	String parentcomment;
+	String depth;
 }

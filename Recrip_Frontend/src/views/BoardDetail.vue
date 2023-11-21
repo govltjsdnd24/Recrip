@@ -4,6 +4,8 @@ import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import { LoginInfo } from '../store/login';
 
+const $ = (query) => document.querySelector(query);
+
 const info = LoginInfo();
 const { getLoginInfo, IsLogin } = info;
 const route = useRoute();
@@ -17,7 +19,19 @@ const files = ref([{}]);
 const comment = ref('');
 const likecount = ref(0);
 
-const comment_count = ref(0);
+const childcomments = ref([{}]);
+const commentcount = ref(0);
+
+function modalOn(className) {
+    const targetModal = $(className);
+    targetModal.style.display = 'block';
+}
+
+function modalOff(className) {
+    const targetModal = $(className);
+    childcontent.value = '';
+    targetModal.style.display = 'none';
+}
 
 onBeforeMount(() => {
     userinfo.value = getLoginInfo;
@@ -54,7 +68,26 @@ onBeforeMount(() => {
 
     var likeurl = `/api/freeboardlikecount?articleno=${articleno}`;
     getLikes(likeurl);
+
+    var counturl = `/api/freecommentcount?articleno=${articleno}`;
+    commentCount(counturl);
+
+    var childcomm = `/api/freecommentchildren?articleno=${articleno}`;
+
+    async function getChildComment(childcomm) {
+        const response = await axios.get(childcomm);
+        childcomments.value = response.data.resdata;
+        console.log(childcomments.value);
+    }
+    getChildComment(childcomm).catch((error) => {
+        console.log(error);
+    });
 });
+
+async function commentCount(url) {
+    const response = await axios.get(url);
+    commentcount.value = response.data.resdata;
+}
 
 async function getLikes(url) {
     const response = await axios.get(url);
@@ -120,6 +153,38 @@ const CommentWrite = () => {
     setTimeout(gozero, 100);
 };
 
+const childcontent = ref('');
+const parentcomment = ref(0);
+const parentdepth = ref(0);
+const parentcontent = ref('');
+const parentuserid = ref('');
+
+const CommentChild = function (comment) {
+    modalOn('.modal-comment');
+    parentcomment.value = comment.commentno;
+    parentdepth.value = comment.depth;
+    parentcontent.value = comment.content;
+    parentuserid.value = comment.userid;
+};
+
+const CommentChildWrite = () => {
+    var url = '/api/freecommentchildwrite';
+    let updated_depth = Number(parentdepth.value) + 1;
+    async function articleWrite(url) {
+        const response = await axios.post(url, {
+            articleno: articleno,
+            userid: userinfo.value.userid,
+            content: childcontent.value,
+            parentcomment: parentcomment.value,
+            depth: updated_depth,
+        });
+    }
+    articleWrite(url).catch((error) => {
+        console.log(error);
+    });
+    setTimeout(gozero, 100);
+};
+
 const gozero = () => {
     router.go(0);
 };
@@ -131,32 +196,6 @@ const CommentDelete = (commentno) => {
         const response = await axios.delete(url);
     }
     CommentDelete(url).catch((error) => {
-        console.log(error);
-    });
-
-    setTimeout(gozero, 100);
-};
-
-const CommentAdd = (commentno) => {
-    var url = `/api/freecommentadd?commentno=${commentno}`;
-
-    async function CommentAdd(url) {
-        const response = await axios.put(url);
-    }
-    CommentAdd(url).catch((error) => {
-        console.log(error);
-    });
-
-    setTimeout(gozero, 100);
-};
-
-const CommentNested = (commentno) => {
-    var url = `/api/freecommentnested?commentno=${commentno}`;
-
-    async function CommentNested(url) {
-        const response = await axios.get(url);
-    }
-    CommentNested(url).catch((error) => {
         console.log(error);
     });
 
@@ -258,15 +297,10 @@ const CommentNested = (commentno) => {
 
                 <div id="comment-area" class="col-lg-8 col-md-10 col-sm-12">
                     <hr />
-                    <h4>댓글 ({{ comment_count }})</h4>
+                    <h4>댓글 ({{ commentcount }})</h4>
                     <ul class="list-group">
-                        <li
-                            class="list-group-item pt-0 pb-0"
-                            v-for="comment in comments"
-                            :key="comment.commentno"
-                            style="width: 435px"
-                        >
-                            <div class="media mt-3 mb-3" style="width: 400px">
+                        <li class="list-group-item pt-0 pb-0" v-for="comment in comments" :key="comment.commentno">
+                            <div class="media mt-3 mb-3">
                                 <div class="media-body">
                                     <div class="row">
                                         <h5 class="mt-0 col">{{ comment.userid }}</h5>
@@ -276,7 +310,7 @@ const CommentNested = (commentno) => {
                                                     type="button"
                                                     class="btn btn-outline-dark ms-1"
                                                     id="btn-cm-delete"
-                                                    @click="CommentAdd(comment.commentno)"
+                                                    @click="CommentChild(comment)"
                                                 >
                                                     댓글추가
                                                 </button>
@@ -297,9 +331,40 @@ const CommentNested = (commentno) => {
                                     <p>{{ comment.registdate }}</p>
                                 </div>
                             </div>
-                            <!-- <c:if test="${userinfo.userid eq comment.userid }"> -->
-
-                            <!-- </c:if> -->
+                            <div
+                                class="modal modal-wrap modal-comment"
+                                tabindex="-1"
+                                role="dialog"
+                                aria-labelledby="myLargeModalLabel"
+                                aria-hidden="true"
+                            >
+                                <div class="modal1 modal-dialogue">
+                                    <header class="modal-header">
+                                        <h2>답글 작성</h2>
+                                        <button class="modal-close-btn" @click="modalOff('.modal-comment')">X</button>
+                                    </header>
+                                    {{ parentuserid }}:
+                                    {{ parentcontent }}
+                                    <div class="modal-input-wrap">
+                                        <label class="modal-label" for="modal-pw">내용</label>
+                                        <textarea
+                                            class="modal-input"
+                                            id="content"
+                                            name="content"
+                                            v-model="childcontent"
+                                            style="width: 370px; height: 200px"
+                                        >
+                                        내용</textarea
+                                        >
+                                    </div>
+                                    <div class="modal-input-wrap" style="justify-content: center">
+                                        <button @click="CommentChildWrite()" class="modal-submit">확인</button>
+                                        <button class="modal-cancel but" @click="modalOff('.modal-comment')">
+                                            취소
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>

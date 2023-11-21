@@ -47,8 +47,8 @@ public interface BoardService {
 	List<BoardDto> reviewBoardMostLikes();
 	int freeCommentCount(String articleno);
 	int reviewCommentCount(String articleno);
-	int freeCommentChildren(String articleno);
-	int reviewCommentChildren(String articleno);
+	List<CommentDto> freeCommentChildren(String articleno);
+	List<CommentDto> reviewCommentChildren(String articleno);
 	int freeCommentChildWrite(CommentDto dto);
 	int reviewCommentChildWrite(CommentDto dto);
 	

@@ -118,7 +118,6 @@ public class BoardController {
 		
 		try {
 			int result=service.freeBoardLikeCount(articleno);
-			System.out.println("RESULT: "+result);
 			map.put("resmsg", result);
 			map.put("resdata", "1");
 		} catch (Exception e) {
@@ -541,8 +540,8 @@ public class BoardController {
 	public ResponseEntity<Map<String, Object>> freeCommentChildren(String articleno) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			int count = service.freeCommentChildren(articleno);
-			map.put("resdata", count);
+			List<CommentDto> comments = service.freeCommentChildren(articleno);
+			map.put("resdata", comments);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -559,8 +558,8 @@ public class BoardController {
 	public ResponseEntity<Map<String, Object>> reviewCommentChildren(String articleno) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			int count = service.reviewCommentChildren(articleno);
-			map.put("resdata", count);
+			List<CommentDto> comments = service.reviewCommentChildren(articleno);
+			map.put("resdata", comments);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -573,10 +572,11 @@ public class BoardController {
 		return res;
 	}
 	
-	@PutMapping("/freecommentchildwrte")
+	@PostMapping("/freecommentchildwrite")
 	public ResponseEntity<Map<String, Object>> freecommentchildwrite(@RequestBody CommentDto dto) throws SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
+			System.out.println(dto);
 			service.freeCommentChildWrite(dto);
 			map.put("resdata", "추가성공");
 			map.put("resmsg", "1");
@@ -590,7 +590,7 @@ public class BoardController {
 		return res;
 	}
 	
-	@PutMapping("/reviewcommentchildwrte")
+	@PostMapping("/reviewcommentchildwrte")
 	public ResponseEntity<Map<String, Object>> reviewcommentchildwrite(@RequestBody CommentDto dto) throws SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {

@@ -260,12 +260,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int freeCommentChildren(String articleno) {
+	public List<CommentDto> freeCommentChildren(String articleno) {
 		return session.getMapper(BoardMapper.class).freeCommentChildren(articleno);
 	}
 
 	@Override
-	public int reviewCommentChildren(String articleno) {
+	public List<CommentDto> reviewCommentChildren(String articleno) {
 		return session.getMapper(BoardMapper.class).reviewCommentChildren(articleno);
 	}
 
