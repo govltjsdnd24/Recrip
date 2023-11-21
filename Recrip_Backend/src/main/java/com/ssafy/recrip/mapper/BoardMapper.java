@@ -48,4 +48,10 @@ public interface BoardMapper {
 	int freeBoardLikeCount(String articleno);
 	int reviewBoardLikeCount(String articleno);
 	List<BoardDto> reviewBoardMostLikes();
+	int freeCommentCount(String articleno);
+	int reviewCommentCount(String articleno);
+	int freeCommentChildren(String articleno);
+	int reviewCommentChildren(String articleno);
+	int freeCommentChildWrite(CommentDto dto);
+	int reviewCommentChildWrite(CommentDto dto);
 }

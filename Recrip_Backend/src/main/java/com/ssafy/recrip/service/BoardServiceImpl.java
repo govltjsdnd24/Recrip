@@ -248,5 +248,35 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardDto> reviewBoardMostLikes() {
 		return session.getMapper(BoardMapper.class).reviewBoardMostLikes();
 	}
+
+	@Override
+	public int freeCommentCount(String articleno) {
+		return session.getMapper(BoardMapper.class).freeCommentCount(articleno);
+	}
+
+	@Override
+	public int reviewCommentCount(String articleno) {
+		return session.getMapper(BoardMapper.class).reviewCommentCount(articleno);
+	}
+
+	@Override
+	public int freeCommentChildren(String articleno) {
+		return session.getMapper(BoardMapper.class).freeCommentChildren(articleno);
+	}
+
+	@Override
+	public int reviewCommentChildren(String articleno) {
+		return session.getMapper(BoardMapper.class).reviewCommentChildren(articleno);
+	}
+
+	@Override
+	public int freeCommentChildWrite(CommentDto dto) {
+		return session.getMapper(BoardMapper.class).freeCommentChildWrite(dto);
+	}
+
+	@Override
+	public int reviewCommentChildWrite(CommentDto dto) {
+		return session.getMapper(BoardMapper.class).reviewCommentChildWrite(dto);
+	}
 	
 }

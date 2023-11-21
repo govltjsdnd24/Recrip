@@ -500,4 +500,113 @@ public class BoardController {
 		
 		return res;
 	}
+	
+	@GetMapping("/freecommentcount")
+	public ResponseEntity<Map<String, Object>> freecommentcount(String articleno) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			int count = service.freeCommentCount(articleno);
+			map.put("resdata", count);
+			map.put("resmsg", "조회성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/reviewcommentcount")
+	public ResponseEntity<Map<String, Object>> reviewcommentcount(String articleno) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			int count = service.reviewCommentCount(articleno);
+			map.put("resdata", count);
+			map.put("resmsg", "조회성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/freecommentchildren")
+	public ResponseEntity<Map<String, Object>> freeCommentChildren(String articleno) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			int count = service.freeCommentChildren(articleno);
+			map.put("resdata", count);
+			map.put("resmsg", "조회성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/reviewcommentchildren")
+	public ResponseEntity<Map<String, Object>> reviewCommentChildren(String articleno) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			int count = service.reviewCommentChildren(articleno);
+			map.put("resdata", count);
+			map.put("resmsg", "조회성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회실패");
+			map.put("resdata", "0");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@PutMapping("/freecommentchildwrte")
+	public ResponseEntity<Map<String, Object>> freecommentchildwrite(@RequestBody CommentDto dto) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			service.freeCommentChildWrite(dto);
+			map.put("resdata", "추가성공");
+			map.put("resmsg", "1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "추가실패");
+			map.put("resdata", "0");
+		}
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@PutMapping("/reviewcommentchildwrte")
+	public ResponseEntity<Map<String, Object>> reviewcommentchildwrite(@RequestBody CommentDto dto) throws SQLException {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			service.reviewCommentChildWrite(dto);
+			map.put("resdata", "추가성공");
+			map.put("resmsg", "1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "추가실패");
+			map.put("resdata", "0");
+		}
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	
+	
 }
