@@ -49,7 +49,7 @@
 	<select id="courseList" parameterType="map" resultType="courseDto">
 		select * from courselist
 		where userid = #{userid}
-		limit ${current}, ${size}
+		and groupno between ${current} and ${size}
 	</select>
 	<insert id="histroyInsert" parameterType="wishHisDto">
 		insert into historylist (userid, contentid) values (#{userid}, #{contentid})
@@ -90,6 +90,9 @@
 	<select id="getAttrInfo" parameterType="string" resultType="attractionDto">
 		select * from attraction_info
 		where content_id = #{contentid}
+	</select>
+	<select id="getCourseCount" parameterType="String" resultType="int">
+		select groupno from courselist order by groupno desc limit 1
 	</select>
 </mapper>
   

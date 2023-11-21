@@ -15,6 +15,8 @@ const total = ref();
 const current = ref(1);
 const list = ref();
 const isShown = ref(false);
+const group = ref();
+
 onBeforeMount(() => {
     if (getLoginInfo.userid == null) {
         alert('로그인이 필요합니다.');
@@ -86,7 +88,9 @@ const CourseLoad = () => {
         })
         .then((response) => {
             list.value = response.data.resmsg;
+            group.value = response.data.resgroup;
             total.value = response.data.totalpage;
+            console.log(group.value[group.value.length-1]);
         });
 };
 

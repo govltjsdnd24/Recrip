@@ -36,7 +36,7 @@ const BoardWrite = () => {
 	multipartFile.append('userid', userinfo.value.userid);
 	multipartFile.append('subject', subject.value);
 	multipartFile.append('content', content.value);	
-	multipartFile.append('starscore', starscore.value * 10);
+	multipartFile.append('starscore', starscore.value);
 	multipartFile.append('contentid', attr.content_id);
 
     var url = '/api/reviewboardwrite';
