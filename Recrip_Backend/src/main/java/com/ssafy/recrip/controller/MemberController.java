@@ -301,19 +301,25 @@ public class MemberController {
 	@GetMapping("/courselist")
 	public ResponseEntity<Map<String, Object>> courselist(@RequestParam Map<String, Object> param) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
+		int size = Integer.parseInt((String)param.get("size"));
 		try {
 			List<CourseDto> list = service.courseList(param);
 			List<AttractionDto> result = new ArrayList<>();
+			List<String> group = new ArrayList<>();
 			
 			for (CourseDto dto : list) {
 				AttractionDto a = service.getAttrInfo(dto.getContentid());
 				result.add(a);
+				group.add(dto.getGroupno());
 			}
 			
-			int totalpage = service.getTotalCount(param) / Integer.parseInt((String) param.get("size")) + 1;
+			System.out.println(list);
+			
+			int totalpage = service.getCourseCount((String)param.get("userid")) / size + 1;
 			
 			if(list.size()>0) {
 				map.put("resmsg", result);
+				map.put("resgroup", group);
 				map.put("totalpage",totalpage);
 				map.put("resdata", "1");
 			} else {

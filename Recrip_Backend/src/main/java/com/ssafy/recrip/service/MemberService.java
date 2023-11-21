@@ -30,4 +30,5 @@ public interface MemberService {
 	int messagedelete(String messageno);
 	int getTotalCount(Map<String,Object> param);
 	AttractionDto getAttrInfo(String string);
+	int getCourseCount(String userid);
 }

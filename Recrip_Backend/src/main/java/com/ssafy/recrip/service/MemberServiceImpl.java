@@ -80,8 +80,11 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public List<CourseDto> courseList(Map<String,Object> param) {
 		// TODO Auto-generated method stub
-		int current = (Integer.parseInt((String) param.get("current")) - 1) * Integer.parseInt((String) param.get("size"));
+		int current = (1 + (Integer.parseInt((String) param.get("current")) - 1) * Integer.parseInt((String) param.get("size")));
+		int size = (Integer.parseInt((String) param.get("current"))) * Integer.parseInt((String) param.get("size"));
 		param.put("current", current);
+		param.put("size", size);
+		System.out.println("asdasdsadasd"+param);
 		return session.getMapper(MemberMapper.class).courseList(param);
 	}
 
@@ -170,6 +173,12 @@ public class MemberServiceImpl implements MemberService{
 	public AttractionDto getAttrInfo(String contentid) {
 		// TODO Auto-generated method stub
 		return session.getMapper(MemberMapper.class).getAttrInfo(contentid);
+	}
+
+	@Override
+	public int getCourseCount(String userid) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).getCourseCount(userid);
 	}
 
 }

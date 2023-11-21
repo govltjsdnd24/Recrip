@@ -36,7 +36,7 @@ onBeforeMount(() => {
                         style="object-fit: fit; max-height: 200px"
                     />
                 </template>
-                <p><a-rate :value="article.starscore / 10" allow-half disabled /></p>
+                <a-rate :value="article.starscore" allow-half disabled style="margin-bottom: 20px;"></a-rate>
                 <a-card-meta :title="subject">
                     <template #description>
                         <p>조회수: {{ article.hit }} &nbsp; 추천수: {{ article.likes }}</p>

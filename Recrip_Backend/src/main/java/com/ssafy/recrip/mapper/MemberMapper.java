@@ -35,4 +35,5 @@ public interface MemberMapper {
 	int messagedelete(String messageno);
 	int getTotalCount(Map<String,Object> param);
 	AttractionDto getAttrInfo(String contentid);
+	int getCourseCount(String userid);
 }
