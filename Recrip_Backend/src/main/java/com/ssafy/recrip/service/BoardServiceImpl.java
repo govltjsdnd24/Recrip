@@ -183,7 +183,6 @@ public class BoardServiceImpl implements BoardService {
 		Map<String, Object> result = session.getMapper(BoardMapper.class).findscore(contentid);
 		System.out.println(result);
 		
-		System.out.println(String.valueOf(result.get("rating")));
 		map.put("rating", String.valueOf(Integer.parseInt(String.valueOf(result.get("rating")))+Double.parseDouble(map.get("starscore"))));
 		map.put("count", String.valueOf(Integer.parseInt(String.valueOf(result.get("count"))+1)));
 		map.put("score", String.valueOf(Double.parseDouble(starscore)*10));

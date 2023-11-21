@@ -83,8 +83,10 @@ const gugunchange = (e) => {
 };
 
 const Search = () => {
-    if (polyline.value != null) {
-        polyline.value.setMap(null);
+    if (polyline.value != null && polyline.value.length > 0) {
+        polyline.value.forEach(poly => poly.setMap(null));
+        polyline.value = [];
+        polyoverlay.value = [];
     }
     markers.value.forEach((marker) => {
         marker.setMap(null);
@@ -133,6 +135,8 @@ function makeList(data) {
           addr1: area.addr1,
           content_id: area.content_id,
           img: area.first_image,
+          starscore: area.starscore,
+          count: area.count,
         };
         positions.push(markerInfo);
     });
@@ -334,51 +338,70 @@ const selectdelete = (index) => {
 }
 
 const selectadd = (index) => {
-  console.log(selectspot.value[index]);
-  selectcourse.value.push(selectspot.value[index]);
+    console.log(selectspot.value[index]);
+    selectcourse.value.push(selectspot.value[index]);
+    alert(selectspot.value[index].title + ' 을(를)  ' + selectcourse.value.length + '번째 일정으로 추가했습니다.');
     //계획 추가
-    let url = `/api/addscore?content_id=${selectspot.value[index].content_id}`;
-    axios.get(url).then(response => console.log(response)).catch(error => console.log(error));
+    if (getLoginInfo.userid != null) {
+        let url = `/api/addscore?content_id=${selectspot.value[index].content_id}`;
+        axios.get(url).then(response => console.log(response)).catch(error => console.log(error));
+    }
 }
 
 const coursedelete = (index) => {
     selectcourse.value.splice(index, 1);
 }
 
-const polyline = ref();
+const polyline = ref([]);
+const polyoverlay = ref([]);
 
 const coursesave = () => {
+    if (selectcourse.value.length < 2) {
+        alert('여행 계획은 최소 2군데 이상을 지정 해야 합니다.')
+        return;
+    }
     let course = [];
+    var surecourse = [];
     selectcourse.value.forEach((attr) => {
         let c = {
             content_id: attr.content_id,
             userid: getLoginInfo.userid
         };
         course.push(c);
+        surecourse.push(attr);
     });
-    console.log(course);
-    let url = '/api/courseinsert';
-    axios.post(url, {
-        headers: {
-            "Content-Type": "application/json",
-        }, dto: JSON.stringify(course)
-    }).then(response => {
-        if (response.data.resdata == 1) {
-            alert("여행 계획을 저장했습니다. 해당 계획을 지도에 출력합니다.");
+
+    console.log('코스 복사', surecourse);
+       
+    if (getLoginInfo.userid != null) {
+        let url = '/api/courseinsert';
+        axios.post(url, {
+            headers: {
+                "Content-Type": "application/json",
+            }, dto: JSON.stringify(course)
+        }).then(response => {
+            if (response.data.resdata == 1) {
+                alert("여행 계획을 저장했습니다. 해당 계획을 지도에 출력합니다.");
+            }
+        }).catch(error => console.log(error));
+    } else {
+        if (confirm("현재 로그인 되어있지 않아 계획이 저장되지 않고 맵에만 출력됩니다.\n그래도 출력하시겠습니까?")) {
+            alert("여행 계획을 지도에 출력합니다.");
+        } else {
+            return;
         }
-    }).catch(error => console.log(error));
+    }
 
     let mobility = 'https://apis-navi.kakaomobility.com/v1/waypoints/directions';
     let key = '935d83ed14edef82a34131e921e9f2bd';
 
     let waypoints = [];
-    console.log(selectcourse.value);
 
-    for (let i = 1; i < selectcourse.value.length - 1; i++) {
+    for (let i = 1; i < surecourse.length - 1; i++) {
         let way = {
-            "name": selectcourse.value[i].title,
-            "x": selectcourse.value[i].latlng.La,
-            "y": selectcourse.value[i].latlng.Ma
+            "name": surecourse[i].title,
+            "x": surecourse[i].latlng.La,
+            "y": surecourse[i].latlng.Ma
         }
         waypoints.push(way);
     }
@@ -387,14 +410,14 @@ const coursesave = () => {
 
     axios.post(mobility, {
         "origin": {
-            "name": selectcourse.value[0].title,
-            "x": selectcourse.value[0].latlng.La,
-            "y": selectcourse.value[0].latlng.Ma
+            "name": surecourse[0].title,
+            "x": surecourse[0].latlng.La,
+            "y": surecourse[0].latlng.Ma
         },
         "destination": {
-            "name":selectcourse.value[selectcourse.value.length-1].title,
-            "x": selectcourse.value[selectcourse.value.length-1].latlng.La,
-            "y": selectcourse.value[selectcourse.value.length-1].latlng.Ma
+            "name":surecourse[surecourse.length-1].title,
+            "x": surecourse[surecourse.length-1].latlng.La,
+            "y": surecourse[surecourse.length-1].latlng.Ma
         },
         "waypoints": waypoints,
         "priority": "RECOMMEND",
@@ -409,8 +432,10 @@ const coursesave = () => {
         }
     }).then(response => {
         console.log(response);
-        if (polyline.value != null) {
-            polyline.value.setMap(null);
+        if (polyline.value != null && polyline.value.length > 0) {
+            polyline.value.forEach(poly => poly.setMap(null));
+            polyline.value = [];
+            polyoverlay.value = [];
         }
         markers.value.forEach((marker) => {
             marker.setMap(null);
@@ -418,9 +443,9 @@ const coursesave = () => {
 
         console.log("마커", markers.value[0]);
 
-        for (let i = 0; i < selectcourse.value.length; i++) {
+        for (let i = 0; i < surecourse.length; i++) {
             for (let j = 0; j < markers.value.length; j++) {
-                if (selectcourse.value[i].title == markers.value[j].Gb) {
+                if (surecourse[i].title == markers.value[j].Gb) {
                     markers.value[j].setMap(map);
                     break;
                 }
@@ -428,38 +453,93 @@ const coursesave = () => {
         }
 
         var sections = response.data.routes[0].sections;
-        console.log(response.data.routes[0].sections[0].roads);
-        var linepath = [];
-
+        
         sections.forEach(roads => {
+            var linepath = [];
             roads.roads.forEach((road) => {
                 for (let i = 0; i < road.vertexes.length; i += 2) {
                     linepath.push(new kakao.maps.LatLng(road.vertexes[i + 1], road.vertexes[i]));
                 }
             })
+            let color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+            let poly = new kakao.maps.Polyline({
+                path: linepath, // 선을 구성하는 좌표배열 입니다
+                strokeWeight: 7, // 선의 두께 입니다
+                strokeColor: color, // 선의 색깔입니다
+                strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeStyle: 'solid' // 선의 스타일입니다
+            });
+
+            polyline.value.push(poly);
         })
-        
-        console.log(linepath);
 
-        // 지도에 표시할 선을 생성합니다
-        polyline.value = new kakao.maps.Polyline({
-            path: linepath, // 선을 구성하는 좌표배열 입니다
-            strokeWeight: 5, // 선의 두께 입니다
-            strokeColor: '#000000', // 선의 색깔입니다
-            strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-            strokeStyle: 'solid' // 선의 스타일입니다
-        });
+        polyline.value.forEach(line => line.setMap(map));
 
-        // 지도에 선을 표시합니다 
-        polyline.value.setMap(map); 
-
-        map.setCenter(linepath[0]);
+        map.setCenter(surecourse[0].latlng);
         map.setLevel(3);
-    });
 
-    
+        console.log(surecourse);
+        console.log(sections)
+        console.log(polyline.value)
 
-        
+        for (let i = 0; i < polyline.value.length; i++) {
+            console.log(surecourse[i].title + ' => ' + surecourse[i+1].title)
+            let content = document.createElement('div');
+            content.setAttribute('class', 'card');
+
+            let cardtitle = document.createElement('div');
+            cardtitle.setAttribute('class', 'card-title');
+            cardtitle.appendChild(document.createTextNode("길찾기"));
+
+            content.appendChild(cardtitle);
+
+            let cardtext = document.createElement('div');
+            cardtext.setAttribute('class', 'card-text');
+            cardtext.appendChild(document.createTextNode(surecourse[i].title + ' => ' + surecourse[i+1].title));
+            content.appendChild(cardtext);
+
+            let ul = document.createElement('ul');
+            let li = document.createElement('li');
+            li.setAttribute('class', 'up');
+            ul.appendChild(li);
+
+            let span1 = document.createElement('span');
+            span1.setAttribute('class', 'card-text');
+            span1.appendChild(document.createTextNode('거리 (m) : ' + sections[i].distance ));
+            li.appendChild(span1);
+
+            let li2 = document.createElement('li');
+            let span2 = document.createElement('span');
+            span2.setAttribute('class', 'card-text');
+            span2.appendChild(document.createTextNode('시간 (분) : ' + parseInt((sections[i].duration / 60)) ));
+            li2.appendChild(span2);
+
+            ul.appendChild(li2);
+            content.appendChild(ul);
+
+            let overlay = new kakao.maps.CustomOverlay({
+            map: map,
+            position: polyline.value[i].Ug[parseInt(polyline.value[i].Ug.length / 2)],
+            content: content,
+            yAnchor: 1,
+            });
+
+            overlay.setMap(null);
+            polyoverlay.value.push(overlay);
+
+            kakao.maps.event.addListener(polyline.value[i], 'mouseover', function (mouseEvent) {
+                polyoverlay.value[i].setMap(map);
+                polyoverlay.value[i].setPosition(mouseEvent.latLng);
+            })
+
+            kakao.maps.event.addListener(polyline.value[i], 'mouseout', function (mouseEvent) {
+                polyoverlay.value[i].setMap(null);
+            })
+        } 
+
+
+    });  
 }
 
 
@@ -569,7 +649,7 @@ const coursesave = () => {
               <button @click="selectadd(selectspot.length - index - 1)">일정 추가</button>
               <button @click="selectdelete(selectspot.length - index - 1)">삭제</button>
             </template>
-            <p><a-rate :value="data.content_type_id" allow-half disabled/></p>
+            <p><a-rate :value="data.starscore / 10" allow-half disabled/>&nbsp;&nbsp;({{ data.count }})</p>
             <a-card-meta :title="data.title" :description="data.addr1"></a-card-meta>
           </a-card>
         </div>
