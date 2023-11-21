@@ -213,4 +213,30 @@ public class AttractionController {
 		ResponseEntity<Map<String,Object>> res= new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 		return res;
 	}
+	
+	@GetMapping("/ratingcall")
+	public ResponseEntity<Map<String,Object>> ratingcall (String sidocode, String guguncode) {
+		Map<String,Object>map =new HashMap<>();
+		Map<String,String>param = new HashMap<>();
+		param.put("sidocode",sidocode);
+		param.put("guguncode",guguncode);
+		
+		System.out.println(param);
+		try {
+			List<AttractionDto> result = service.ratingCall(param);
+			if(result != null) {
+				map.put("resdata", result);
+				map.put("resmsg", "레이팅 결과 가져오기 성공");
+			} else {
+				map.put("resdata", "0");
+				map.put("resmsg", "레이팅 결과 가져오기  실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "레이팅 결과 가져오기 중 오류 발생");
+		}
+		
+		ResponseEntity<Map<String,Object>> res= new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		return res;
+	}
 }

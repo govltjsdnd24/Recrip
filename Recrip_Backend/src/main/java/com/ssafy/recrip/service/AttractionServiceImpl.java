@@ -75,4 +75,10 @@ public class AttractionServiceImpl implements AttractionService {
 	public List<AttractionDto> attrRankList() {
 		return session.getMapper(AttractionMapper.class).attrRankList();
 	}
+
+	@Override
+	public List<AttractionDto> ratingCall(Map<String, String> param) {
+		// TODO Auto-generated method stub
+		return session.getMapper(AttractionMapper.class).ratingCall(param);
+	}
 }
