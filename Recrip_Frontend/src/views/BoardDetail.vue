@@ -17,6 +17,8 @@ const files = ref([{}]);
 const comment = ref('');
 const likecount = ref(0);
 
+const comment_count = ref(0);
+
 onBeforeMount(() => {
     userinfo.value = getLoginInfo;
 
@@ -24,7 +26,6 @@ onBeforeMount(() => {
 
     async function getArticle(url) {
         const response = await axios.get(url);
-        console.log(response.data.resdata);
         article.value = response.data.resdata;
     }
     getArticle(url).catch((error) => {
@@ -35,7 +36,6 @@ onBeforeMount(() => {
 
     async function getComment(comm) {
         const response = await axios.get(comm);
-        console.log(response.data.resdata);
         comments.value = response.data.resdata;
     }
     getComment(comm).catch((error) => {
@@ -67,17 +67,16 @@ const likeBoard = () => {
 
     async function getArticle(url) {
         const response = await axios.get(url);
-        if(getLoginInfo.userid==null) {
-            alert("좋아요를 누르시려면 우선 로그인이 되어있어야 합니다.")
+        if (getLoginInfo.userid == null) {
+            alert('좋아요를 누르시려면 우선 로그인이 되어있어야 합니다.');
         } else if (response.data.resmsg == '입력성공') {
-            if(alert('해당 게시물이 좋아요 처리 되었습니다.')){}
-            else{
+            if (alert('해당 게시물이 좋아요 처리 되었습니다.')) {
+            } else {
                 getLikes(likeurl);
                 router.go(0);
             }
         } else if (response.data.resmsg == '중복확인') alert('이미 해당 게시물에 좋아요를 하셨습니다.');
-        else
-            alert('좋아요 실패');
+        else alert('좋아요 실패');
     }
     getArticle(url).catch((error) => {
         alert('좋아요 실패');
@@ -137,6 +136,32 @@ const CommentDelete = (commentno) => {
 
     setTimeout(gozero, 100);
 };
+
+const CommentAdd = (commentno) => {
+    var url = `/api/freecommentadd?commentno=${commentno}`;
+
+    async function CommentAdd(url) {
+        const response = await axios.put(url);
+    }
+    CommentAdd(url).catch((error) => {
+        console.log(error);
+    });
+
+    setTimeout(gozero, 100);
+};
+
+const CommentNested = (commentno) => {
+    var url = `/api/freecommentnested?commentno=${commentno}`;
+
+    async function CommentNested(url) {
+        const response = await axios.get(url);
+    }
+    CommentNested(url).catch((error) => {
+        console.log(error);
+    });
+
+    setTimeout(gozero, 100);
+};
 </script>
 
 <template>
@@ -160,7 +185,9 @@ const CommentDelete = (commentno) => {
                                     <span class="fw-bold" id="user">{{ article.userid }}</span> <br />
                                     <span class="text-secondary fw-light" id="date"> {{ article.date }} </span>
                                 </p>
-                                <p class="" style="text-align: start">조회: {{article.hit}} &nbsp; 추천: {{ likecount }}</p>
+                                <p class="" style="text-align: start">
+                                    조회: {{ article.hit }} &nbsp; 추천: {{ likecount }}
+                                </p>
                             </div>
                         </div>
 
@@ -228,31 +255,50 @@ const CommentDelete = (commentno) => {
                 </template>
 
                 <!-- 댓글 목록 -->
+
                 <div id="comment-area" class="col-lg-8 col-md-10 col-sm-12">
+                    <hr />
+                    <h4>댓글 ({{ comment_count }})</h4>
                     <ul class="list-group">
-                        <li class="list-group-item" v-for="comment in comments" :key="comment.commentno">
-                            <div class="media mt-3 mb-3">
+                        <li
+                            class="list-group-item pt-0 pb-0"
+                            v-for="comment in comments"
+                            :key="comment.commentno"
+                            style="width: 435px"
+                        >
+                            <div class="media mt-3 mb-3" style="width: 400px">
                                 <div class="media-body">
-                                    <h4 class="mt-0">{{ comment.userid }}</h4>
+                                    <div class="row">
+                                        <h5 class="mt-0 col">{{ comment.userid }}</h5>
+                                        <div class="d-flex justify-content-end col">
+                                            <template v-if="IsLogin == true">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-dark ms-1"
+                                                    id="btn-cm-delete"
+                                                    @click="CommentAdd(comment.commentno)"
+                                                >
+                                                    댓글추가
+                                                </button>
+                                                <template v-if="userinfo.userid == comment.userid">
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-outline-danger ms-1"
+                                                        id="btn-cm-delete"
+                                                        @click="CommentDelete(comment.commentno)"
+                                                    >
+                                                        댓글삭제
+                                                    </button>
+                                                </template>
+                                            </template>
+                                        </div>
+                                    </div>
                                     <p>{{ comment.content }}</p>
                                     <p>{{ comment.registdate }}</p>
                                 </div>
                             </div>
                             <!-- <c:if test="${userinfo.userid eq comment.userid }"> -->
-                            <template v-if="IsLogin == true">
-                                <template v-if="userinfo.userid == comment.userid">
-                                    <div class="d-flex justify-content-end">
-                                        <button
-                                            type="button"
-                                            class="btn btn-outline-danger ms-1"
-                                            id="btn-cm-delete"
-                                            @click="CommentDelete(comment.commentno)"
-                                        >
-                                            댓글삭제
-                                        </button>
-                                    </div>
-                                </template>
-                            </template>
+
                             <!-- </c:if> -->
                         </li>
                     </ul>

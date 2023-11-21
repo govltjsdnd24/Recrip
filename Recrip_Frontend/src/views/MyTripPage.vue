@@ -123,9 +123,9 @@ const deleteattr = (index) => {
     <div class="row justify-content-center">
         <div style="margin-top: 0px; margin-bottom: 0px">
             페이지 전환
-            <a-button type="dashed" style="margin: 20px" @click="HistoryLoad">Histroy</a-button>
-            <a-button type="dashed" style="margin: 20px" @click="WishLoad">Wish</a-button>
-            <a-button type="dashed" style="margin: 20px" @click="CourseLoad">Course</a-button>
+            <a-button type="dashed" style="margin: 20px" @click="HistoryLoad">내가 본 여행지 목록</a-button>
+            <a-button type="dashed" style="margin: 20px" @click="WishLoad">찜 목록</a-button>
+            <a-button type="dashed" style="margin: 20px" @click="CourseLoad">코스 목록</a-button>
         </div>
         <h5 v-if="isShown == false">보고 싶은 페이지를 선택해주세요.</h5>
 
