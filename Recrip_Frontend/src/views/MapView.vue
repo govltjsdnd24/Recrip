@@ -135,6 +135,8 @@ function makeList(data) {
           addr1: area.addr1,
           content_id: area.content_id,
           img: area.first_image,
+          starscore: area.starscore,
+          count: area.count,
         };
         positions.push(markerInfo);
     });
@@ -336,11 +338,14 @@ const selectdelete = (index) => {
 }
 
 const selectadd = (index) => {
-  console.log(selectspot.value[index]);
-  selectcourse.value.push(selectspot.value[index]);
+    console.log(selectspot.value[index]);
+    selectcourse.value.push(selectspot.value[index]);
+    alert(selectspot.value[index].title + ' 을(를)  ' + selectcourse.value.length + '번째 일정으로 추가했습니다.');
     //계획 추가
-    let url = `/api/addscore?content_id=${selectspot.value[index].content_id}`;
-    axios.get(url).then(response => console.log(response)).catch(error => console.log(error));
+    if (getLoginInfo.userid != null) {
+        let url = `/api/addscore?content_id=${selectspot.value[index].content_id}`;
+        axios.get(url).then(response => console.log(response)).catch(error => console.log(error));
+    }
 }
 
 const coursedelete = (index) => {
@@ -351,6 +356,10 @@ const polyline = ref([]);
 const polyoverlay = ref([]);
 
 const coursesave = () => {
+    if (selectcourse.value.length < 2) {
+        alert('여행 계획은 최소 2군데 이상을 지정 해야 합니다.')
+        return;
+    }
     let course = [];
     var surecourse = [];
     selectcourse.value.forEach((attr) => {
@@ -362,18 +371,26 @@ const coursesave = () => {
         surecourse.push(attr);
     });
 
-    console.log('코스 복사',surecourse);
-
-    let url = '/api/courseinsert';
-    axios.post(url, {
-        headers: {
-            "Content-Type": "application/json",
-        }, dto: JSON.stringify(course)
-    }).then(response => {
-        if (response.data.resdata == 1) {
-            alert("여행 계획을 저장했습니다. 해당 계획을 지도에 출력합니다.");
+    console.log('코스 복사', surecourse);
+       
+    if (getLoginInfo.userid != null) {
+        let url = '/api/courseinsert';
+        axios.post(url, {
+            headers: {
+                "Content-Type": "application/json",
+            }, dto: JSON.stringify(course)
+        }).then(response => {
+            if (response.data.resdata == 1) {
+                alert("여행 계획을 저장했습니다. 해당 계획을 지도에 출력합니다.");
+            }
+        }).catch(error => console.log(error));
+    } else {
+        if (confirm("현재 로그인 되어있지 않아 계획이 저장되지 않고 맵에만 출력됩니다.\n그래도 출력하시겠습니까?")) {
+            alert("여행 계획을 지도에 출력합니다.");
+        } else {
+            return;
         }
-    }).catch(error => console.log(error));
+    }
 
     let mobility = 'https://apis-navi.kakaomobility.com/v1/waypoints/directions';
     let key = '935d83ed14edef82a34131e921e9f2bd';
@@ -448,15 +465,16 @@ const coursesave = () => {
 
             let poly = new kakao.maps.Polyline({
                 path: linepath, // 선을 구성하는 좌표배열 입니다
-                strokeWeight: 5, // 선의 두께 입니다
+                strokeWeight: 7, // 선의 두께 입니다
                 strokeColor: color, // 선의 색깔입니다
-                strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
                 strokeStyle: 'solid' // 선의 스타일입니다
             });
 
             polyline.value.push(poly);
-            poly.setMap(map);
         })
+
+        polyline.value.forEach(line => line.setMap(map));
 
         map.setCenter(surecourse[0].latlng);
         map.setLevel(3);
@@ -631,7 +649,7 @@ const coursesave = () => {
               <button @click="selectadd(selectspot.length - index - 1)">일정 추가</button>
               <button @click="selectdelete(selectspot.length - index - 1)">삭제</button>
             </template>
-            <p><a-rate :value="data.content_type_id" allow-half disabled/></p>
+            <p><a-rate :value="data.starscore / 10" allow-half disabled/>&nbsp;&nbsp;({{ data.count }})</p>
             <a-card-meta :title="data.title" :description="data.addr1"></a-card-meta>
           </a-card>
         </div>
