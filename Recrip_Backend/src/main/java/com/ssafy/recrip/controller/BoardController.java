@@ -2,6 +2,7 @@ package com.ssafy.recrip.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -355,8 +356,13 @@ public class BoardController {
 	public ResponseEntity<Map<String, Object>> freecommentlist(String articleno) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			List<CommentDto> list = service.freeCommentList(articleno);
-			//System.out.println(list);
+			Map<String,String> param = new HashMap<>();
+			param.put("articleno", articleno);
+			param.put("parentcomment", "0");
+			List<CommentDto> list = new ArrayList<CommentDto>();
+			boolean[] check = new boolean[service.freeMaxComment(articleno)+1];
+			recursive(param,list,0,check);
+			System.out.println(list);
 			map.put("resdata", list);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {
@@ -369,6 +375,27 @@ public class BoardController {
 		
 		return res;
 	}
+	
+	public void recursive(Map<String,String> map, List<CommentDto> list, int index, boolean[] check) {
+		if(list.size() == 0) {
+			list.addAll(service.freeCommentList(map));
+		}
+		
+		for (int i = index; i < list.size(); i++) {
+			if(check[Integer.parseInt(list.get(i).getCommentno())]) {
+				continue;
+			}
+			map.put("parentcomment",list.get(i).getCommentno());
+			System.out.println(i);
+			List<CommentDto> f = service.freeCommentList(map);
+			check[Integer.parseInt(map.get("parentcomment"))] = true;
+			if(f.size() > 0) {
+				list.addAll(i+1,f);
+				recursive(map,list,i+1,check);
+			}
+		}
+	}
+	
 	
 	@GetMapping("/reviewcommentlist")
 	public ResponseEntity<Map<String, Object>> reviewcommentlist(String articleno) throws Exception {

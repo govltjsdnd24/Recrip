@@ -105,8 +105,8 @@
   		select * from reviewboard where isdelete = false and articleno = #{articleno}
   	</select>
   	
-  	<select id="freeCommentList" parameterType="string" resultType="commentDto">
-  		select * from freecomment where isdelete = false and articleno = #{articleno} AND depth=0;
+  	<select id="freeCommentList" parameterType="map" resultType="commentDto">
+  		select * from freecomment where isdelete = false and articleno = #{articleno} AND parentcomment = #{parentcomment};
   	</select>
   	
   	<select id="reviewCommentList" parameterType="string" resultType="commentDto">
@@ -187,5 +187,7 @@
   	<insert id="reviewCommentChildWrite" parameterType="commentDto">
   		insert into reviewcomment (articleno, userid, content, parentcomment,depth) values (#{articleno}, #{userid}, #{content}, #{parentcomment}, #{depth});
   	</insert>
-  	
+  	<select id="freeMaxComment" parameterType="String" resultType="int">
+  		select commentno from freecomment where isdelete=0 AND articleno=${articleno} order by commentno desc limit 1;
+  	</select>
 </mapper>

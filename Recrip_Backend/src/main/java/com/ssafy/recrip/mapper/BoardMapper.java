@@ -23,7 +23,7 @@ public interface BoardMapper {
 	int reviewBoardUpdate(BoardDto dto);
 	BoardDto freeBoardView(String articleno);
 	BoardDto reviewBoardView(String articleno);
-	List<CommentDto> freeCommentList(String articleno);
+	List<CommentDto> freeCommentList(Map<String,String> map);
 	List<CommentDto> reviewCommentList(String articleno);
 	int freeCommentWrite(CommentDto dto);
 	int reviewCommentWrite(CommentDto dto);
@@ -54,4 +54,5 @@ public interface BoardMapper {
 	List<CommentDto> reviewCommentChildren(String articleno);
 	int freeCommentChildWrite(CommentDto dto);
 	int reviewCommentChildWrite(CommentDto dto);
+	int freeMaxComment(String articleno);
 }
