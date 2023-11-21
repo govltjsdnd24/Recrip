@@ -715,7 +715,7 @@ function addcourse(index) {
           
           <a-card hoverable style="width: 100%">
             <template #cover>
-              <img alt="no image" :src="data.img" />
+              <img alt="no image" :src="data.first_image" />
             </template>
             <template #actions>
                 <button @click="coursedelete(index)">삭제</button>
