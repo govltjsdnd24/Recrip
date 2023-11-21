@@ -219,6 +219,11 @@ function displayMarker() {
         markers.value.push(markerobject);
 
         var closeBtn = document.createElement('button');
+        var closeDiv = document.createElement('div');
+        closeDiv.setAttribute(
+            'style',
+            'background:#eee;width: 35px;height: 25px;position: absolute;top: 0px;right: 0px;border-bottom: 1px solid #ddd;'
+        );
         closeBtn.setAttribute(
             'style',
             "position: absolute;top: 10px;right: 10px;color: #888;padding-top:0px;margin-top:-5px;margin-bottom:5px;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');"
@@ -231,7 +236,11 @@ function displayMarker() {
         };
 
         var addBtn = document.createElement('button');
-        addBtn.appendChild(document.createTextNode('찜'));
+        addBtn.setAttribute(
+            'style',
+            "position: absolute;top: 75px;right: 100px;color: #888;padding-top:0px;margin-top:-5px;margin-bottom:5px;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');"
+        );
+        addBtn.appendChild(document.createTextNode(''));
 
         addBtn.onclick = function () {
             //찜 누름
@@ -263,24 +272,27 @@ function displayMarker() {
         content.setAttribute('class', 'card');
         content.setAttribute(
             'style',
-            'position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;'
+            'position: absolute;left: 0;bottom: 40px;width: 220px;height: 100px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;'
         );
 
         let cardtitle = document.createElement('div');
         cardtitle.setAttribute('class', 'info');
         cardtitle.setAttribute(
             'style',
-            'margin-top:-5px;padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;'
+            'margin-top:-5px;padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;display:inline-block;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:183px'
         );
         cardtitle.appendChild(document.createTextNode(positions[i].title));
-        cardtitle.appendChild(closeBtn);
+        closeDiv.appendChild(closeBtn);
+        cardtitle.appendChild(closeDiv);
 
         content.appendChild(cardtitle);
         content.appendChild(addBtn);
 
-        let cardtext = document.createElement('div');
-
         let ul = document.createElement('ul');
+        ul.setAttribute(
+            'style',
+            'margin-left:-25px;width:225px;display:inline-block;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;'
+        );
         let li = document.createElement('li');
         li.setAttribute('class', 'up');
         ul.appendChild(li);
