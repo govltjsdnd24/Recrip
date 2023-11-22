@@ -662,10 +662,11 @@ public class BoardController {
 		return res;
 	}
 	
-	@PostMapping("/reviewcommentchildwrte")
+	@PostMapping("/reviewcommentchildwrite")
 	public ResponseEntity<Map<String, Object>> reviewcommentchildwrite(@RequestBody CommentDto dto) throws SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
+			System.out.println("HEREs");
 			service.reviewCommentChildWrite(dto);
 			map.put("resdata", "추가성공");
 			map.put("resmsg", "1");
