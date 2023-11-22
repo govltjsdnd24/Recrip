@@ -6,7 +6,7 @@ import PageNavigation from '../components/common/PageNavigation.vue';
 import VSelect from '../components/common/VSelect.vue';
 import { LoginInfo } from '../store/login';
 const info = LoginInfo();
-const { isLogin, loginInfo, IsLogin, getLoginInfo, } = info;
+const { isLogin, loginInfo, IsLogin, getLoginInfo } = info;
 const articles = ref();
 const userinfo = ref();
 const currentpage = ref(1);
@@ -65,7 +65,7 @@ const changeKey = (val) => {
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-md-10 col-sm-12">
-                    <h2 class="my-3 py-3 shadow-sm bg-light text-center">
+                    <h2 class="my-3 py-3 shadow-sm text-center">
                         <span>글목록</span>
                     </h2>
                 </div>

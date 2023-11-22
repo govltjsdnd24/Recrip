@@ -67,7 +67,7 @@ const changeKey = (val) => {
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-md-10 col-sm-12" style="margin-bottom: 0px; margin-top: 0px">
-                    <h2 class="my-3 py-3 shadow-sm bg-light text-center" style="margin-bottom: 0px; margin-top: 0px">
+                    <h2 class="my-3 py-3 shadow-sm text-center" style="margin-bottom: 0px; margin-top: 0px">
                         <span>리뷰</span>
                     </h2>
                 </div>
