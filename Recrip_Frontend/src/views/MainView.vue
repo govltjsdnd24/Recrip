@@ -94,7 +94,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div>
+    <div class="container">
         <!--슬라이더-->
         <div class="image-slideshow">
             <div class="image fadeslide">
@@ -197,10 +197,12 @@ onBeforeUnmount(() => {
                 class="article-title link-dark"
                 style="text-decoration: none"
             >
-                <div class="card">
+                <div class="card" style="height: 430px">
                     <img :src="reviewPics[0]" alt="Avatar" style="width: 100%" />
                     <div class="card-info">
-                        <h4>{{ reviewList[0].subject }}</h4>
+                        <h4 class="d-inline-block text-truncate" style="max-width: 240px">
+                            {{ reviewList[0].subject }}
+                        </h4>
                         <p>추천수: {{ reviewList[0].likes }}</p>
                     </div>
                 </div>
@@ -210,10 +212,12 @@ onBeforeUnmount(() => {
                 class="article-title link-dark"
                 style="text-decoration: none"
             >
-                <div class="card">
+                <div class="card" style="height: 430px">
                     <img :src="reviewPics[1]" alt="Avatar" style="width: 100%" />
                     <div class="card-info">
-                        <h4>{{ reviewList[1].subject }}</h4>
+                        <h4 class="d-inline-block text-truncate" style="max-width: 240px">
+                            {{ reviewList[1].subject }}
+                        </h4>
                         <p>추천수: {{ reviewList[1].likes }}</p>
                     </div>
                 </div>
@@ -223,10 +227,12 @@ onBeforeUnmount(() => {
                 class="article-title link-dark"
                 style="text-decoration: none"
             >
-                <div class="card">
+                <div class="card" style="height: 430px">
                     <img :src="reviewPics[2]" alt="Avatar" style="width: 100%" />
                     <div class="card-info">
-                        <h4>{{ reviewList[2].subject }}</h4>
+                        <h4 class="d-inline-block text-truncate" style="max-width: 240px">
+                            {{ reviewList[2].subject }}
+                        </h4>
                         <p>추천수: {{ reviewList[2].likes }}</p>
                     </div>
                 </div>
@@ -236,10 +242,12 @@ onBeforeUnmount(() => {
                 class="article-title link-dark"
                 style="text-decoration: none"
             >
-                <div class="card">
-                    <img :src="reviewPics[3]" alt="Avatar" style="width: 100%" />
+                <div class="card" style="height: 430px">
+                    <img :src="reviewPics[3]" class="img-fluid" alt="Avatar" style="width: 100%" />
                     <div class="card-info">
-                        <h4>{{ reviewList[3].subject }}</h4>
+                        <h4 class="d-inline-block text-truncate" style="max-width: 240px">
+                            {{ reviewList[3].subject }}
+                        </h4>
                         <p>추천수: {{ reviewList[3].likes }}</p>
                     </div>
                 </div>
@@ -249,29 +257,23 @@ onBeforeUnmount(() => {
             <div class="divider"></div>
             <h2>여행 뉴스</h2>
         </div>
-        <div class="place-wrapper">
+        <div class="row">
             <template v-for="(data, index) in crawlings" :key="data.href">
-                <a-card hoverable v-if="index != 0 && index < 10" class="place-card" style="width: 600px">
-                    <template #cover>
-                        <a :href="data.href" target="_blank">
-                            <img
-                                :src="data.src"
-                                alt=""
-                                style="width: 100%; height: 80%; max-height: 300px; max-width: 700px"
-                            />
+                <template v-if="index != 0 && index < 7">
+                    <div class="card col-4 pt-2" style="border: 0px">
+                        <a :href="data.href" target="_blank" style="text-decoration: none; color: black">
+                            <img class="card-img-top" :src="data.src" alt="Card image cap" />
+                            <p class="card-title" style="text-align: center; text-decoration: none">{{ data.alt }}</p>
                         </a>
-                    </template>
-                    <a :href="data.href" style="text-decoration: none">
-                        <a-card-meta :title="data.alt" style="text-align: center; text-decoration: none"> </a-card-meta
-                    ></a>
-                </a-card>
+                    </div>
+                </template>
             </template>
         </div>
 
         <div class="bottom_contact">
-            <p>언제든 연락주세요</p>
-            <p>Recrip은 여러분의 많은 참여를 기다립니다.</p>
-            <p>숨어있는 지역 명소와 함께 즐기고 싶은 여행일정이 있다면 언제든지 환영입니다.</p>
+            <p></p>
+            <p>Recrip과 함께 손쉽게 여행을 준비해 보세요</p>
+            <p></p>
         </div>
     </div>
 </template>
