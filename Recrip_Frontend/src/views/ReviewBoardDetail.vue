@@ -221,6 +221,16 @@ watch(files, (files) => {
         getImageSource(file);
     });
 });
+
+const gotomap = (groupno , content_id) => {
+    console.log(groupno, content_id);
+    if (groupno != 0) {
+        router.push({ name: 'map', state: { groupno: groupno } });
+    } else {
+        router.push({ name: 'map', state: { content_id: content_id } });
+    }
+    
+}
 </script>
 
 <template>
@@ -247,6 +257,9 @@ watch(files, (files) => {
                                 </a-card-meta>
                             </a-card>
                         </template>
+                    </div>
+                    <div style="text-align:center; margin: 10px;">
+                        <button class="btn btn-primary" type="button" @click="gotomap(article.groupno,attr[0].content_id)">맵에서 보기</button>
                     </div>
                     <div class="row">
                         <div class="col-md-8">

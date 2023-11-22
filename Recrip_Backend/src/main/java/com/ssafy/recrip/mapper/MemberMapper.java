@@ -37,5 +37,5 @@ public interface MemberMapper {
 	AttractionDto getAttrInfo(String contentid);
 	int getCourseCount(String userid);
 	List<Integer> courseReview(Map<String,Object> param);
-	int reviewBoardAttrWrite(Map<String,Object> param);
+	List<Integer> getcourse(String groupno);
 }

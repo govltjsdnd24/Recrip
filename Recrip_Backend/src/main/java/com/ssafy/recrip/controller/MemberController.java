@@ -581,4 +581,61 @@ public class MemberController {
 		
 		return res;
 	}
+	
+	@GetMapping("/getcourse")
+	public ResponseEntity<Map<String, Object>> getcourse(String groupno) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		
+		List<Integer> getcourse = service.getcourse(groupno);
+		List<AttractionDto> result = new ArrayList<>();
+		
+		for (Integer id : getcourse) {
+			AttractionDto attr = service.getAttrInfo(String.valueOf(id));
+			result.add(attr);
+		}
+		
+		try {
+			
+			if(result.size()>0) {
+				map.put("resdata", result);
+				map.put("resmsg", "1");
+			} else {
+				map.put("resmsg", "조회 실패");
+				map.put("resdata", "0");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회 중 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
+	@GetMapping("/getattraction")
+	public ResponseEntity<Map<String, Object>> getattracion(String content_id) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		
+		List<AttractionDto> result = new ArrayList<>();
+		AttractionDto attr = service.getAttrInfo(content_id);
+		result.add(attr);
+		
+		try {
+			if(result.size() > 0) {
+				map.put("resdata", result);
+				map.put("resmsg", "1");
+			} else {
+				map.put("resmsg", "조회 실패");
+				map.put("resdata", "0");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회 중 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
 }
