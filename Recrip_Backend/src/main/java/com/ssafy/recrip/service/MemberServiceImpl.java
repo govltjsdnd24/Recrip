@@ -80,8 +80,9 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public List<CourseDto> courseList(Map<String,Object> param) {
 		// TODO Auto-generated method stub
-		int current = (1 + (Integer.parseInt((String) param.get("current")) - 1) * Integer.parseInt((String) param.get("size")));
-		int size = (Integer.parseInt((String) param.get("current"))) * Integer.parseInt((String) param.get("size"));
+		int total = session.getMapper(MemberMapper.class).getCourseCount((String)param.get("userid"));
+		int current = (total - (Integer.parseInt((String) param.get("current")) - 1) * Integer.parseInt((String) param.get("size")));
+		int size = (total - (Integer.parseInt((String) param.get("current"))) * Integer.parseInt((String) param.get("size")) + 1);
 		param.put("current", current);
 		param.put("size", size);
 		System.out.println("asdasdsadasd"+param);

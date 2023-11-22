@@ -22,7 +22,7 @@ public interface BoardService {
 	BoardDto freeBoardView(String articleno);
 	BoardDto reviewBoardView(String articleno);
 	List<CommentDto> freeCommentList(Map<String,String> map);
-	List<CommentDto> reviewCommentList(String articleno);
+	List<CommentDto> reviewCommentList(Map<String,String> map);
 	int freeCommentWrite(CommentDto dto);
 	int reviewCommentWrite(CommentDto dto);
 	int freeCommentDelete(String commentno);
@@ -52,4 +52,5 @@ public interface BoardService {
 	int freeCommentChildWrite(CommentDto dto);
 	int reviewCommentChildWrite(CommentDto dto);
 	int freeMaxComment(String articleno);
+	int reviewMaxComment(String articleno);
 }
