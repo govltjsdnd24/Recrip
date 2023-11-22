@@ -202,7 +202,6 @@ const CommentDelete = (commentno) => {
 
     setTimeout(gozero, 100);
 };
-
 </script>
 
 <template>
@@ -302,73 +301,86 @@ const CommentDelete = (commentno) => {
                     <h4>댓글 ({{ commentcount }})</h4>
                     <ul class="list-group">
                         <template v-if="commentcount > 0">
-                        <li class="list-group-item pt-0 pb-0" v-for="comment in comments" :key="comment.commentno">
-                            <div class="media mt-3 mb-3">
-                                <div class="media-body">
-                                    <div class="row">
-                                        <h5 class="mt-0 col">{{ comment.userid }}</h5>
-                                        <div class="d-flex justify-content-end col">
-                                            <template v-if="IsLogin == true">
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-outline-dark ms-1"
-                                                    id="btn-cm-delete"
-                                                    @click="CommentChild(comment)"
-                                                >
-                                                    댓글추가
-                                                </button>
-                                                <template v-if="userinfo.userid == comment.userid">
+                            <li class="list-group-item pt-0 pb-0" v-for="comment in comments" :key="comment.commentno">
+                                <div
+                                    class="media mt-3 mb-3"
+                                    :style="{
+                                        marginLeft: (comment.depth < 5 ? comment.depth : 4) * 100 + 'px',
+                                    }"
+                                >
+                                    <template v-if="comment.depth != 0">
+                                        <img
+                                            src="/src/assets/images/down_right.png"
+                                            style="width: 30px; height: 20px; margin-left: -50px"
+                                        />
+                                    </template>
+                                    <div class="media-body">
+                                        <div class="row">
+                                            <h5 class="mt-0 col">{{ comment.userid }}</h5>
+                                            <div class="d-flex justify-content-end col">
+                                                <template v-if="IsLogin == true">
                                                     <button
                                                         type="button"
-                                                        class="btn btn-outline-danger ms-1"
+                                                        class="btn btn-outline-dark ms-1"
                                                         id="btn-cm-delete"
-                                                        @click="CommentDelete(comment.commentno)"
+                                                        @click="CommentChild(comment)"
                                                     >
-                                                        댓글삭제
+                                                        댓글추가
                                                     </button>
+                                                    <template v-if="userinfo.userid == comment.userid">
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-outline-danger ms-1"
+                                                            id="btn-cm-delete"
+                                                            @click="CommentDelete(comment.commentno)"
+                                                        >
+                                                            댓글삭제
+                                                        </button>
+                                                    </template>
                                                 </template>
-                                            </template>
+                                            </div>
+                                        </div>
+                                        <p>{{ comment.content }}</p>
+                                        <p>{{ comment.registdate }}</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="modal modal-wrap modal-comment"
+                                    tabindex="-1"
+                                    role="dialog"
+                                    aria-labelledby="myLargeModalLabel"
+                                    aria-hidden="true"
+                                >
+                                    <div class="modal1 modal-dialogue">
+                                        <header class="modal-header">
+                                            <h2>답글 작성</h2>
+                                            <button class="modal-close-btn" @click="modalOff('.modal-comment')">
+                                                X
+                                            </button>
+                                        </header>
+                                        {{ parentuserid }}:
+                                        {{ parentcontent }}
+                                        <div class="modal-input-wrap">
+                                            <label class="modal-label" for="modal-pw">내용</label>
+                                            <textarea
+                                                class="modal-input"
+                                                id="content"
+                                                name="content"
+                                                v-model="childcontent"
+                                                style="width: 370px; height: 200px"
+                                            >
+                                        내용</textarea
+                                            >
+                                        </div>
+                                        <div class="modal-input-wrap" style="justify-content: center">
+                                            <button @click="CommentChildWrite()" class="modal-submit">확인</button>
+                                            <button class="modal-cancel but" @click="modalOff('.modal-comment')">
+                                                취소
+                                            </button>
                                         </div>
                                     </div>
-                                    <p>{{ comment.content }}</p>
-                                    <p>{{ comment.registdate }}</p>
                                 </div>
-                            </div>
-                            <div
-                                class="modal modal-wrap modal-comment"
-                                tabindex="-1"
-                                role="dialog"
-                                aria-labelledby="myLargeModalLabel"
-                                aria-hidden="true"
-                            >
-                                <div class="modal1 modal-dialogue">
-                                    <header class="modal-header">
-                                        <h2>답글 작성</h2>
-                                        <button class="modal-close-btn" @click="modalOff('.modal-comment')">X</button>
-                                    </header>
-                                    {{ parentuserid }}:
-                                    {{ parentcontent }}
-                                    <div class="modal-input-wrap">
-                                        <label class="modal-label" for="modal-pw">내용</label>
-                                        <textarea
-                                            class="modal-input"
-                                            id="content"
-                                            name="content"
-                                            v-model="childcontent"
-                                            style="width: 370px; height: 200px"
-                                        >
-                                        내용</textarea
-                                        >
-                                    </div>
-                                    <div class="modal-input-wrap" style="justify-content: center">
-                                        <button @click="CommentChildWrite()" class="modal-submit">확인</button>
-                                        <button class="modal-cancel but" @click="modalOff('.modal-comment')">
-                                            취소
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
                         </template>
                     </ul>
                 </div>
@@ -376,12 +388,12 @@ const CommentDelete = (commentno) => {
         </div>
     </main>
     <div>
-    <draggable v-model="cards" :options="{ animation: 200 }">
-      <div v-for="(card, index) in cards" :key="index" class="card">
-        {{ card }}
-      </div>
-    </draggable>
-  </div>
+        <draggable v-model="cards" :options="{ animation: 200 }">
+            <div v-for="(card, index) in cards" :key="index" class="card">
+                {{ card }}
+            </div>
+        </draggable>
+    </div>
 </template>
 
 <style scoped></style>
