@@ -32,11 +32,11 @@ onBeforeMount(() => {
                     <img
                         v-else
                         alt="example"
-                        src="/src/assets/images/Recrip.JPG"
+                        src="/src/assets/images/Recrip_wide.JPG"
                         style="object-fit: fit; max-height: 200px"
                     />
                 </template>
-                <a-rate :value="article.starscore" allow-half disabled style="margin-bottom: 20px;"></a-rate>
+                <a-rate :value="article.starscore" allow-half disabled style="margin-bottom: 20px"></a-rate>
                 <a-card-meta :title="subject">
                     <template #description>
                         <p>조회수: {{ article.hit }} &nbsp; 추천수: {{ article.likes }}</p>
