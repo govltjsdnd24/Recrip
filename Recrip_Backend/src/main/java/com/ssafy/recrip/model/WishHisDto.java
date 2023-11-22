@@ -14,4 +14,5 @@ import lombok.ToString;
 public class WishHisDto {
 	String userid;
 	String contentid;
+	String articleno;
 }

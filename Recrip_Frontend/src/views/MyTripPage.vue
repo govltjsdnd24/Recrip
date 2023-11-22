@@ -18,6 +18,7 @@ const isShown = ref(false);
 const group = ref();
 const index = [1, 2, 3, 4, 5];
 const title = ref('');
+const articleno = ref();
 
 onBeforeMount(() => {
     if (getLoginInfo.userid == null) {
@@ -69,8 +70,10 @@ const WishLoad = () => {
             },
         })
         .then((response) => {
+            console.log('위시 리스트 결과',response);
             list.value = response.data.resmsg;
             total.value = response.data.totalpage;
+            articleno.value = response.data.resid;
         });
 };
 
@@ -145,9 +148,23 @@ const reviewwrite = (attr) => {
     router.push({ name: 'ReviewBoardWrite', state: { attr: JSON.stringify(attr) } });
 };
 
-const deleteattr = (index) => {
-    console.log(index);
+const deleteattr = (articleno, index) => {
+    console.log(articleno);
+    let url = `/api/wishdelete?articleno=${articleno}`;
+    axios.delete(url).then(response => {
+        console.log(response)
+        setTimeout(WishLoad(),1000);
+    });
 };
+
+const deletecourse = (groupno) => {
+    console.log(groupno);
+    let url = `/api/wishdelete?groupno=${groupno}`;
+    axios.delete(url).then(response => {
+        console.log(response)
+        setTimeout(CourseLoad(),1000);
+    });
+}
 
 const reviewcoursewrite = (groupno) => {
     console.log(groupno);
@@ -210,7 +227,7 @@ const reviewcoursewrite = (groupno) => {
                                 </template>
                                 <template #actions>
                                     <button @click="reviewwrite(attr)">review</button>
-                                    <button @click="deleteattr(index)">delete</button>
+                                    <button @click="deleteattr(articleno[index].articleno, index)">delete</button>
                                 </template>
                                 <a-card-meta :title="attr.title">
                                     <template #description>{{ attr.addr1 }} ({{ attr.zipcode }}) <br> TEL: {{ attr.tel!=''?attr.tel: "Unavailable"}}</template>
@@ -237,12 +254,12 @@ const reviewcoursewrite = (groupno) => {
                             <div 
                                 :id="'collapse' + index"
                                 class="accordion-collapse collapse"
-                                :aria-labelledby="'heading' + item"
+                                :aria-labelledby="'heading' + index"
                                 data-bs-parent="#accordionExample"
                             >
                                 <div class="accordion-body row flex">
                                     <template
-                                        v-for="(attr, index) in datas.data"
+                                        v-for="(attr, i) in datas.data"
                                         :key="attr.content_id"
                                         
                                     >
@@ -265,7 +282,7 @@ const reviewcoursewrite = (groupno) => {
                                         </div>
 
                                         <div
-                                            v-if="index != datas.data.length - 1"
+                                            v-if="i != datas.data.length - 1"
                                             class="col-2 px-0"
                                             style="vertical-align: middle; width: 50px"
                                         >
@@ -279,7 +296,7 @@ const reviewcoursewrite = (groupno) => {
                                         >
                                             review
                                         </button>
-                                        <button class="col-4 btn btn-outline-danger mx-5" @click="deleteattr(index)">
+                                        <button class="col-4 btn btn-outline-danger mx-5" @click="deletecourse(list[index].groupno)">
                                             delete
                                         </button>
                                     </div>

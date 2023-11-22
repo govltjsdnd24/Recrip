@@ -281,6 +281,7 @@ public class MemberController {
 			int totalpage = service.getTotalCount(param) / Integer.parseInt((String) param.get("size")) + 1;
 			
 			if(list.size()>0) {
+				map.put("resid",list);
 				map.put("resmsg", result);
 				map.put("totalpage",totalpage);
 				map.put("resdata", "1");
@@ -470,10 +471,10 @@ public class MemberController {
 	}
 	
 	@DeleteMapping("/wishdelete")
-	public ResponseEntity<Map<String, Object>> wishdelete(String contentid) throws SQLException {
+	public ResponseEntity<Map<String, Object>> wishdelete(String articleno) throws SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			int result = service.wishdelete(contentid);
+			int result = service.wishdelete(articleno);
 			if(result != 0) {
 				map.put("resdata", "1");
 				map.put("resmsg", "삭제 성공");

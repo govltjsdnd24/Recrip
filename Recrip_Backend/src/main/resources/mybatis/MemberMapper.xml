@@ -67,7 +67,7 @@
 		delete from historylist where contentid = #{contentid}
 	</delete>
 	<delete id="wishdelete" parameterType="string">
-		delete from wishlist where contentid = #{contentid}
+		delete from wishlist where articleno = #{articleno}
 	</delete>
 	<delete id="coursedelete" parameterType="string">
 		delete from courselist where groupno = #{groupno}
