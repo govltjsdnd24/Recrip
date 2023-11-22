@@ -102,7 +102,7 @@ onBeforeUnmount(() => {
             </div>
             <div class="image-on-text">
                 <p>최고의 여행 계획을 원하세요?</p>
-                <p>Recrip</p>
+                <div><p>Recrip</p></div>
                 <p>에게 맡기세요.</p>
             </div>
             <div class="image fadeslide">
@@ -110,7 +110,7 @@ onBeforeUnmount(() => {
             </div>
             <div class="image-on-text">
                 <p>최고의 여행 계획을 원하세요?</p>
-                <p>Recrip</p>
+                <div><p>Recrip</p></div>
                 <p>에게 맡기세요.</p>
             </div>
             <div class="image fadeslide">
@@ -118,7 +118,7 @@ onBeforeUnmount(() => {
             </div>
             <div class="image-on-text">
                 <p>최고의 여행 계획을 원하세요?</p>
-                <p>Recrip</p>
+                <div><p>Recrip</p></div>
                 <p>에게 맡기세요.</p>
             </div>
             <div class="image fadeslide">
@@ -126,7 +126,7 @@ onBeforeUnmount(() => {
             </div>
             <div class="image-on-text">
                 <p>최고의 여행 계획을 원하세요?</p>
-                <p>Recrip</p>
+                <div><p>Recrip</p></div>
                 <p>에게 맡기세요.</p>
             </div>
         </div>
