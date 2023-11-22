@@ -188,4 +188,10 @@ public class MemberServiceImpl implements MemberService{
 		return session.getMapper(MemberMapper.class).courseReview(param);
 	}
 
+	@Override
+	public List<Integer> getcourse(String groupno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).getcourse(groupno);
+	}
+
 }

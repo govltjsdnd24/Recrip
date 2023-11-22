@@ -244,7 +244,7 @@ const CommentDelete = (commentno) => {
                         <div><h3>첨부파일</h3></div>
                         <br />
                         <div v-for="file in files" :key="file.filename">
-                            <a :href="'http://192.168.0.3:8080/trip/download?fileName=' + file.filename">{{
+                            <a :href="'http://192.168.205.66:8080/trip/download?fileName=' + file.filename">{{
                                 file.filename
                             }}</a>
                         </div>

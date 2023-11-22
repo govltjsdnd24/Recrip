@@ -63,6 +63,21 @@ function initializeMap() {
         };
         // 지도를 생성합니다.
         map = new kakao.maps.Map(mapContainer.value, options);
+
+        if (history.state.groupno != null) {
+            let url = `/api/getcourse?groupno=${history.state.groupno}`;
+            axios.get(url).then(response => {
+                selectcourse.value = response.data.resdata;
+                makeList(response.data);
+                coursesave();
+            });
+        } else if (history.state.content_id != null) {
+            alert('게시판의 여행 정보를 맵에 표시합니다.');
+            let url = `/api/getattraction?content_id=${history.state.content_id}`;
+            axios.get(url).then(response => {
+                makeList(response.data);
+            });
+        }
     });
 }
 
@@ -141,8 +156,8 @@ var positions = ref([]); // marker 배열.
 var overlays = ref([]);
 
 function makeList(data) {
+    console.log('makelist', data);
     carousel.value = data.resdata;
-    console.log(data.resdata);
 
     positions = [];
     data.resdata.forEach((area) => {
@@ -410,13 +425,16 @@ const coursesave = () => {
             userid: getLoginInfo.userid,
         };
         course.push(c);
-        
+
         surecourse.push(attr);
     });
 
     console.log('코스 복사', surecourse);
 
-    if (getLoginInfo.userid != null) {
+    if (history.state.groupno = ! null) {
+        alert('게시판의 여행 정보를 맵에 표시합니다.');
+    } else {
+        if (getLoginInfo.userid != null) {
         let url = '/api/courseinsert';
         axios
             .post(url, {
@@ -431,13 +449,15 @@ const coursesave = () => {
                 }
             })
             .catch((error) => console.log(error));
-    } else {
-        if (confirm('현재 로그인 되어있지 않아 계획이 저장되지 않고 맵에만 출력됩니다.\n그래도 출력하시겠습니까?')) {
-            alert('여행 계획을 지도에 출력합니다.');
         } else {
-            return;
+            if (confirm('현재 로그인 되어있지 않아 계획이 저장되지 않고 맵에만 출력됩니다.\n그래도 출력하시겠습니까?')) {
+                alert('여행 계획을 지도에 출력합니다.');
+            } else {
+                return;
+            }
         }
     }
+    
 
     let mobility = 'https://apis-navi.kakaomobility.com/v1/waypoints/directions';
     let key = '935d83ed14edef82a34131e921e9f2bd';
