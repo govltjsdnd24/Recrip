@@ -113,7 +113,10 @@ const fileschange = (e) => {
                     <template v-for="(at, index) in attr" :key="index">
                         <a-card hoverable style="width: 300px; padding: 10px; margin-left: 5px; margin-right: 5px">
                             <template #cover>
-                                <img :alt="at.title" :src="at.first_image" />
+                                <img
+                                    :alt="at.title"
+                                    :src="at.first_image != '' ? at.first_image : '/src/assets/images/Recrip_wide.JPG'"
+                                />
                             </template>
                             <p><a-rate v-model:value="starscore[index]" allow-half /></p>
                             <a-card-meta :title="at.title">
