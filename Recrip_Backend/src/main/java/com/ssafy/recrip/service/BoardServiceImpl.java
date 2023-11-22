@@ -110,9 +110,9 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<CommentDto> reviewCommentList(String articleno) {
+	public List<CommentDto> reviewCommentList(Map<String,String> map) {
 		// TODO Auto-generated method stub
-		return session.getMapper(BoardMapper.class).reviewCommentList(articleno);
+		return session.getMapper(BoardMapper.class).reviewCommentList(map);
 	}
 
 	@Override
@@ -282,7 +282,15 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int freeMaxComment(String articleno) {
 		// TODO Auto-generated method stub
-		return session.getMapper(BoardMapper.class).freeMaxComment(articleno);
+		Object result = session.getMapper(BoardMapper.class).freeMaxComment(articleno);
+		return result == null ? 0 : (int) result;
+	}
+
+	@Override
+	public int reviewMaxComment(String articleno) {
+		// TODO Auto-generated method stub
+		Object result = session.getMapper(BoardMapper.class).reviewMaxComment(articleno);
+		return result == null ? 0 : (int) result;
 	}
 	
 }

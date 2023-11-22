@@ -39,17 +39,20 @@
 	<select id="historyList" parameterType="map" resultType="wishHisDto">
 		select * from historylist
 		where userid = #{userid}
+		order by articleno desc
 		limit ${current}, ${size}
 	</select>
 	<select id="wishList" parameterType="map" resultType="wishHisDto">
 		select * from wishlist
 		where userid = #{userid}
+		order by articleno desc
 		limit ${current}, ${size}
 	</select>
 	<select id="courseList" parameterType="map" resultType="courseDto">
 		select * from courselist
 		where userid = #{userid}
-		and groupno between ${current} and ${size}
+		and groupno between ${size} and ${current}
+		order by groupno desc, articleno
 	</select>
 	<insert id="histroyInsert" parameterType="wishHisDto">
 		insert into historylist (userid, contentid) values (#{userid}, #{contentid})

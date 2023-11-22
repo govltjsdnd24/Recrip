@@ -34,7 +34,7 @@ onBeforeMount(() => {
 
     async function getComment(comm) {
         const response = await axios.get(comm);
-        console.log(response.data.resdata);
+        console.log(response);
         comments.value = response.data.resdata;
     }
     getComment(comm).catch((error) => {
