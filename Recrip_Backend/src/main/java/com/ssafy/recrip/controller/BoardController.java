@@ -41,13 +41,14 @@ public class BoardController {
 	
 	BoardService service;
 	private S3UpDownloadService s3service;
-
+	MemberService mservice;
 	
 	@Autowired
-	public BoardController(BoardService service, S3UpDownloadService s3service) {
+	public BoardController(BoardService service, S3UpDownloadService s3service, MemberService mservice) {
 		super();
 		this.service = service;
 		this.s3service = s3service;
+		this.mservice = mservice;
 	}
 	
 	@GetMapping("/freeboardlike")
@@ -73,7 +74,7 @@ public class BoardController {
 		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 		return res;
 	}
-	
+
 	@GetMapping("/reviewboardlike")
 	public ResponseEntity<Map<String, Object>> reviewboardlike(@RequestParam String articleno,@RequestParam String userid) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
@@ -183,14 +184,16 @@ public class BoardController {
 	}
 	
 	@PostMapping("/reviewboardwrite")
-	public ResponseEntity<Map<String, Object>> reviewboardwrite(@RequestParam String userid , @RequestParam String subject, @RequestParam String content, @RequestParam String contentid, @RequestParam String starscore, @RequestParam(required = false) List<MultipartFile> multipartFile) throws IllegalStateException, IOException, SQLException {
+	public ResponseEntity<Map<String, Object>> reviewboardwrite(@RequestParam String userid , @RequestParam String subject, @RequestParam String content,
+			@RequestParam List<String> contentid, @RequestParam List<String> starscore, 
+			@RequestParam(required = false) List<MultipartFile> multipartFile) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		BoardDto dto=new BoardDto();
 		dto.setUserid(userid);
 		dto.setSubject(subject);
 		dto.setContent(content);
-		dto.setStarscore(starscore);
-		dto.setContentid(contentid);
+		
+		System.out.println(contentid);
 		
 		try {
 			service.reviewBoardWrite(dto);
@@ -206,7 +209,14 @@ public class BoardController {
 				}
 			}
 			
-			service.addscore(contentid,starscore);
+			for (int i = 0; i < contentid.size(); i++) {
+				Map<String,Object> param = new HashMap<>();
+				param.put("articleno", articleno);
+				param.put("contentid", contentid.get(i));
+				param.put("starscore", starscore.get(i));
+				service.reviewBoardAttrWrite(param);
+				service.addscore(contentid.get(i), starscore.get(i));
+			}
 			
 			map.put("resmsg", "입력성공");
 			map.put("resdata", "1");
@@ -264,9 +274,20 @@ public class BoardController {
 	public ResponseEntity<Map<String, Object>> reviewboardview(String articleno) throws SQLException {
 		Map<String, Object> map = new HashMap<>();
 		try {
+			List<AttractionDto> attr = new ArrayList<>();
+			List<Map<String, Object>> result = service.reviewBoardAttrList(articleno);
+			System.out.println(result);
+			
+			for (Map<String, Object> data : result) {
+				AttractionDto info = mservice.getAttrInfo(String.valueOf((int)data.get("contentid")));
+				attr.add(info);
+			}
+			
 			BoardDto dto = service.reviewBoardView(articleno);
 			service.reviewBoardHit(articleno);
 			map.put("resdata", dto);
+			map.put("attr", attr);
+			map.put("starscore", result);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {
 			e.printStackTrace();

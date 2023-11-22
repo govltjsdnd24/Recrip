@@ -37,9 +37,18 @@
   	</insert>
   	
   	<insert id="reviewBoardWrite" parameterType="boardDto">
-  		insert into reviewboard (userid, subject, content, starscore, contentid)
-  		values (#{userid}, #{subject}, #{content}, #{starscore}, #{contentid})
+  		insert into reviewboard (userid, subject, content)
+  		values (#{userid}, #{subject}, #{content})
   	</insert>
+  	
+  	<insert id="reviewBoardAttrWrite" parameterType="map">
+  		insert into reviewboardattr (articleno, contentid, starscore)
+  		values(#{articleno}, #{contentid}, #{starscore})
+  	</insert>
+  	
+  	<select id="reviewBoardAttrList" parameterType="string" resultType="map">
+  		select * from reviewboardattr where articleno = #{articleno}
+  	</select>
   	
   	<update id="freeBoardDelete" parameterType="string">
   		update freeboard set isdelete = true where articleno = #{articleno}

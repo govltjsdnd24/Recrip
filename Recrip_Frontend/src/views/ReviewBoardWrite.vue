@@ -6,8 +6,15 @@ import { LoginInfo } from "../store/login";
 
 const route = useRoute();
 
-const attr = history.state.attr != null ? JSON.parse(history.state.attr) : '';
-const groupno = history.state.groupno != null ? history.state.groupno : 0;
+const attr = ref([]);
+if (history.state.attr != null) {
+	attr.value.push(JSON.parse(history.state.attr));
+}
+const groupno = ref(0);
+if (history.state.groupno != null) {
+	groupno.value = history.state.groupno
+}
+
 const info = LoginInfo();
 const { getLoginInfo } = info;
 
@@ -18,20 +25,36 @@ const router = useRouter();
 const starscore = ref();
 
 onMounted(() => {
-	console.log(attr);
 	userinfo.value = getLoginInfo;
-	if (groupno != null) {
-		console.log("코스 리뷰 작성",groupno);
+	if (groupno.value != 0) {
+		console.log("코스 리뷰 작성 정보", groupno.value);
+		courseload(groupno.value);
+	} else {
+		console.log("히스 위시 리뷰 정보",attr.value);
 	}
 })
+
+const courseload = (groupno) => {
+	let url = `/api/coursereview?userid=${getLoginInfo.userid}&groupno=${groupno}`;
+	axios.get(url).then(response => {
+		attr.value = response.data.resmsg;
+		starscore.value = new Array(attr.value.length);
+	});
+}
 
 const BoardWrite = () => {
     if (subject.value == '' || content.value == '') {
         alert('작성 내용 확인');
         return false;
 	}
-	
-	console.log(subject.value, content.value, userinfo.value.userid);
+
+	let contentid = [];
+	attr.value.forEach(data => {
+		contentid.push(data.content_id);
+	})
+
+	console.log(starscore.value);
+	console.log(subject.value, content.value, userinfo.value.userid, contentid);
 
 	const multipartFile = new FormData();
 
@@ -43,7 +66,7 @@ const BoardWrite = () => {
 	multipartFile.append('subject', subject.value);
 	multipartFile.append('content', content.value);	
 	multipartFile.append('starscore', starscore.value);
-	multipartFile.append('contentid', attr.content_id);
+	multipartFile.append('contentid', contentid);
 
     var url = '/api/reviewboardwrite';
 
@@ -52,7 +75,7 @@ const BoardWrite = () => {
 	}
 
 	async function writeArticle(url) {
-		console.log("MULTI "+multipartFile);
+		console.log("MULTI "+ multipartFile);
 		const response = await axios.post(url, multipartFile, { headers: {'Content-Type':'multipart/form-data'}});
         console.log(response);
 	}
@@ -86,17 +109,19 @@ const fileschange = (e) => {
 					</h2>
 				</div>
 				<div class="row justify-content-center">
-					<a-card hoverable style="width: 300px">
-						<template #cover>
-						<img :alt="attr.title" :src="attr.first_image"/>
-						</template>
-						<p><a-rate v-model:value="attr.starscore" allow-half disabled/>&nbsp;&nbsp;({{ attr.count }})</p>
-						<a-card-meta :title="attr.title">
-						<template #description>
-							{{attr.addr1}}
-						</template>
-						</a-card-meta>
-					</a-card>
+					<template v-for="at , index in attr" :key="index">
+						<a-card hoverable style="width: 300px">
+							<template #cover>
+							<img :alt="at.title" :src="at.first_image"/>
+							</template>
+							<p><a-rate v-model:value="starscore[index]" allow-half/></p>
+							<a-card-meta :title="at.title">
+							<template #description>
+								{{at.addr1}}
+							</template>
+							</a-card-meta>
+						</a-card>
+					</template>
         		</div>
 				<div class="col-lg-8 col-md-10 col-sm-12">
 					<form id="form-register" method="POST" action="">
@@ -105,11 +130,6 @@ const fileschange = (e) => {
 							<label for="subject" class="form-label">제목 : </label> <input
 								type="text" class="form-control" id="subject" name="subject"
 								placeholder="제목..." v-model="subject"/>
-						</div>
-						<div class="mb-3">
-							<label class="form-label">별점 : &nbsp;&nbsp;</label>
-							<a-rate v-model:value="starscore" allow-half />
-							<label class="form-label">&nbsp;&nbsp;{{ starscore }}</label>
 						</div>
 						<div class="mb-3">
 							<label for="content" class="form-label">내용 : </label>
