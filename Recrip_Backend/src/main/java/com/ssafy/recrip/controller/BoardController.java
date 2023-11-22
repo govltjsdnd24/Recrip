@@ -255,8 +255,9 @@ public class BoardController {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			BoardDto dto = service.freeBoardView(articleno);
-			service.freeBoardHit(articleno);
+			String url = service.profilePicture(dto.getUserid());
 			map.put("resdata", dto);
+			map.put("url", url);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -284,10 +285,11 @@ public class BoardController {
 			}
 			
 			BoardDto dto = service.reviewBoardView(articleno);
-			service.reviewBoardHit(articleno);
+			String url = service.profilePicture(dto.getUserid());
 			map.put("resdata", dto);
 			map.put("attr", attr);
 			map.put("starscore", result);
+			map.put("url", url);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -679,7 +681,6 @@ public class BoardController {
 		
 		return res;
 	}
-	
-	
+
 	
 }

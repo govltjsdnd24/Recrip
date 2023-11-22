@@ -202,4 +202,7 @@
   	<select id="reviewMaxComment" parameterType="String" resultType="int">
   		select commentno from reviewcomment where isdelete = 0 AND articleno=${articleno} order by commentno desc limit 1;
   	</select>
+  	<select id="profilePicture" parameterType="String" resultType="String">
+  		select profile from members where userid = "${userid}";
+  	</select>
 </mapper>

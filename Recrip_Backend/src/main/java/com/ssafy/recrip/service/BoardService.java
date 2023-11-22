@@ -55,4 +55,5 @@ public interface BoardService {
 	int reviewMaxComment(String articleno);
 	int reviewBoardAttrWrite(Map<String,Object> param);
 	List<Map<String,Object>> reviewBoardAttrList(String articleno);
+	String profilePicture(String userid);
 }
