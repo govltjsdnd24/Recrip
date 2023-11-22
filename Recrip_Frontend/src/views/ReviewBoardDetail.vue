@@ -17,6 +17,9 @@ const files = ref([{}]);
 const comment = ref('');
 const likecount = ref(0);
 
+const attr = ref();
+const starscore = ref();
+
 onBeforeMount(() => {
     userinfo.value = getLoginInfo;
     var url = `/api/reviewboardview?articleno=${articleno}`;
@@ -25,6 +28,10 @@ onBeforeMount(() => {
         const response = await axios.get(url);
         console.log("글정보",response.data);
         article.value = response.data.resdata;
+        attr.value = response.data.attr;
+        starscore.value = response.data.starscore;
+
+        console.log(attr.value, starscore.value);
     }
     getArticle(url).catch((error) => {
         console.log(error);
@@ -163,6 +170,21 @@ const CommentDelete = (commentno) => {
                     </h2>
                 </div>
                 <div class="col-lg-8 col-md-10 col-sm-12">
+                    <div class="row justify-content-center" style="margin-bottom: 20px;">
+                        <template v-for="at , index in attr" :key="index">
+                            <a-card hoverable style="width: 300px">
+                                <template #cover>
+                                <img :alt="at.title" :src="at.first_image"/>
+                                </template>
+                                <p><a-rate :value="starscore[index].starscore/10" allow-half disabled/></p>
+                                <a-card-meta :title="at.title">
+                                <template #description>
+                                    {{at.addr1}}
+                                </template>
+                                </a-card-meta>
+                            </a-card>
+                        </template>
+        		    </div>
                     <div class="row">
                         <div class="col-md-8">
                             <div class="clearfix align-content-center">
