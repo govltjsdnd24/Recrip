@@ -17,6 +17,7 @@ const list = ref([]);
 const isShown = ref(false);
 const group = ref();
 const index = [1, 2, 3, 4, 5];
+const title = ref('');
 
 onBeforeMount(() => {
     if (getLoginInfo.userid == null) {
@@ -27,6 +28,7 @@ onBeforeMount(() => {
 
 const HistoryLoad = () => {
     isShown.value = true;
+    title.value = '내가 본 여행지 목록';
     if (type.value != 'history') {
         current.value = 1;
     }
@@ -51,6 +53,7 @@ const HistoryLoad = () => {
 
 const WishLoad = () => {
     isShown.value = true;
+    title.value = '찜 목록';
     if (type.value != 'wish') {
         current.value = 1;
     }
@@ -73,6 +76,7 @@ const WishLoad = () => {
 
 const CourseLoad = () => {
     isShown.value = true;
+    title.value = '코스 목록';
     if (type.value != 'course') {
         current.value = 1;
     }
@@ -149,9 +153,13 @@ const reviewcoursewrite = (groupno) => {
             <a-button type="dashed" style="margin: 20px" @click="WishLoad">찜 목록</a-button>
             <a-button type="dashed" style="margin: 20px" @click="CourseLoad">코스 목록</a-button>
         </div>
-        <h5 v-if="isShown == false">보고 싶은 페이지를 선택해주세요.</h5>
+        <h5 v-if="isShown == false" style="text-align: center">보고 싶은 페이지를 선택해주세요.</h5>
 
-        <div class="row" style="width: 1900px; height: 1000px">
+        <template v-if="title != ''">
+            <h1 style="text-align: center; margin-bottom: 0px">{{ title }}</h1>
+        </template>
+
+        <div class="row">
             <template v-if="type != 'course'">
                 <template v-for="(attr, index) in list" :key="index">
                     <div class="col-2">
@@ -177,41 +185,89 @@ const reviewcoursewrite = (groupno) => {
                 </template>
             </template>
             <template v-else>
-                <div v-for="(datas, index) in list" :key="index">
-                    <div class="row">
-                        <h1>{{ (current - 1) * 5 + index + 1 }}</h1>
-                        <div class="col-2" v-for="attr in datas.data" :key="attr.content_id">
-                            <a-card hoverable style="max-width: 300px; margin: 0px">
-                                <template #cover>
-                                    <img
-                                        :alt="attr.title"
-                                        :src="
-                                            attr.first_image != ''
-                                                ? attr.first_image
-                                                : '/src/assets/images/Recrip_wide.JPG'
-                                        "
-                                        style="max-width: 300px; max-height: 300px"
-                                    />
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item" v-for="(datas, index) in list" :key="index" style="margin: 0px">
+                        <h2 class="accordion-header" :id="'heading' + index">
+                            <button
+                                class="accordion-button"
+                                :class="{ collapsed: index !== 0 }"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                :data-bs-target="'#collapse' + index"
+                                aria-expanded="true"
+                                :aria-controls="'collapse' + index"
+                            >
+                                {{ (current - 1) * 5 + index + 1 }}번 코스
+                            </button>
+                        </h2>
+                        <div
+                            :id="'collapse' + index"
+                            class="accordion-collapse collapse"
+                            :class="{ show: index === 0 }"
+                            :aria-labelledby="'heading' + item"
+                            data-bs-parent="#accordionExample"
+                        >
+                            <div class="accordion-body row flex">
+                                <template
+                                    v-for="(attr, index) in datas.data"
+                                    :key="attr.content_id"
+                                    style="margin: 0px"
+                                >
+                                    <div class="col-2 mx-0 px-0">
+                                        <a-card hoverable style="max-width: 300px; margin: 0px">
+                                            <template #cover>
+                                                <img
+                                                    :alt="attr.title"
+                                                    :src="
+                                                        attr.first_image != ''
+                                                            ? attr.first_image
+                                                            : '/src/assets/images/Recrip_wide.JPG'
+                                                    "
+                                                    style="max-width: 300px; max-height: 300px"
+                                                />
+                                            </template>
+
+                                            <a-card-meta :title="attr.title"> </a-card-meta>
+                                        </a-card>
+                                    </div>
+
+                                    <div
+                                        v-if="index != datas.data.length - 1"
+                                        class="col-2 px-0"
+                                        style="vertical-align: middle; width: 50px"
+                                    >
+                                        <img src="@/assets/images/arrow_right.png" style="width: 50px; margin: 0px" />
+                                    </div>
                                 </template>
-                                <template #actions>
-                                    <button @click="reviewcoursewrite(datas.groupno)">review</button>
-                                    <button @click="deleteattr(index)">delete</button>
-                                </template>
-                                <a-card-meta :title="attr.title">
-                                    <template #description>{{ attr.addr1 }}</template>
-                                </a-card-meta>
-                            </a-card>
+                                <div class="row flex justify-content-center">
+                                    <button
+                                        class="col-4 btn btn-outline-secondary mx-5"
+                                        @click="reviewcoursewrite(datas.groupno)"
+                                    >
+                                        review
+                                    </button>
+                                    <button class="col-4 btn btn-outline-danger mx-5" @click="deleteattr(index)">
+                                        delete
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </template>
         </div>
 
-        <div class="row">
-            <table class="text-center">
-                <PageNavigation :current-page="current" :total-page="total" @pageChange="onPageChange"></PageNavigation>
-            </table>
-        </div>
+        <template v-if="title != ''">
+            <div class="row">
+                <table class="text-center">
+                    <PageNavigation
+                        :current-page="current"
+                        :total-page="total"
+                        @pageChange="onPageChange"
+                    ></PageNavigation>
+                </table>
+            </div>
+        </template>
     </div>
 </template>
 
