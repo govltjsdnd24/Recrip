@@ -16,8 +16,8 @@ const areaUrl =
 const src =
     '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=4fd0aaf2d6c6b86333a1b8f0115bac76&libraries=services,clusterer,drawing';
 
-//const src =
-//    '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=068c718ed6d3a38278cc1820746952f0&libraries=services,clusterer,drawing';
+// const src =
+//     '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=068c718ed6d3a38278cc1820746952f0&libraries=services,clusterer,drawing';
 
 var map = ref(null);
 const mapContainer = ref(null);
@@ -222,7 +222,7 @@ function displayMarker() {
         var closeDiv = document.createElement('div');
         closeDiv.setAttribute(
             'style',
-            'background:#eee;width: 35px;height: 25px;position: absolute;top: 0px;right: 0px;border-bottom: 1px solid #ddd;'
+            'background:#eee;width: 35px;height: 28px;position: absolute;top: 0px;right: 0px;border-bottom: 1px solid #ddd;'
         );
         closeBtn.setAttribute(
             'style',
@@ -238,9 +238,9 @@ function displayMarker() {
         var addBtn = document.createElement('button');
         addBtn.setAttribute(
             'style',
-            "position: absolute;top: 75px;right: 100px;color: #888;padding-top:0px;margin-top:-5px;margin-bottom:5px;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');"
+            'position: absolute;top: 75px;right: 100px;color: #888;padding-top:5px; padding-bottom:5px;margin-top:-10px;margin-bottom:10px;width: 25px;height: 30px;font-weight:bold; font-size: large; );'
         );
-        addBtn.appendChild(document.createTextNode(''));
+        addBtn.appendChild(document.createTextNode('<'));
 
         addBtn.onclick = function () {
             //찜 누름
@@ -279,7 +279,7 @@ function displayMarker() {
         cardtitle.setAttribute('class', 'info');
         cardtitle.setAttribute(
             'style',
-            'margin-top:-5px;padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;display:inline-block;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:183px'
+            'margin-top:-5px;padding: 5px 0 0 10px;height: 33px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;display:inline-block;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;width:183px'
         );
         cardtitle.appendChild(document.createTextNode(positions[i].title));
         closeDiv.appendChild(closeBtn);
@@ -539,16 +539,27 @@ const coursesave = () => {
                 console.log(surecourse[i].title + ' => ' + surecourse[i + 1].title);
                 let content = document.createElement('div');
                 content.setAttribute('class', 'card');
+                content.setAttribute(
+                    'style',
+                    "position:relative;width:180px;height:150px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/box_movie.png') no-repeat;padding:15px 10px; padding-bottom:0px"
+                );
 
                 let cardtitle = document.createElement('div');
                 cardtitle.setAttribute('class', 'card-title');
                 cardtitle.appendChild(document.createTextNode('길찾기'));
-
+                cardtitle.setAttribute(
+                    'style',
+                    'color:#fff;font-size:16px;font-weight:bold; no-repeat right 120px center;margin-bottom:8px; text-align:center'
+                );
                 content.appendChild(cardtitle);
 
                 let cardtext = document.createElement('div');
                 cardtext.setAttribute('class', 'card-text');
                 cardtext.appendChild(document.createTextNode(surecourse[i].title + ' => ' + surecourse[i + 1].title));
+                cardtext.setAttribute(
+                    'style',
+                    'position:relative;font-size:13px;margin-bottom:2px;background:#2b2d36;padding:5px 10px;color:#aaabaf;line-height: 1;display:inline-block;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;text-align:center'
+                );
                 content.appendChild(cardtext);
 
                 let ul = document.createElement('ul');
@@ -559,12 +570,20 @@ const coursesave = () => {
                 let span1 = document.createElement('span');
                 span1.setAttribute('class', 'card-text');
                 span1.appendChild(document.createTextNode('거리 (m) : ' + sections[i].distance));
+                span1.setAttribute(
+                    'style',
+                    'position:relative;margin-left:-35px;font-size:13px;margin-bottom:2px;padding:5px 10px;color:#aaabaf;line-height: 1;'
+                );
                 li.appendChild(span1);
 
                 let li2 = document.createElement('li');
                 let span2 = document.createElement('span');
                 span2.setAttribute('class', 'card-text');
                 span2.appendChild(document.createTextNode('시간 (분) : ' + parseInt(sections[i].duration / 60)));
+                span2.setAttribute(
+                    'style',
+                    'position:relative;margin-left:-35px;font-size:13px;margin-bottom:2px;padding:5px 10px;color:#aaabaf;line-height: 1;'
+                );
                 li2.appendChild(span2);
 
                 ul.appendChild(li2);
@@ -735,7 +754,10 @@ function addcourse(index) {
             <div v-for="(data, index) in selectspot.slice().reverse()" :key="data.content_id" style="margin: 20px">
                 <a-card hoverable style="width: 100%">
                     <template #cover>
-                        <img alt="no image" :src="data.first_image" />
+                        <img
+                            alt="no image"
+                            :src="data.first_image != '' ? data.first_image : '/src/assets/images/Recrip_wide.JPG'"
+                        />
                     </template>
                     <template #actions>
                         <button @click="selectadd(selectspot.length - index - 1)">일정 추가</button>
@@ -794,7 +816,10 @@ function addcourse(index) {
             <div v-for="(data, index) in selectcourse" :key="data.content_id" style="margin: 20px">
                 <a-card hoverable style="width: 100%">
                     <template #cover>
-                        <img alt="no image" :src="data.first_image" />
+                        <img
+                            alt="no image"
+                            :src="data.first_image != '' ? data.first_image : '/src/assets/images/Recrip_wide.JPG'"
+                        />
                     </template>
                     <template #actions>
                         <button @click="coursedelete(index)">삭제</button>
