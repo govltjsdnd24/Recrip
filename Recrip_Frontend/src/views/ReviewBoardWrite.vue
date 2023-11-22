@@ -6,7 +6,8 @@ import { LoginInfo } from "../store/login";
 
 const route = useRoute();
 
-const attr = JSON.parse(history.state.attr);
+const attr = history.state.attr != null ? JSON.parse(history.state.attr) : '';
+const groupno = history.state.groupno != null ? history.state.groupno : 0;
 const info = LoginInfo();
 const { getLoginInfo } = info;
 
@@ -15,10 +16,15 @@ const subject = ref('');
 const content = ref('');
 const router = useRouter();
 const starscore = ref();
+
 onMounted(() => {
 	console.log(attr);
 	userinfo.value = getLoginInfo;
+	if (groupno != null) {
+		console.log("코스 리뷰 작성",groupno);
+	}
 })
+
 const BoardWrite = () => {
     if (subject.value == '' || content.value == '') {
         alert('작성 내용 확인');

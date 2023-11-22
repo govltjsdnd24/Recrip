@@ -95,7 +95,7 @@ const CourseLoad = () => {
                 if (index == response.data.resgroup[i]) {
                     l.push(response.data.resmsg[i]);
                 } else {
-                    list.value.push(l);
+                    list.value.push({data: l, groupno: index});
                     l = [];
                     l.push(response.data.resmsg[i]);
                     index = response.data.resgroup[i];
@@ -104,6 +104,7 @@ const CourseLoad = () => {
 
             list.value.push(l);
 
+            console.log("코스리스트",list.value);
             // list.value = response.data.resmsg;
             // group.value = response.data.resgroup;
             total.value = response.data.totalpage;
@@ -133,6 +134,11 @@ const reviewwrite = (attr) => {
 const deleteattr = (index) => {
     console.log(index);
 };
+
+const reviewcoursewrite = (groupno) => {
+    console.log(groupno);
+    router.push({ name: 'ReviewBoardWrite', state: { groupno: groupno } });
+}
 </script>
 
 <template>
@@ -169,10 +175,10 @@ const deleteattr = (index) => {
                 </template>
             </template>
             <template v-else>
-                <div v-for="data , index in list" :key="index">
+                <div v-for="datas , index in list" :key="index">
                     <div class="row">
                         <h1>{{ (current-1) * 5 + index + 1}}</h1>
-                        <div class="col-2" v-for="attr in data" :key="attr.content_id">
+                        <div class="col-2" v-for="attr in datas.data" :key="attr.content_id">
                             <a-card hoverable style="max-width: 300px; margin: 0px">
                                 <template #cover>
                                     <img
@@ -182,7 +188,7 @@ const deleteattr = (index) => {
                                     />
                                 </template>
                                 <template #actions>
-                                    <button @click="reviewwrite(attr)">review</button>
+                                    <button @click="reviewcoursewrite(datas.groupno)">review</button>
                                     <button @click="deleteattr(index)">delete</button>
                                 </template>
                                 <a-card-meta :title="attr.title">
