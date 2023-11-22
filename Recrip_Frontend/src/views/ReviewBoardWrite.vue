@@ -67,6 +67,7 @@ const BoardWrite = () => {
 	multipartFile.append('content', content.value);	
 	multipartFile.append('starscore', starscore.value);
 	multipartFile.append('contentid', contentid);
+	multipartFile.append('groupno', groupno.value);
 
     var url = '/api/reviewboardwrite';
 

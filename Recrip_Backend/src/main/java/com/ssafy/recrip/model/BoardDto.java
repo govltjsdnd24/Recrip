@@ -20,4 +20,5 @@ public class BoardDto {
 	boolean isdelete;
 	String starscore;
 	String contentid;
+	String groupno;
 }

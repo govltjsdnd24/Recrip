@@ -148,7 +148,8 @@ function makeList(data) {
     data.resdata.forEach((area) => {
         let markerInfo = {
             title: area.title,
-            latlng: new kakao.maps.LatLng(area.latitude, area.longitude),
+            latitude: area.latitude,
+            longitude: area.longitude,
             content_type_id: area.content_type_id,
             addr1: area.addr1,
             content_id: area.content_id,
@@ -211,7 +212,7 @@ function displayMarker() {
         // 마커를 생성합니다
         let markerobject = new kakao.maps.Marker({
             map: map, // 마커를 표시할 지도
-            position: positions[i].latlng, // 마커를 표시할 위치
+            position: new kakao.maps.LatLng(positions[i].latitude, positions[i].longitude), // 마커를 표시할 위치
             title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
             image: markerImage, // 마커 이미지
         });
@@ -245,7 +246,6 @@ function displayMarker() {
         addBtn.onclick = function () {
             //찜 누름
             selectspot.value.push(positions[i]);
-            console.log(positions[i].latlng);
             let url = `/api/addscore?content_id=${positions[i].content_id}`;
             axios
                 .get(url)
@@ -313,7 +313,7 @@ function displayMarker() {
 
         let overlay = new kakao.maps.CustomOverlay({
             map: map,
-            position: positions[i].latlng,
+            position: new kakao.maps.LatLng(positions[i].latitude, positions[i].longitude),
             content: content,
             yAnchor: 1,
         });
@@ -344,7 +344,7 @@ function displayMarker() {
     // 커스텀 오버레이를 생성합니다
 
     // 첫번째 검색 정보를 이용하여 지도 중심을 이동 시킵니다
-    map.setCenter(positions[0].latlng);
+    map.setCenter(new kakao.maps.LatLng(positions[0].latitude, positions[0].longitude));
     map.setLevel(6);
 
     const closeOverlay = () => {
@@ -410,6 +410,7 @@ const coursesave = () => {
             userid: getLoginInfo.userid,
         };
         course.push(c);
+        
         surecourse.push(attr);
     });
 
@@ -446,13 +447,14 @@ const coursesave = () => {
     for (let i = 1; i < surecourse.length - 1; i++) {
         let way = {
             name: surecourse[i].title,
-            x: surecourse[i].latlng.La,
-            y: surecourse[i].latlng.Ma,
+            x: surecourse[i].longitude,
+            y: surecourse[i].latitude,
         };
         waypoints.push(way);
     }
 
     console.log(waypoints);
+    console.log("확정 코스 비교",surecourse);
 
     axios
         .post(
@@ -460,13 +462,13 @@ const coursesave = () => {
             {
                 origin: {
                     name: surecourse[0].title,
-                    x: surecourse[0].latlng.La,
-                    y: surecourse[0].latlng.Ma,
+                    x: surecourse[0].longitude,
+                    y: surecourse[0].latitude,
                 },
                 destination: {
                     name: surecourse[surecourse.length - 1].title,
-                    x: surecourse[surecourse.length - 1].latlng.La,
-                    y: surecourse[surecourse.length - 1].latlng.Ma,
+                    x: surecourse[surecourse.length - 1].longitude,
+                    y: surecourse[surecourse.length - 1].latitude,
                 },
                 waypoints: waypoints,
                 priority: 'RECOMMEND',
@@ -528,7 +530,7 @@ const coursesave = () => {
 
             polyline.value.forEach((line) => line.setMap(map));
 
-            map.setCenter(surecourse[0].latlng);
+            map.setCenter(new kakao.maps.LatLng(surecourse[0].latitude, surecourse[0].longitude));
             map.setLevel(3);
 
             console.log(surecourse);

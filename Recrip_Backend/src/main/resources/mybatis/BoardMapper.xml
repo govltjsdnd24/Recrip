@@ -37,8 +37,8 @@
   	</insert>
   	
   	<insert id="reviewBoardWrite" parameterType="boardDto">
-  		insert into reviewboard (userid, subject, content)
-  		values (#{userid}, #{subject}, #{content})
+  		insert into reviewboard (userid, subject, content, groupno)
+  		values (#{userid}, #{subject}, #{content}, #{groupno})
   	</insert>
   	
   	<insert id="reviewBoardAttrWrite" parameterType="map">

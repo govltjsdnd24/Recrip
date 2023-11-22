@@ -185,14 +185,14 @@ public class BoardController {
 	
 	@PostMapping("/reviewboardwrite")
 	public ResponseEntity<Map<String, Object>> reviewboardwrite(@RequestParam String userid , @RequestParam String subject, @RequestParam String content,
-			@RequestParam List<String> contentid, @RequestParam List<String> starscore, 
+			@RequestParam List<String> contentid, @RequestParam List<String> starscore, @RequestParam String groupno, 
 			@RequestParam(required = false) List<MultipartFile> multipartFile) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		BoardDto dto=new BoardDto();
 		dto.setUserid(userid);
 		dto.setSubject(subject);
 		dto.setContent(content);
-		
+		dto.setGroupno(groupno);
 		System.out.println(contentid);
 		
 		try {
