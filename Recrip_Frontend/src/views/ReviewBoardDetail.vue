@@ -222,15 +222,14 @@ watch(files, (files) => {
     });
 });
 
-const gotomap = (groupno , content_id) => {
+const gotomap = (groupno, content_id) => {
     console.log(groupno, content_id);
     if (groupno != 0) {
         router.push({ name: 'map', state: { groupno: groupno } });
     } else {
         router.push({ name: 'map', state: { content_id: content_id } });
     }
-    
-}
+};
 </script>
 
 <template>
@@ -245,21 +244,34 @@ const gotomap = (groupno , content_id) => {
                 <div class="col-lg-8 col-md-10 col-sm-12">
                     <div class="row justify-content-center" style="margin-bottom: 20px">
                         <template v-for="(at, index) in attr" :key="index">
-                            <a-card hoverable style="width: 300px">
+                            <a-card
+                                hoverable
+                                style="width: 400px; margin: 5px; padding: 15px"
+                                class="d-flex align-items-center"
+                            >
                                 <template #cover>
-                                    <img :alt="at.title" :src="at.first_image" />
+                                    <img
+                                        :alt="at.title"
+                                        :src="
+                                            at.first_image != '' ? at.first_image : '/src/assets/images/Recrip_wide.JPG'
+                                        "
+                                    />
                                 </template>
-                                <p><a-rate :value="starscore[index].starscore / 10" allow-half disabled /></p>
-                                <a-card-meta :title="at.title">
-                                    <template #description>
-                                        {{ at.addr1 }}
-                                    </template>
-                                </a-card-meta>
+                                <div class="align-text-bottom align-self-end" style="width: 135px">
+                                    <p><a-rate :value="starscore[index].starscore / 10" allow-half disabled /></p>
+                                    <a-card-meta :title="at.title"> </a-card-meta>
+                                </div>
                             </a-card>
                         </template>
                     </div>
-                    <div style="text-align:center; margin: 10px;">
-                        <button class="btn btn-primary" type="button" @click="gotomap(article.groupno,attr[0].content_id)">맵에서 보기</button>
+                    <div style="text-align: center; margin: 10px">
+                        <button
+                            class="btn btn-dark"
+                            type="button"
+                            @click="gotomap(article.groupno, attr[0].content_id)"
+                        >
+                            맵에서 보기
+                        </button>
                     </div>
                     <div class="row">
                         <div class="col-md-8">
