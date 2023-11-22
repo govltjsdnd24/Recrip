@@ -22,7 +22,7 @@ const userinfo = ref();
 const subject = ref('');
 const content = ref('');
 const router = useRouter();
-const starscore = ref();
+const starscore = ref(new Array(1));
 
 onMounted(() => {
 	userinfo.value = getLoginInfo;

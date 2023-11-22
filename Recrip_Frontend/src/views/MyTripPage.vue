@@ -106,7 +106,7 @@ const CourseLoad = () => {
                 }
             }
 
-            list.value.push(l);
+            list.value.push({ data:l, groupno:index });
 
             console.log('코스리스트', list.value);
             // list.value = response.data.resmsg;
@@ -128,6 +128,16 @@ const onPageChange = (val) => {
             CourseLoad();
             break;
     }
+    var accordion = document.querySelectorAll('.accordion-collapse');
+    accordion.forEach(element => {
+        console.log(element);
+        element.setAttribute('class', 'accordion-collapse collapse');
+    });
+    var button = document.querySelectorAll('.accordion-button');
+    button.forEach(element => {
+        console.log(element);
+        element.setAttribute('class', 'accordion-button collapsed');
+    });
 };
 
 const reviewwrite = (attr) => {
@@ -189,8 +199,7 @@ const reviewcoursewrite = (groupno) => {
                     <div class="accordion-item" v-for="(datas, index) in list" :key="index" style="margin: 0px">
                         <h2 class="accordion-header" :id="'heading' + index">
                             <button
-                                class="accordion-button"
-                                :class="{ collapsed: index !== 0 }"
+                                class="accordion-button collapsed"
                                 type="button"
                                 data-bs-toggle="collapse"
                                 :data-bs-target="'#collapse' + index"
@@ -200,10 +209,9 @@ const reviewcoursewrite = (groupno) => {
                                 {{ (current - 1) * 5 + index + 1 }}번 코스
                             </button>
                         </h2>
-                        <div
+                        <div 
                             :id="'collapse' + index"
                             class="accordion-collapse collapse"
-                            :class="{ show: index === 0 }"
                             :aria-labelledby="'heading' + item"
                             data-bs-parent="#accordionExample"
                         >
@@ -211,7 +219,7 @@ const reviewcoursewrite = (groupno) => {
                                 <template
                                     v-for="(attr, index) in datas.data"
                                     :key="attr.content_id"
-                                    style="margin: 0px"
+                                    
                                 >
                                     <div class="col-2 mx-0 px-0">
                                         <a-card hoverable style="max-width: 300px; margin: 0px">
