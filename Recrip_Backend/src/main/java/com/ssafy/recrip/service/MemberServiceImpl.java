@@ -182,4 +182,10 @@ public class MemberServiceImpl implements MemberService{
 		return session.getMapper(MemberMapper.class).getCourseCount(userid);
 	}
 
+	@Override
+	public List<Integer> courseReview(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		return session.getMapper(MemberMapper.class).courseReview(param);
+	}
+
 }

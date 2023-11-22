@@ -23,7 +23,7 @@ onBeforeMount(() => {
 
     async function getArticle(url) {
         const response = await axios.get(url);
-        console.log(response.data.resdata);
+        console.log("글정보",response.data);
         article.value = response.data.resdata;
     }
     getArticle(url).catch((error) => {

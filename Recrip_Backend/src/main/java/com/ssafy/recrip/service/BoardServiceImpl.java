@@ -292,5 +292,19 @@ public class BoardServiceImpl implements BoardService {
 		Object result = session.getMapper(BoardMapper.class).reviewMaxComment(articleno);
 		return result == null ? 0 : (int) result;
 	}
+
+	@Override
+	public int reviewBoardAttrWrite(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		param.put("starscore", Double.parseDouble((String) param.get("starscore")) * 10);
+		System.out.println("review board attr write " + param);
+		return session.getMapper(BoardMapper.class).reviewBoardAttrWrite(param);
+	}
+
+	@Override
+	public List<Map<String, Object>> reviewBoardAttrList(String articleno) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).reviewBoardAttrList(articleno);
+	}
 	
 }

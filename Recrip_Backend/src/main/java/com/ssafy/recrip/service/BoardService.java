@@ -53,4 +53,6 @@ public interface BoardService {
 	int reviewCommentChildWrite(CommentDto dto);
 	int freeMaxComment(String articleno);
 	int reviewMaxComment(String articleno);
+	int reviewBoardAttrWrite(Map<String,Object> param);
+	List<Map<String,Object>> reviewBoardAttrList(String articleno);
 }

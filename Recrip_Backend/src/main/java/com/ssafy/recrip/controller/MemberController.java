@@ -337,6 +337,33 @@ public class MemberController {
 		return res;
 	}
 	
+	@GetMapping("/coursereview")
+	public ResponseEntity<Map<String, Object>> coursereview(@RequestParam Map<String, Object> param) throws IllegalStateException, IOException, SQLException {
+		Map<String, Object> map = new HashMap<>();
+		List<Integer> course = service.courseReview(param);
+		List<AttractionDto> result = new ArrayList<>();
+		try {
+			for (Integer c : course) {
+				AttractionDto attrInfo = service.getAttrInfo(String.valueOf(c));
+				result.add(attrInfo);
+			}
+			if(result.size()>0) {
+				map.put("resmsg", result);
+				map.put("resdata", "1");
+			} else {
+				map.put("resmsg", "조회 실패");
+				map.put("resdata", "0");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("resmsg", "조회 중 오류 발생");
+		}
+		
+		ResponseEntity<Map<String, Object>> res = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return res;
+	}
+	
 	@PostMapping("/historyinsert")
 	public ResponseEntity<Map<String, Object>> historyinsert(@RequestBody WishHisDto dto) throws Exception {
 		Map<String, Object> map = new HashMap<>();

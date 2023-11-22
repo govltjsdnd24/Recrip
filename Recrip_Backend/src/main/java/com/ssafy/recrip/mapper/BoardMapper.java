@@ -56,5 +56,6 @@ public interface BoardMapper {
 	int reviewCommentChildWrite(CommentDto dto);
 	Object freeMaxComment(String articleno);
 	Object reviewMaxComment(String articleno);
-	
+	int reviewBoardAttrWrite(Map<String,Object> param);
+	List<Map<String,Object>> reviewBoardAttrList(String articleno);
 }
