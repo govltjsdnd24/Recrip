@@ -16,7 +16,7 @@ const current = ref(1);
 const list = ref([]);
 const isShown = ref(false);
 const group = ref();
-const index = [1, 2, 3, 4, 5]; 
+const index = [1, 2, 3, 4, 5];
 
 onBeforeMount(() => {
     if (getLoginInfo.userid == null) {
@@ -95,7 +95,7 @@ const CourseLoad = () => {
                 if (index == response.data.resgroup[i]) {
                     l.push(response.data.resmsg[i]);
                 } else {
-                    list.value.push({data: l, groupno: index});
+                    list.value.push({ data: l, groupno: index });
                     l = [];
                     l.push(response.data.resmsg[i]);
                     index = response.data.resgroup[i];
@@ -104,7 +104,7 @@ const CourseLoad = () => {
 
             list.value.push(l);
 
-            console.log("코스리스트",list.value);
+            console.log('코스리스트', list.value);
             // list.value = response.data.resmsg;
             // group.value = response.data.resgroup;
             total.value = response.data.totalpage;
@@ -138,7 +138,7 @@ const deleteattr = (index) => {
 const reviewcoursewrite = (groupno) => {
     console.log(groupno);
     router.push({ name: 'ReviewBoardWrite', state: { groupno: groupno } });
-}
+};
 </script>
 
 <template>
@@ -159,7 +159,9 @@ const reviewcoursewrite = (groupno) => {
                             <template #cover>
                                 <img
                                     :alt="attr.title"
-                                    :src="attr.first_image"
+                                    :src="
+                                        attr.first_image != '' ? attr.first_image : '/src/assets/images/Recrip_wide.JPG'
+                                    "
                                     style="max-width: 300px; max-height: 300px"
                                 />
                             </template>
@@ -175,15 +177,19 @@ const reviewcoursewrite = (groupno) => {
                 </template>
             </template>
             <template v-else>
-                <div v-for="datas , index in list" :key="index">
+                <div v-for="(datas, index) in list" :key="index">
                     <div class="row">
-                        <h1>{{ (current-1) * 5 + index + 1}}</h1>
+                        <h1>{{ (current - 1) * 5 + index + 1 }}</h1>
                         <div class="col-2" v-for="attr in datas.data" :key="attr.content_id">
                             <a-card hoverable style="max-width: 300px; margin: 0px">
                                 <template #cover>
                                     <img
                                         :alt="attr.title"
-                                        :src="attr.first_image"
+                                        :src="
+                                            attr.first_image != ''
+                                                ? attr.first_image
+                                                : '/src/assets/images/Recrip_wide.JPG'
+                                        "
                                         style="max-width: 300px; max-height: 300px"
                                     />
                                 </template>
