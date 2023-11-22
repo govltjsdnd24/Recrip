@@ -358,8 +358,7 @@ const CommentDelete = (commentno) => {
                                                 X
                                             </button>
                                         </header>
-                                        {{ parentuserid }}:
-                                        {{ parentcontent }}
+                                        {{ parentuserid }}: {{ parentcontent }} 의 대한 답글
                                         <div class="modal-input-wrap">
                                             <label class="modal-label" for="modal-pw">내용</label>
                                             <textarea
@@ -367,7 +366,7 @@ const CommentDelete = (commentno) => {
                                                 id="content"
                                                 name="content"
                                                 v-model="childcontent"
-                                                style="width: 370px; height: 200px"
+                                                style="width: 370px; height: 100px"
                                             >
                                         내용</textarea
                                             >
