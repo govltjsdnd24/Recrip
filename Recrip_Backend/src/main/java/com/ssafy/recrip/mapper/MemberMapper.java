@@ -27,7 +27,7 @@ public interface MemberMapper {
 	int wishInsert(WishHisDto dto);
 	int courseInsert(CourseDto dto);
 	int historydelete(String contentid);
-	int wishdelete(String contentid);
+	int wishdelete(String articleno);
 	int coursedelete(String groupno);
 	String findMaxGroupno(String userid);
 	List<MessageDto> messageList(String userid);

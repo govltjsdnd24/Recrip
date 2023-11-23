@@ -74,6 +74,7 @@ public class MemberServiceImpl implements MemberService{
 		// TODO Auto-generated method stub
 		int current = (Integer.parseInt((String) param.get("current")) - 1) * Integer.parseInt((String) param.get("size"));
 		param.put("current", current);
+		System.out.println(param);
 		return session.getMapper(MemberMapper.class).wishList(param);
 	}
 
@@ -135,9 +136,9 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public int wishdelete(String contentid) {
+	public int wishdelete(String articleno) {
 		// TODO Auto-generated method stub
-		return session.getMapper(MemberMapper.class).wishdelete(contentid);
+		return session.getMapper(MemberMapper.class).wishdelete(articleno);
 	}
 
 	@Override

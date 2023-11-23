@@ -18,6 +18,7 @@ const comments = ref([{}]);
 const files = ref([{}]);
 const comment = ref('');
 const likecount = ref(0);
+const profilepic= ref('');
 
 const childcomments = ref([{}]);
 const commentcount = ref(0);
@@ -41,6 +42,7 @@ onBeforeMount(() => {
     async function getArticle(url) {
         const response = await axios.get(url);
         article.value = response.data.resdata;
+        profilepic.value=response.data.url;
     }
     getArticle(url).catch((error) => {
         console.log(error);
@@ -83,6 +85,9 @@ onBeforeMount(() => {
     getChildComment(childcomm).catch((error) => {
         console.log(error);
     });
+
+
+    
 });
 
 async function commentCount(url) {
@@ -94,6 +99,8 @@ async function getLikes(url) {
     const response = await axios.get(url);
     likecount.value = response.data.resmsg;
 }
+
+
 
 const likeBoard = () => {
     var url = `/api/freeboardlike?articleno=${articleno}&userid=${getLoginInfo.userid}`;
@@ -219,7 +226,10 @@ const CommentDelete = (commentno) => {
                             <div class="clearfix align-content-center">
                                 <img
                                     class="avatar me-2 float-md-start bg-light p-2"
-                                    src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"
+                                    :src="
+                                            profilepic != '' ? profilepic : 
+                                        'https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg'"
+                                    style="width: 50px;"
                                 />
                                 <p>
                                     <span class="fw-bold" id="user">{{ article.userid }}</span> <br />

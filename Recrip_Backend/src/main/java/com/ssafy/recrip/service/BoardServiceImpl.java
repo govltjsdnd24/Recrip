@@ -306,5 +306,11 @@ public class BoardServiceImpl implements BoardService {
 		// TODO Auto-generated method stub
 		return session.getMapper(BoardMapper.class).reviewBoardAttrList(articleno);
 	}
+
+	@Override
+	public String profilePicture(String userid) {
+		// TODO Auto-generated method stub
+		return session.getMapper(BoardMapper.class).profilePicture(userid);
+	}
 	
 }
