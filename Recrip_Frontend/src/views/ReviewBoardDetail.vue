@@ -18,7 +18,7 @@ const comments = ref([{}]);
 const files = ref([{}]);
 const comment = ref('');
 const likecount = ref(0);
-const profilepic= ref('');
+const profilepic = ref('');
 
 const attr = ref();
 const starscore = ref();
@@ -46,7 +46,7 @@ onBeforeMount(() => {
         article.value = response.data.resdata;
         attr.value = response.data.attr;
         starscore.value = response.data.starscore;
-        profilepic.value=response.data.url;
+        profilepic.value = response.data.url;
     }
     getArticle(url).catch((error) => {
         console.log(error);
@@ -241,46 +241,17 @@ const gotomap = (groupno, content_id) => {
                     </h2>
                 </div>
                 <div class="col-lg-8 col-md-10 col-sm-12">
-                    <div class="row justify-content-center" style="margin-bottom: 20px">
-                        <template v-for="(at, index) in attr" :key="index">
-                            <a-card
-                                hoverable
-                                style="width: 400px; margin: 5px; padding: 15px"
-                                class="d-flex align-items-center"
-                            >
-                                <template #cover>
-                                    <img
-                                        :alt="at.title"
-                                        :src="
-                                            at.first_image != '' ? at.first_image : '/src/assets/images/Recrip_wide.JPG'
-                                        "
-                                    />
-                                </template>
-                                <div class="align-text-bottom align-self-end" style="width: 135px">
-                                    <p><a-rate :value="starscore[index].starscore / 10" allow-half disabled /></p>
-                                    <a-card-meta :title="at.title"> </a-card-meta>
-                                </div>
-                            </a-card>
-                        </template>
-                    </div>
-                    <div style="text-align: center; margin: 10px">
-                        <button
-                            class="btn btn-dark"
-                            type="button"
-                            @click="gotomap(article.groupno, attr[0].content_id)"
-                        >
-                            맵에서 보기
-                        </button>
-                    </div>
                     <div class="row">
                         <div class="col-md-8">
                             <div class="clearfix align-content-center">
                                 <img
-                                    class="avatar me-2 float-md-start bg-light p-2"
+                                    class="avatar me-2 float-md-start p-2"
                                     :src="
-                                            profilepic != '' ? profilepic : 
-                                        'https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg'"
-                                    style="width: 50px;"
+                                        profilepic != ''
+                                            ? profilepic
+                                            : 'https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg'
+                                    "
+                                    style="width: 50px"
                                 />
                                 <p>조회: {{ article.hit }} &nbsp; 추천: {{ article.likes }}</p>
                                 <p>
@@ -296,6 +267,39 @@ const gotomap = (groupno, content_id) => {
                         <!-- <div class="divider mt-3 mb-3"></div> -->
                         <br />
                         <br />
+                        <div class="row justify-content-center" style="margin-bottom: 20px">
+                            <template v-for="(at, index) in attr" :key="index">
+                                <a-card
+                                    hoverable
+                                    style="width: 400px; margin: 5px; padding: 15px"
+                                    class="d-flex align-items-center"
+                                >
+                                    <template #cover>
+                                        <img
+                                            :alt="at.title"
+                                            :src="
+                                                at.first_image != ''
+                                                    ? at.first_image
+                                                    : '/src/assets/images/Recrip_wide.JPG'
+                                            "
+                                        />
+                                    </template>
+                                    <div class="align-text-bottom align-self-end" style="width: 135px">
+                                        <p><a-rate :value="starscore[index].starscore / 10" allow-half disabled /></p>
+                                        <a-card-meta :title="at.title"> </a-card-meta>
+                                    </div>
+                                </a-card>
+                            </template>
+                        </div>
+                        <div style="text-align: center; margin: 10px">
+                            <button
+                                class="btn btn-dark"
+                                type="button"
+                                @click="gotomap(article.groupno, attr[0].content_id)"
+                            >
+                                맵에서 보기
+                            </button>
+                        </div>
                         <hr />
                         <br />
                         <br />
