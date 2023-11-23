@@ -95,7 +95,7 @@
 		where content_id = #{contentid}
 	</select>
 	<select id="getCourseCount" parameterType="String" resultType="int">
-		select groupno from courselist order by groupno desc limit 1
+		select groupno from courselist where userid = #{userid} order by groupno desc limit 1
 	</select>
 	<select id="courseReview" parameterType="map" resultType="int">
 		select contentid from courselist where userid = #{userid} and groupno = #{groupno} 

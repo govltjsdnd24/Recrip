@@ -102,6 +102,7 @@ const CourseLoad = () => {
             },
         })
         .then((response) => {
+            console.log(response);
             if (response.data.resdata == 0) {
                 return;
             }
