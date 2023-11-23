@@ -165,7 +165,7 @@
   	</select>
   	
   	<select id="reviewBoardMostLikes" resultType="boardDto">
-  		select * from reviewboard order by likes desc limit 4;
+  		select * from reviewboard WHERE isdelete=0 order by likes desc limit 4;
   	</select>
   	
   	<select id="findscore" parameterType="String" resultType="map">
