@@ -85,7 +85,7 @@ const BoardWrite = () => {
         console.log(error);
     });
 
-    setTimeout(golist, 100);
+    setTimeout(golist, 1000);
 };
 
 const golist = () => {

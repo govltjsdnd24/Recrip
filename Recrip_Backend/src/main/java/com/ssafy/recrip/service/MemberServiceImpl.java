@@ -190,9 +190,9 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public List<Integer> getcourse(String groupno) {
+	public List<Integer> getcourse(Map<String,String> param) {
 		// TODO Auto-generated method stub
-		return session.getMapper(MemberMapper.class).getcourse(groupno);
+		return session.getMapper(MemberMapper.class).getcourse(param);
 	}
 
 }

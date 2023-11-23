@@ -224,10 +224,10 @@ watch(files, (files) => {
     });
 });
 
-const gotomap = (groupno, content_id) => {
-    console.log(groupno, content_id);
+const gotomap = (userid, groupno, content_id) => {
+    console.log(userid, groupno, content_id);
     if (groupno != 0) {
-        router.push({ name: 'map', state: { groupno: groupno } });
+        router.push({ name: 'map', state: { groupno: groupno , userid: userid} });
     } else {
         router.push({ name: 'map', state: { content_id: content_id } });
     }
@@ -298,10 +298,7 @@ const gotomap = (groupno, content_id) => {
                             <button
                                 class="btn btn-dark"
                                 type="button"
-                                @click="gotomap(article.groupno, attr[0].content_id)"
-                            >
-                                맵에서 보기
-                            </button>
+                                @click="gotomap(article.userid, article.groupno, attr[0].content_id)">맵에서 보기</button>
                         </div>
                         <hr />
                         <br />

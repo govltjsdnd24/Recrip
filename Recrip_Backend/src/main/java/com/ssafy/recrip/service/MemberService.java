@@ -32,5 +32,5 @@ public interface MemberService {
 	AttractionDto getAttrInfo(String string);
 	int getCourseCount(String userid);
 	List<Integer> courseReview(Map<String,Object> param);
-	List<Integer> getcourse(String groupno);
+	List<Integer> getcourse(Map<String, String> param);
 }

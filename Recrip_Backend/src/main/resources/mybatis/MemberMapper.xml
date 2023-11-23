@@ -100,8 +100,8 @@
 	<select id="courseReview" parameterType="map" resultType="int">
 		select contentid from courselist where userid = #{userid} and groupno = #{groupno} 
 	</select>
-	<select id="getcourse" parameterType="String" resultType="int">
-		select contentid from courselist where groupno = #{groupno}
+	<select id="getcourse" parameterType="map" resultType="int">
+		select contentid from courselist where groupno = #{groupno} and userid = #{userid}
 	</select>
 </mapper>
   

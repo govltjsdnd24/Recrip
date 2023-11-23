@@ -584,10 +584,13 @@ public class MemberController {
 	}
 	
 	@GetMapping("/getcourse")
-	public ResponseEntity<Map<String, Object>> getcourse(String groupno) throws IllegalStateException, IOException, SQLException {
+	public ResponseEntity<Map<String, Object>> getcourse(String groupno, String userid) throws IllegalStateException, IOException, SQLException {
 		Map<String, Object> map = new HashMap<>();
 		
-		List<Integer> getcourse = service.getcourse(groupno);
+		Map<String, String> param = new HashMap<>();
+		param.put("groupno", groupno);
+		param.put("userid", userid);
+		List<Integer> getcourse = service.getcourse(param);
 		List<AttractionDto> result = new ArrayList<>();
 		
 		for (Integer id : getcourse) {

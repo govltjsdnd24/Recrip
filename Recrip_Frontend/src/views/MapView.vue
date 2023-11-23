@@ -65,7 +65,7 @@ function initializeMap() {
         map = new kakao.maps.Map(mapContainer.value, options);
 
         if (history.state.groupno != null) {
-            let url = `/api/getcourse?groupno=${history.state.groupno}`;
+            let url = `/api/getcourse?groupno=${history.state.groupno}&userid=${history.state.userid}`;
             axios.get(url).then(response => {
                 selectcourse.value = response.data.resdata;
                 makeList(response.data.resdata);
