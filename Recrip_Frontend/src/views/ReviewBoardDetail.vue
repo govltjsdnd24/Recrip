@@ -420,7 +420,7 @@ const gotomap = (groupno, content_id) => {
                                                 X
                                             </button>
                                         </header>
-                                        {{ parentuserid }}: {{ parentcontent }} 의 대한 답글
+                                        {{ parentuserid }}: {{ parentcontent }} 답글
                                         <div class="modal-input-wrap">
                                             <label class="modal-label" for="modal-pw">내용</label>
                                             <textarea
