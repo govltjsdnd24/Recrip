@@ -1,4 +1,4 @@
-package com.ssafy.recrip.main;
+package com.ssafy.recrip;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
