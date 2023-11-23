@@ -106,7 +106,7 @@ public class MemberServiceImpl implements MemberService{
 	public int courseInsert(List<CourseDto> dto) {
 		// TODO Auto-generated method stub
 		try {
-			String groupno = session.getMapper(MemberMapper.class).findMaxGroupno();
+			String groupno = session.getMapper(MemberMapper.class).findMaxGroupno(dto.get(0).getUserid());
 			if(groupno == null) {
 				for (CourseDto courseDto : dto) {
 					courseDto.setGroupno("1");

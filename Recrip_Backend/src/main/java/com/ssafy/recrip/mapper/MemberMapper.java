@@ -29,7 +29,7 @@ public interface MemberMapper {
 	int historydelete(String contentid);
 	int wishdelete(String articleno);
 	int coursedelete(String groupno);
-	String findMaxGroupno();
+	String findMaxGroupno(String userid);
 	List<MessageDto> messageList(String userid);
 	int messageinsert(MessageDto dto);
 	int messagedelete(String messageno);
