@@ -65,7 +65,7 @@ const WishLoad = () => {
             params: {
                 userid: getLoginInfo.userid,
                 current: current.value,
-                size: 10,
+                size: 9,
                 table: 'wishlist',
             },
         })
@@ -74,6 +74,7 @@ const WishLoad = () => {
             list.value = response.data.resmsg;
             total.value = response.data.totalpage;
             articleno.value = response.data.resid;
+            console.log('articleno',articleno.value)
         });
 };
 
@@ -148,7 +149,7 @@ const reviewwrite = (attr) => {
     router.push({ name: 'ReviewBoardWrite', state: { attr: JSON.stringify(attr) } });
 };
 
-const deleteattr = (articleno, index) => {
+const deleteattr = (articleno) => {
     console.log(articleno);
     let url = `/api/wishdelete?articleno=${articleno}`;
     axios.delete(url).then(response => {
@@ -227,7 +228,7 @@ const reviewcoursewrite = (groupno) => {
                                 </template>
                                 <template #actions>
                                     <button @click="reviewwrite(attr)">review</button>
-                                    <button @click="deleteattr(articleno[index].articleno, index)">delete</button>
+                                    <button @click="deleteattr(articleno[index].articleno)">delete</button>
                                 </template>
                                 <a-card-meta :title="attr.title">
                                     <template #description>{{ attr.addr1 }} ({{ attr.zipcode }}) <br> TEL: {{ attr.tel!=''?attr.tel: "Unavailable"}}</template>
