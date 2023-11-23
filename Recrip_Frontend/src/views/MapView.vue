@@ -432,7 +432,7 @@ const coursesave = () => {
     console.log('코스 복사', surecourse);
 
     if (history.state.groupno != null) {
-        alert('1231게시판의 여행 정보를 맵에 표시합니다.');
+        alert('게시판의 여행 정보를 맵에 표시합니다.');
     } else {
         if (getLoginInfo.userid != null) {
         let url = '/api/courseinsert';
