@@ -68,14 +68,14 @@ function initializeMap() {
             let url = `/api/getcourse?groupno=${history.state.groupno}`;
             axios.get(url).then(response => {
                 selectcourse.value = response.data.resdata;
-                makeList(response.data);
+                makeList(response.data.resdata);
                 coursesave();
             });
         } else if (history.state.content_id != null) {
             alert('게시판의 여행 정보를 맵에 표시합니다.');
             let url = `/api/getattraction?content_id=${history.state.content_id}`;
             axios.get(url).then(response => {
-                makeList(response.data);
+                makeList(response.data.resdata);
             });
         }
     });
@@ -149,7 +149,7 @@ const Search = () => {
         word: keyword,
     };
 
-    axios.post(baseUrl, param).then((response) => makeList(response.data));
+    axios.post(baseUrl, param).then((response) => makeList(response.data.resdata));
 };
 var markers = ref([]);
 var positions = ref([]); // marker 배열.
@@ -157,10 +157,10 @@ var overlays = ref([]);
 
 function makeList(data) {
     console.log('makelist', data);
-    carousel.value = data.resdata;
+    carousel.value = data;
 
     positions = [];
-    data.resdata.forEach((area) => {
+    data.forEach((area) => {
         let markerInfo = {
             title: area.title,
             latitude: area.latitude,
@@ -431,8 +431,8 @@ const coursesave = () => {
 
     console.log('코스 복사', surecourse);
 
-    if (history.state.groupno = ! null) {
-        alert('게시판의 여행 정보를 맵에 표시합니다.');
+    if (history.state.groupno != null) {
+        alert('1231게시판의 여행 정보를 맵에 표시합니다.');
     } else {
         if (getLoginInfo.userid != null) {
         let url = '/api/courseinsert';
@@ -525,6 +525,8 @@ const coursesave = () => {
                     }
                 }
             }
+
+            makeList(surecourse);
 
             var sections = response.data.routes[0].sections;
 
