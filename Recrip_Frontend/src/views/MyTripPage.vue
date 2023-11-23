@@ -11,7 +11,7 @@ const { isLogin, loginInfo, IsLogin, getLoginInfo, setLogOut, setLoginInfo } = i
 
 const type = ref('');
 
-const total = ref();
+const total = ref(0);
 const current = ref(1);
 const list = ref([]);
 const isShown = ref(false);
@@ -45,6 +45,9 @@ const HistoryLoad = () => {
             },
         })
         .then((response) => {
+            if (response.data.resdata == 0) {
+                return;
+            }
             console.log(response);
             list.value = response.data.resmsg;
             total.value = response.data.totalpage;
@@ -70,6 +73,9 @@ const WishLoad = () => {
             },
         })
         .then((response) => {
+            if (response.data.resdata == 0) {
+                return;
+            }
             console.log('위시 리스트 결과',response);
             list.value = response.data.resmsg;
             total.value = response.data.totalpage;
@@ -96,6 +102,9 @@ const CourseLoad = () => {
             },
         })
         .then((response) => {
+            if (response.data.resdata == 0) {
+                return;
+            }
             let l = [];
             let index = response.data.resgroup[0];
             list.value = [];
