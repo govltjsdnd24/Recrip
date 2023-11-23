@@ -255,6 +255,7 @@ public class BoardController {
 		Map<String, Object> map = new HashMap<>();
 		try {
 			BoardDto dto = service.freeBoardView(articleno);
+			service.freeBoardHit(articleno);
 			String url = service.profilePicture(dto.getUserid());
 			map.put("resdata", dto);
 			map.put("url", url);
@@ -277,6 +278,7 @@ public class BoardController {
 		try {
 			List<AttractionDto> attr = new ArrayList<>();
 			List<Map<String, Object>> result = service.reviewBoardAttrList(articleno);
+			service.reviewBoardHit(articleno);
 			System.out.println(result);
 			
 			for (Map<String, Object> data : result) {
