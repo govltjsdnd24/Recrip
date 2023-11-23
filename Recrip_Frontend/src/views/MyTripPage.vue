@@ -295,10 +295,7 @@ const reviewcoursewrite = (groupno) => {
                                             class="col-4 btn btn-outline-secondary mx-5"
                                             @click="reviewcoursewrite(datas.groupno)"
                                         >
-                                            review
-                                        </button>
-                                        <button class="col-4 btn btn-outline-danger mx-5" @click="deletecourse(list[index].groupno)">
-                                            delete
+                                            review 작성
                                         </button>
                                     </div>
                                 </div>

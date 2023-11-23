@@ -326,24 +326,26 @@ const CommentDelete = (commentno) => {
                                         <div class="row">
                                             <h5 class="mt-0 col">{{ comment.userid }}</h5>
                                             <div class="d-flex justify-content-end col">
-                                                <template v-if="IsLogin == true">
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-outline-dark ms-1"
-                                                        id="btn-cm-delete"
-                                                        @click="CommentChild(comment)"
-                                                    >
-                                                        댓글추가
-                                                    </button>
-                                                    <template v-if="userinfo.userid == comment.userid">
+                                                <template v-if="comment.registdate != null"> 
+                                                    <template v-if="IsLogin == true">
                                                         <button
                                                             type="button"
-                                                            class="btn btn-outline-danger ms-1"
+                                                            class="btn btn-outline-dark ms-1"
                                                             id="btn-cm-delete"
-                                                            @click="CommentDelete(comment.commentno)"
+                                                            @click="CommentChild(comment)"
                                                         >
-                                                            댓글삭제
+                                                            댓글추가
                                                         </button>
+                                                        <template v-if="userinfo.userid == comment.userid">
+                                                            <button
+                                                                type="button"
+                                                                class="btn btn-outline-danger ms-1"
+                                                                id="btn-cm-delete"
+                                                                @click="CommentDelete(comment.commentno)"
+                                                            >
+                                                                댓글삭제
+                                                            </button>
+                                                        </template>
                                                     </template>
                                                 </template>
                                             </div>
