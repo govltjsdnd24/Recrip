@@ -72,8 +72,8 @@
 	<delete id="coursedelete" parameterType="string">
 		delete from courselist where groupno = #{groupno}
 	</delete>
-	<select id="findMaxGroupno" resultType="string">
-		select groupno from courselist order by groupno desc limit 1;
+	<select id="findMaxGroupno" parameterType="string" resultType="string">
+		select groupno from courselist where userid = #{userid} order by groupno desc limit 1;
 	</select>
 	<select id="messageList" parameterType="String" resultType="messageDto">
 		select * from message
