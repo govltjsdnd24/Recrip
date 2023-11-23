@@ -85,11 +85,14 @@ onBeforeMount(() => {
     async function getChildComment(childcomm) {
         const response = await axios.get(childcomm);
         childcomments.value = response.data.resdata;
-        console.log('CHILDREN', childcomments.value);
+        console.log('코멘트',comments.value);
+        console.log('차일드 코멘트',childcomments.value);
     }
     getChildComment(childcomm).catch((error) => {
         console.log(error);
     });
+
+    
 });
 
 async function commentCount(url) {

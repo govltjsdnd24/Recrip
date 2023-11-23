@@ -133,11 +133,11 @@
   	</insert>
   	
   	<update id="freeCommentDelete" parameterType="string">
-  		update freecomment set isdelete = true where commentno = #{commentno}
+  		update freecomment set content = '삭제된 댓글입니다.', registdate = null where commentno = #{commentno}
   	</update>
   	
   	<update id="reviewCommentDelete" parameterType="string">
-  		update reviewcomment set isdelete = true where commentno = #{commentno}
+  		update reviewcomment set content = '삭제된 댓글입니다.', registdate = null where commentno = #{commentno}
   	</update>
   	
   	<select id="freeBoardFileList" parameterType="string" resultType="fileDto">
