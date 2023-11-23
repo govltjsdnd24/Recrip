@@ -430,6 +430,7 @@ public class BoardController {
 			List<CommentDto> list = new ArrayList<CommentDto>();
 			boolean[] check = new boolean[service.reviewMaxComment(articleno)+1];
 			rrecursive(param,list,0,check);
+			System.out.println(list);
 			map.put("resdata", list);
 			map.put("resmsg", "조회성공");
 		} catch (Exception e) {
@@ -453,12 +454,11 @@ public class BoardController {
 				continue;
 			}
 			map.put("parentcomment",list.get(i).getCommentno());
-			System.out.println(i);
 			List<CommentDto> f = service.reviewCommentList(map);
 			check[Integer.parseInt(map.get("parentcomment"))] = true;
 			if(f.size() > 0) {
 				list.addAll(i+1,f);
-				recursive(map,list,i+1,check);
+				rrecursive(map,list,i+1,check);
 			}
 		}
 	}
