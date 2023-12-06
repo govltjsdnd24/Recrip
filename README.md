@@ -3,13 +3,11 @@
 A Web Project On Travel Recommendation Site.
 
 Chose KakaoMap API for mapping.
-
 Utilized VueJS and Spring Boot.
-
 Deployed through AWS.
 
 
-Functionalities:
+# Functionalities:
 
 Login
 
