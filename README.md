@@ -1,26 +1,18 @@
 # Recrip
 
 A Web Project On Travel Recommendation Site.
-
 Chose KakaoMap API for mapping.
 Utilized VueJS and Spring Boot.
 Deployed through AWS.
 
 
-# Functionalities:
-
+Functionalities:
 Login
-
 Map Interaction (Marker, Popup)
-
 Course Selection, Management
-
 Review for Courses
-
 File I/O
-
 Nested Comments
-
 And many more...
 
 
