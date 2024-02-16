@@ -7,17 +7,15 @@ import { LoginInfo } from '../store/login';
 const info = LoginInfo();
 const { isLogin, loginInfo, IsLogin, getLoginInfo } = info;
 
-const serviceKey = 'YmLOCrrmdh8DGzVmGbT0Xu9jfrsXGgdJ6GsHZ%2FDGzKW82R5KrnlJU0dar8fqQ0nYXpb9fjuYjDQx1QuSigbTkw%3D%3D';
+const serviceKey /*= kakao map service key*/;
 const areaUrl =
     'https://apis.data.go.kr/B551011/KorService1/areaCode1?serviceKey=' +
     serviceKey +
     '&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
 
 const src =
-    '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=4fd0aaf2d6c6b86333a1b8f0115bac76&libraries=services,clusterer,drawing';
+    '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey='+/*kakao app key +*/ '&libraries=services,clusterer,drawing';
 
-// const src =
-//     '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=068c718ed6d3a38278cc1820746952f0&libraries=services,clusterer,drawing';
 
 var map = ref(null);
 const mapContainer = ref(null);
@@ -460,7 +458,7 @@ const coursesave = () => {
     
 
     let mobility = 'https://apis-navi.kakaomobility.com/v1/waypoints/directions';
-    let key = '935d83ed14edef82a34131e921e9f2bd';
+    let key /*=mobility key*/;
 
     let waypoints = [];
 
